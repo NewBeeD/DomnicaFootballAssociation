@@ -50,10 +50,10 @@ const isAboveSM = useMediaQuery(theme.breakpoints.up('sm'));
 
       <Routes>
 
-        <Route path='/' element={<HomePage />} />
+        {/* <Route path='/' element={<HomePage />} /> */}
+        <Route path="/" element={isAboveSM ? <DfaPageLargeScreens />: <DFA />} />
         <Route path='/:id' element={<Article />} />
         
-        <Route path="/DFA/Home" element={isAboveSM ? <DfaPageLargeScreens />: <DFA />} />
            
         {/* <Route path='/DFA/Home' element={<DFA />} /> */}
         {/* <Route path='/DFA/Home' element={<DfaPageLargeScreens />} /> */}

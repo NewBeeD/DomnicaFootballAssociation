@@ -222,6 +222,13 @@ const DFA = () => {
   };
 
 
+  const [value, setValue] = useState(1);
+
+  const handleChangeTableFixtures = (event, newValue) => {
+    setValue(newValue);
+  };
+
+
 
   // Identifying window width
   const getVideoDimensions = () => {
@@ -266,26 +273,51 @@ const DFA = () => {
   
       <NavBar />
 
-      <Box sx={{display: 'flex', flexDirection: 'column', justify: 'center', alignItems: 'center'}}>
+      {/* <Box sx={{display: 'flex', flexDirection: 'column', justify: 'center', alignItems: 'center'}}>
         <Typography style={{ color: `var(--color-color2, ${theme.colors.color2})`}} marginTop={{xs: 2}} marginBottom={{xs: 2}} variant="h5" sx={{ textAlign: 'center', fontWeight: 900}}>Dominica Football Association</Typography>
 
         <Box width={{xs: 100}} height={{xs: 100}}>
 
           <img src="https://res.cloudinary.com/djrkottjd/image/upload/v1711418501/Dominica_national_football_team_600e878744.png" width='100%' />
 
-          {/* <img src="https://res.cloudinary.com/djrkottjd/image/upload/v1711418501/medium_Dominica_national_football_team_600e878744.png" width='100%' /> */}
-
-
         </Box>
 
 
-      </Box>
+      </Box> */}
 
       {/* <MainNews /> */}
-      <Box marginTop={2} />
-      <DfaArticles level='first' />
+      <Box paddingTop={4} />
+      <DfaArticles level='first' size='small' />
 
       <Divider sx={{ marginTop: 2}} />
+
+      <Box marginTop={{ sm: 7}} height='100%'>
+
+        <TabContext value={value}>
+
+          <TabList onChange={handleChangeTableFixtures} aria-label="tabs example" centered >
+                    <Tab label='Table' value={1}  />
+                    <Tab label='Fixtures' value={2}  />
+          </TabList>
+
+
+          <TabPanel  value={1}>
+
+            <Points_Table page='Homepage'/>
+
+          </TabPanel>
+
+          <TabPanel  value={2}>
+
+            <FixturesData page='home' type="now" league='DFA' />
+            
+          </TabPanel>
+
+        </TabContext>
+
+      </Box>
+
+      <Divider sx={{ marginTop: 2, display: {xs: 'none'}}} />
       
       <Box style={{ backgroundColor: `var(--color-color3, ${theme.colors.color3})`}} paddingBottom={3} marginTop={2} textAlign='center' sx={{ display: {xs: 'none'}}}>
         <Typography variant="h5" style={{ textDecoration: 'underline', color: 'white'}}>Weekend Highlights</Typography>
@@ -320,45 +352,15 @@ const DFA = () => {
         <Stack justifyContent='center' alignItems='center' direction='row' spacing={window_width < 290? 1.8:window_width == 300? 2.5 : window_width == 350? 4: window_width == 390? 3.5: window_width == 400? 4.5: window_width == 420? 4.5: window_width == 500? 5: 2.5}>
 
   
-          {/* <Box >
-            <Button 
-            aria-controls="simple-menu" 
-            aria-haspopup="true" 
-            onClick={handleClick}
-            endIcon={<KeyboardArrowUpIcon style={{ color: 'white'}} />}
-            style={{fontWeight: 900, textTransform: 'capitalize', color: `var(--color-color3, ${theme.colors.color3})`, padding: '0px'}}
-            size='small'
-            sx={{ fontSize: {xs: '13px', sm: '15px'}}}>
-              {selectedChoice}
-            </Button>
-  
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: 'top', // Position of the anchor element
-                horizontal: 'left',
-              }}
-              transformOrigin={{
-                vertical: 'bottom', // Position of the menu
-                horizontal: 'left',
-              }}
-            >
-              <MenuItem style={{ color: `var(--color-color3, ${theme.colors.color3})`}} onClick={() => handleMenuItemClick('Men')}>Men</MenuItem>
-              <MenuItem style={{ color: `var(--color-color3, ${theme.colors.color3})`}} onClick={() => handleMenuItemClick('Women')}>Women</MenuItem>
-              <MenuItem style={{ color: `var(--color-color3, ${theme.colors.color3})`}} onClick={() => handleMenuItemClick('Div 1')}>Division 1</MenuItem>
-            </Menu>
-          </Box> */}
 
           <Box>
             <Button onClick={() => handleNewsClick()} size='small' style={{ textTransform: 'capitalize',  padding: 0, minWidth: 'inherit' }} startIcon={<NewspaperIcon style={{ color: `var(--color-color4, ${theme.colors.color3})`, fontSize: '20px' }} />} />
           </Box>
   
           <Box>
-            <Button onClick={() => handleFixturesClick()} size='small' style={{ textTransform: 'capitalize',  padding: 0, minWidth: 'inherit' }} startIcon={<CalendarMonthIcon style={{ color: `var(--color-color4, ${theme.colors.color3})`, fontSize: '20px' }} />} />
+            <Button 
+            onClick={() => handleFixturesClick()} size='small' style={{ textTransform: 'capitalize',  padding: 0, minWidth: 'inherit' }} 
+            startIcon={<CalendarMonthIcon style={{ color: `var(--color-color4, ${theme.colors.color3})`, fontSize: '20px' }} />} />
 
           </Box>
   

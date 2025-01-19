@@ -4,6 +4,8 @@ export default function PlayerDisplayStructure(data){
 
   if(data == null){return []}
 
+  console.log(data);
+
   let final_data = data.map(item => {
 
     let player = {};
@@ -21,6 +23,7 @@ export default function PlayerDisplayStructure(data){
     player['YellowCards'] = item.attributes['Yellow_Cards']
     player['RedCards'] = item.attributes['Red_Cards']
     player['Foot'] = item.attributes['Foot']
+    player['profile_pic'] = item.attributes['Profile_Pic'].data.attributes['url']
 
     return player
   })

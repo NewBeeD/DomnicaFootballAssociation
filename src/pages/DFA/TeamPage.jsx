@@ -7,6 +7,7 @@ import axios from "axios";
 
 import {  Box, Typography, Stack, Button, Card, CardHeader, CardContent, CardMedia, CardActions,  Grid, Skeleton, Divider, Menu, MenuItem, Paper, FormControl, Select, InputLabel, Tab } from '@mui/material'
 
+
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Link } from "react-router-dom";
 
@@ -62,6 +63,7 @@ const TeamPage = () => {
 
         let final_data = TeamDataStructure(result)
 
+
         // Set the data state
         setData(final_data);
       } catch (error) {
@@ -81,31 +83,106 @@ const TeamPage = () => {
 
 
   return (
-    <Box paddingTop={0.5} height='100vh' >
+    <Box paddingTop={0.5} >
 
       <NavBar />
 
       {data ?
 
-        <Stack margin='auto' alignItems='center' direction={{xs:'column', sm:'row'}} width={{xs:'98%'}}>
+        <Stack 
+        margin='auto' 
+        alignItems='center' 
+        width={{xs:'98%'}}
+        paddingTop={1}
+        >
 
-          <Paper>
 
-            <Card>
+          <Stack
+          maxWidth={{ xs: 200, sm: 1200}}
+          minHeight={500}
+          paddingBottom={1}
+          sx={{ border: '1px solid black', borderRadius: '8px', boxShadow: 5}}
+          justifyContent='space-between'
+          paddingX={5}
+          alignItems='center'
+          direction={{sm:'column-reverse', md: 'row'}}
+          spacing={10}
+          >
 
-                <CardMedia component='img' image={data.team_crest} />
+            <Stack 
+            direction='row'
+            spacing={2}
+            >
 
-                <CardContent>
-                  <Typography variant="h5" sx={{ paddingTop: 1}} >{data.Team}</Typography>
+
+              <Box
+              height='100%'
+              width={{xs: 100 ,sm:150}}
+              textAlign='center'
+              >
+
+                <img 
+                src={data.team_crest}
+                width='100%'
+                loading="lazy"
+                style={{ padding: 0, margin: 0}}                 
+                />
+
+              </Box>
+
+              <Stack 
+              direction='column' 
+              spacing={2} 
+              width='50%' 
+              justifyContent='center'
+              >
+                
+                <Typography 
+                variant="h3"  
+                sx={{ paddingTop: 1}} 
+                fontWeight={900}
+                width='200px'
+                >
+                  {data.Team}
+                </Typography>
+
+                <Stack 
+                direction='row'
+                spacing={2}
+                >
+
                   <Typography sx={{ paddingTop: 1}} paddingTop={0}>{data.Community}</Typography>
+
                   <Typography sx={{ paddingTop: 1}} paddingTop={0}>EST: {data.est}</Typography>
-                </CardContent>
+                </Stack>
 
-            </Card>
+              </Stack>
 
-          </Paper>
 
-          <Box>
+            </Stack>
+
+
+            <Stack
+              height='100%'
+              width={{xs: 200 ,sm:600}}
+              justifyContent='center'
+              >
+
+                <img 
+                src={data.Team_Photo}
+                width='100%'
+                loading="lazy"
+                style={{ padding: 0, margin: 0}}                 
+                />
+
+            </Stack>
+
+
+          </Stack>
+
+
+
+          <Box marginTop={5}>
 
             <TabContext value={value}>
 
@@ -114,14 +191,18 @@ const TeamPage = () => {
                 <TabList onChange={handleTabChange} centered>
 
                   <Tab label='Overview' value='1' />
-                  <Tab label='Squad' value='2' />
-                  {/* <Tab label='TabThree' value='3' /> */}
+                  <Tab label='Staff' value='2' />
+                  <Tab label='Squad' value='3' />
 
                 </TabList>
 
               </Box>
 
-              <TabPanel value='1' sx={{ width: {xs: 350}}}> 
+              <TabPanel value='1'> 
+                Panel Three
+              </TabPanel>
+
+              <TabPanel value='2' > 
 
               <Typography variant="h5" sx={{ textAlign: 'center'}}>Staff</Typography>
 
@@ -165,9 +246,228 @@ const TeamPage = () => {
               </TabPanel>
               
               
-              <TabPanel value='2' sx={{ width: {xs: 350}}}> 
+              <TabPanel value='3' > 
 
-                {data ? data.Players.map((item, idx) => {
+                <Stack width={{ md: 1200}}>
+
+                  <Box>
+
+                    <Typography variant="h6" fontWeight={900} marginBottom={1}>Goalkeepers</Typography>
+
+                    {data ? data.Players.filter(pos => pos.Position === "GK").map((item, idx) => {
+
+                      return (
+
+                          <Card key={idx} sx={{ marginTop: 1, width: {xs: 350}}}>
+
+                            <Link to={`/DFA/Home/Player/${item.id}`} style={{ textDecoration: 'none'}}>
+
+                                <CardMedia
+                                width='100%'
+                                component='img' 
+                                loading="lazy"
+                                image={item.profile_pic}
+                                sx={{ objectFit: 'cover', objectPosition: "50% 50%"}}  />
+
+                                <CardContent>
+                                  <Typography variant="h6" fontWeight={900}>{item.FirstName} {item.Last_Name}</Typography>
+                                </CardContent>
+
+                              </Link>
+                          </Card>
+
+                      )
+                      }): <Skeleton variant="rectangular" width={210} height={118} />}
+
+
+
+
+
+                  </Box>
+
+                  <Box  marginTop={6}>
+
+                    <Typography variant="h6" fontWeight={900} marginBottom={2}>Defenders</Typography>
+
+                    <Grid  
+                    container 
+                    spacing={1.5} 
+                    direction={{ sm: 'row' }} 
+                    width='100%'
+                    >
+
+                      {data ? data.Players.filter(pos => ["CB", "LB", "RB"].includes(pos.Position)).map((item, idx) => {
+
+                      return (
+                        
+                        <Card 
+                        key={idx} 
+                        sx={{ marginTop: 1, width: {xs: 350}, height: 300, margin: 1}}>
+
+                        <Link to={`/DFA/Home/Player/${item.id}`} style={{ textDecoration: 'none'}}>
+
+                            <CardMedia
+                            component='img' 
+                            loading="lazy"
+                            image={item.profile_pic}
+                            sx={{ width: '100%', maxHeight: 220, objectFit: 'cover', objectPosition: "50% 50%"}}  />
+
+                            <CardContent>
+
+                              <Typography fontWeight={900} variant="h6">{item.FirstName} {item.Last_Name}</Typography>
+
+                              <Typography fontWeight={900}>{item.Position}</Typography>
+
+
+                            </CardContent>
+
+                          </Link>
+                      </Card>
+                      )
+                      }): <Skeleton variant="rectangular" width={210} height={118} />}
+
+
+                    </Grid>
+
+                    
+
+                    <Stack direction={{ md: 'row'}} spacing={2} flexWrap='wrap'>
+
+
+                    </Stack>
+
+
+
+
+
+
+                  </Box>
+
+
+                  <Box  marginTop={6}>
+
+                    <Typography variant="h6" fontWeight={900} marginBottom={2}>Midfielders</Typography>
+
+                    <Grid  
+                    container 
+                    spacing={1.5} 
+                    direction={{ sm: 'row' }} 
+                    width='100%'
+                    >
+
+                      {data ? data.Players.filter(pos => [ "CM", "CDM", "CAM"].includes(pos.Position)).map((item, idx) => {
+
+                      return (
+                        
+                        <Card 
+                        key={idx} 
+                        sx={{ marginTop: 1, width: {xs: 350}, height: 300, margin: 1}}>
+
+                        <Link to={`/DFA/Home/Player/${item.id}`} style={{ textDecoration: 'none'}}>
+
+                            <CardMedia
+                            component='img' 
+                            loading="lazy"
+                            image={item.profile_pic}
+                            sx={{ width: '100%', maxHeight: 220,objectFit: 'cover', objectPosition: "50% 50%"}}  />
+
+                            <CardContent>
+
+                              <Typography fontWeight={900} variant="h6">{item.FirstName} {item.Last_Name}</Typography>
+
+                              <Typography fontWeight={900}>{item.Position}</Typography>
+
+
+                            </CardContent>
+
+                          </Link>
+                      </Card>
+                      )
+                      }): <Skeleton variant="rectangular" width={210} height={118} />}
+
+
+                    </Grid>
+
+                    
+
+                    <Stack direction={{ md: 'row'}} spacing={2} flexWrap='wrap'>
+
+
+                    </Stack>
+
+
+
+
+
+
+                  </Box>
+
+                  <Box  marginTop={6}>
+
+                    <Typography variant="h6" fontWeight={900} marginBottom={2}>Forwards</Typography>
+
+                    <Grid  
+                    container 
+                    spacing={1.5} 
+                    direction={{ sm: 'row' }} 
+                    width='100%'
+                    >
+
+                      {data ? data.Players.filter(pos => ["ST", "CF", "LW", "RW"].includes(pos.Position)).map((item, idx) => {
+
+                      return (
+                        
+                        <Card 
+                        key={idx} 
+                        sx={{ marginTop: 1, width: {xs: 350}, height: 300, margin: 1}}>
+
+                        <Link to={`/DFA/Home/Player/${item.id}`} style={{ textDecoration: 'none'}}>
+
+                            <CardMedia
+                            component='img' 
+                            loading="lazy"
+                            image={item.profile_pic}
+                            sx={{ width: '100%', maxHeight: 220,objectFit: 'cover', objectPosition: "50% 50%"}}  />
+
+                            <CardContent>
+
+                              <Typography fontWeight={900} variant="h6">{item.FirstName} {item.Last_Name}</Typography>
+
+                              <Typography fontWeight={900}>{item.Position}</Typography>
+
+
+                            </CardContent>
+
+                          </Link>
+                      </Card>
+                      )
+                      }): <Skeleton variant="rectangular" width={210} height={118} />}
+
+
+                    </Grid>
+
+                    
+
+                    <Stack direction={{ md: 'row'}} spacing={2} flexWrap='wrap'>
+
+
+                    </Stack>
+
+
+
+
+
+
+                  </Box>
+
+                </Stack>
+
+                
+                
+                
+                
+                
+                {/* {data ? data.Players.map((item, idx) => {
 
                  return (<Paper key={idx} sx={{ marginTop: 1}}>
 
@@ -183,10 +483,10 @@ const TeamPage = () => {
 
                   </Paper>
 )
-                }): <Skeleton variant="rectangular" width={210} height={118} />}
+                }): <Skeleton variant="rectangular" width={210} height={118} />} */}
 
               </TabPanel>
-              {/* <TabPanel value='3'> Panel Three</TabPanel> */}
+              
 
 
             </TabContext>

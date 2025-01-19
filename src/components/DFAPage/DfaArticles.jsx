@@ -1,11 +1,19 @@
-import {  Box, Typography, Stack,  Card, CardHeader, CardContent, CardMedia, CardActions, Grid, Skeleton, Divider } from '@mui/material'
 
-import Points_Table from '../homePage/Points_Table';
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Stack from '@mui/material/Stack'
+import Card from '@mui/material/Card'
+import CardHeader from '@mui/material/CardHeader'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
+import CardActions from '@mui/material/CardActions'
+import Grid from '@mui/material/Grid'
+import Skeleton from '@mui/material/Skeleton'
+import Divider from '@mui/material/Divider'
 
 
 // Function to fetch article data and structured data
 import GetArticles from '../../modules/Homepage/TrendingSection/TrendingSectionDataFetch'
-import FixturesData from '../homePage/Fixtures';
 
 import theme from '../../css/theme';
 
@@ -13,11 +21,11 @@ import { Link } from "react-router-dom";
 
 // Redux
 import { useSelector } from 'react-redux';
-import FeaturedPlayer from '../homePage/FeaturedPlayer';
 
 
 
-const DfaArticles = ({ level }) => {
+
+const DfaArticles = ({ level, size }) => {
 
   GetArticles()
 
@@ -40,78 +48,63 @@ const DfaArticles = ({ level }) => {
 
   switch(level){
 
+
     case 'first':
-      articles = articles ? articles.slice(0, part_size): null;
+
+      if(size == 'small'){articles = articles ? articles.slice(0, 3): null;}
+      else{articles = articles ? articles.slice(0, 4): null;}
       break;
     
     case 'second':
-      articles = articles ? articles.slice(part_size, 2*part_size): null;
+      if(size == 'small'){articles = articles ? articles.slice(3, 7): null;}
+      else{articles = articles ? articles.slice(4, 8): null;}
       break;
     
     case 'third':
-      articles = articles ? articles.slice(2*part_size): null;
+      if(size == 'small'){articles = articles ? articles.slice(7, 11): null;}
+      else{articles = articles ? articles.slice(8, 12): null;}
+      break;
+
+    case 'fourth':
+      if(size == 'small'){articles = articles ? articles.slice(11, 13): null;}
+      else{articles = articles ? articles.slice(12, 16): null;}
+      break;
+
+    case 'fifth':
+      if(size == 'small'){articles = articles ? articles.slice(13, 16): null;}
+      else{articles = articles ? articles.slice(16, 20): null;}      
+      break;
   }
 
 
 
   return (
     
-    <Box marginTop={2}>
+    <Box >
 
-      {articles_length > 0 ?  
+      {articles_length > 0 ? 
+      
+      <Box
+      direction={{ xs: 'column', sm: 'row' }} 
+      sx={{ display: { sm: 'flex' }, flexDirection: 'row'}}
+      >
 
-        <Stack 
-        direction='column' 
-        spacing={2} 
-        width={{xs: '95%'}} 
-        margin={{xs:'auto'}} 
-        divider={<Divider orientation='horizontal' flexItem />} 
-        >
-
-
-            <Box 
-            direction={{ xs: 'column', sm: 'row' }} 
-            sx={{ display: { sm: 'flex' }, flexDirection: 'row'}} 
-            >
-
-              {/* Side panel on DFA homepage */}
-              {level === 'first'?
               
-                <Stack 
-                  width={{ sm:'300px', md: '380px' }} 
-                  display={{xs:'none', sm:'inherit'}}            
-                  height={{ sm: '400px'}}
-                >
+              <Stack 
+              display={{ sm:'none'}} 
+              direction='column' 
+              spacing={2} 
+              width={{xs: '90%'}} 
+              margin={{xs:'auto'}} 
+              divider={<Divider orientation='horizontal' flexItem />} >
 
-                    <Points_Table page='DfaHomepage'/>
-
-                    <Box marginY={2}/>
-
-                    <FixturesData page='Dfahome' type="now" league='DFA'/>
-
-                    <Box marginY={2}/>
-
-                    <FeaturedPlayer players={players} />
-
-                    <Box marginY={2}/>
-
-                    <FeaturedPlayer players={players} />
-
-                    <Box  marginY={2} display={{ sm: 'none', lg: 'inherit'}}>
-
-                      <FeaturedPlayer players={players} />
-                    </Box>
-
-                  
-                </Stack>: ''
-                }
-
-              <Stack display={{ sm:'none'}} direction='column' spacing={2} width={{xs: '90%'}} margin={{xs:'auto'}} divider={<Divider orientation='horizontal' flexItem />} >
+            
 
                 {articles ? articles.map((item, idx) => {
 
                 return (
-                <Box key={idx}>
+                <Box key={idx} >
+
                   
                   <Card sx={{ boxShadow: 'none', backgroundColor: 'white', border: '1px solid #86C232'}}>
 
@@ -143,13 +136,20 @@ const DfaArticles = ({ level }) => {
 
 
                     <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
-                    <CardMedia component='img' height={200} src={item.url[0]} alt={item.alt}/>
+
+                      <CardMedia 
+                      component='img' 
+                      height={200} 
+                      src={item.url[0]} 
+                      alt={item.alt}
+                      sx={{ objectFit: 'cover', objectPosition: "50% 50%"}}/>
+                    
                     </Link>
 
                     <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
                       <CardContent>
                         <Typography sx={{ color: 'black', fontSize: {xs: 13}}}>
-                          {item.body_content.length < 25? item.body_content: (item.body_content.substr(0, 50) + "...")}
+                          {item.body_content.length < 25? item.body_content: (item.body_content.substr(0, 40) + "...")}
                         </Typography>
                       </CardContent>
                     </Link>
@@ -167,61 +167,179 @@ const DfaArticles = ({ level }) => {
               </Stack>
 
 
-              <Grid display={{ xs:'none', sm: 'inherit'}}  container spacing={1.5} direction={{ xs: 'column', sm: 'row' }} justifyContent="center"   width={{sm:600, md:700, lg:1000}} 
-              >
+                <Grid 
+                display={{ xs:'none', sm: 'inherit'}}  
+                container 
+                spacing={1.5} 
+                direction={{ sm: 'row' }} 
+                justifyContent="left"  
+                width='100%'
+                >
 
-                {articles ? articles.map((item, idx) => (
-                  <Grid item key={idx} xs={12} sm={6} md={4} lg={5}>
                   
-                    <Card sx={{ boxShadow: 'none', backgroundColor: 'white', border: '1px solid #86C232', height: {sm: '440px'}}}>
 
-                      <CardActions>
+                  {articles ? articles.map((item, idx) => (
 
-                        <Stack>
+                    <Box
+                    key={idx}
+                    >
 
-                          {/* TODO: Link this page to the premiere league home page */}
+                    
 
-                          <Link to='/DFA/Home'>
-                          <Typography style={{ color: `var(--color-color5, ${theme.colors.color5})`}} sx={{ fontSize: {xs: 13}, textDecoration: 'underline', fontWeight: 900}}>{item.league}</Typography>
+                      <Box
+                      display={{sm: 'none', md: 'inherit'}}
+                      >       
+                                          
+                      
+                        <Card 
+                        sx={{ boxShadow: 'none', backgroundColor: 'white', border: '1px solid #86C232', height: {sm: '400px'}, maxWidth: 300, margin: 1}}
+                        >
+
+                          <CardActions >
+
+                            <Stack>
+
+                              {/* TODO: Change the league name to the article Category */}
+
+                              <Link to='/'>
+
+                                <Typography style={{ color: `var(--color-color5, ${theme.colors.color5})`}} sx={{ fontSize: {xs: 13}, textDecoration: 'underline', fontWeight: 900}}>{item.league}</Typography>
+
+                              </Link>
+
+
+                              {/* <Stack direction='row' spacing={0.5}>
+                                <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} sx={{ fontSize: {xs: 8}}}>{item.author}</Typography>
+                                <Divider orientation='vertical' flexItem />
+                                <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} sx={{ fontSize: {xs: 8}}}>{item.time}</Typography>
+                              </Stack> */}
+
+
+                            </Stack>
+
+                          </CardActions >
+
+                          <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
+                            
+                            <CardHeader 
+                            titleTypographyProps={{variant:'body2', fontWeight: 900 }} title={item.title} 
+                            style={{ color: `var(--color-color3, ${theme.colors.color3})`}}
+                            sx={{ marginTop: 0, paddingTop: 0 }}
+                            />
+
                           </Link>
 
 
-                          <Stack direction='row' spacing={0.5}>
-                            <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} sx={{ fontSize: {xs: 9}}}>{item.author}</Typography>
-                            <Divider orientation='vertical' flexItem />
-                            <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} sx={{ fontSize: {xs: 9}}}>{item.time}</Typography>
-                          </Stack>
+                          <CardMedia 
+                          component='img' 
+                          height={200} 
+                          src={item.url[0]} 
+                          alt={item.alt}
+                          sx={{ objectFit: 'cover', objectPosition: "50% 50%"}}
+                          />
+
+                          <CardContent sx={{ marginTop: 0, paddingTop: 2 }}>
+                            <Typography sx={{ color: 'black', fontSize: {xs: 13}}}>
+                              {item.body_content.length < 25? item.body_content: (item.body_content.substr(0, 80) + "...")}
+                            </Typography>
+                          </CardContent>
+
+                        </Card>
+
+                      </Box>
+
+                      {/* Set up the media horizontallly */}
+
+                      <Box
+                      key={idx}
+                      display={{sm: 'inherit', md: 'none'}}>       
+                                          
+                      
+                        <Card 
+                        sx={{ boxShadow: 'none', backgroundColor: 'white', border: '1px solid #86C232', height: {sm: 'auto'}, maxWidth: 300, margin: 1}}
+                        >
+
+                          <Stack direction='column-reverse'>
+
+
+                            <Stack>
+
+                            </Stack>
+
+                            <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
+                              
+                              <CardHeader 
+                              titleTypographyProps={{variant:'body2', fontWeight: 900 }} title={item.title} 
+                              style={{ color: `var(--color-color3, ${theme.colors.color3})`}}
+                              sx={{ marginTop: 0, paddingTop: 0, paddingLeft: 1 }}
+                              />
+
+                            </Link>
+
+                            <CardActions >
+
+                              <Stack>
+
+                                {/* TODO: Change the league name to the article Category */}
+
+                                <Link to='/'>
+
+                                  <Typography style={{ color: `var(--color-color5, ${theme.colors.color5})`}} sx={{ fontSize: {xs: 13}, textDecoration: 'underline', fontWeight: 900}}>{item.league}</Typography>
+
+                                </Link>
+
+
+                                {/* <Stack direction='row' spacing={0.5}>
+                                  <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} sx={{ fontSize: {xs: 8}}}>{item.author}</Typography>
+                                  <Divider orientation='vertical' flexItem />
+                                  <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} sx={{ fontSize: {xs: 8}}}>{item.time}</Typography>
+                                </Stack> */}
+
+
+                              </Stack>
+
+                            </CardActions >
+
+                            
+
+
+
+                         
+
+
+
+                            <CardMedia 
+                            component='img' 
+                            height={200} 
+                            src={item.url[0]} 
+                            alt={item.alt}
+                            sx={{ objectFit: 'cover', objectPosition: "50% 50%"}}
+                            />
 
 
                         </Stack>
 
-                      </CardActions>
+                          {/* <CardContent sx={{ marginTop: 0, paddingTop: 2 }}>
+                            <Typography sx={{ color: 'black', fontSize: {xs: 13}}}>
+                              {item.body_content.length < 25? item.body_content: (item.body_content.substr(0, 80) + "...")}
+                            </Typography>
+                          </CardContent> */}
 
-                      <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
-                        <CardHeader titleTypographyProps={{variant:'body2', fontWeight: 900 }} title={item.title} style={{ color: `var(--color-color3, ${theme.colors.color3})`}}/>
-                      </Link>
+                        </Card>
+
+                      </Box>
+
+                    </Box>
 
 
-                      <CardMedia component='img' height={200} src={item.url[0]} alt={item.alt}/>
 
-                      <CardContent>
-                        <Typography sx={{ color: 'black', fontSize: {xs: 13}}}>
-                          {item.body_content.length < 25? item.body_content: (item.body_content.substr(0, 90) + "...")}
-                        </Typography>
-                      </CardContent>
+                  )) : <Skeleton variant="rectangular" width={{xs: '60px', sm: '100px'}} height={60} />}
 
-                    </Card>
-                  </Grid>
-                )) : <Skeleton variant="rectangular" width='100%' height={60} />}
-
-              </Grid>
-
+                </Grid>
+              
             </Box>
 
-                  
 
-        </Stack>
-      
       : <Skeleton width='100%' height='400px' />}
 
   </Box>

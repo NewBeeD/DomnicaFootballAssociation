@@ -55,10 +55,10 @@ const NavBar = () => {
   };
 
   const buttonData = [
-    { id: 1, label: 'DFA', menuItems: ['Home', 'Fixtures' ,'Table', 'Teams', 'Stats'] },
-    { id: 2, label: 'DABA', menuItems: ['Home', 'Fixtures' ,'Table', 'Teams', 'Stats'] },
-    { id: 3, label: 'DAVA', menuItems: ['Home', 'Teams', 'Stats'] },
-    { id: 4, label: 'DNA', menuItems: ['Home', 'Teams', 'Stats'] },
+    { id: 2, label: 'FIXTURES', menuItems: ['Premier', 'Division One' , 'Women' ,'Under 20', 'Under 16'] },
+    { id: 3, label: 'Tables', menuItems: ['Home', 'Teams', 'Stats'] },
+    { id: 4, label: 'Teams', menuItems: ['Home', 'Teams', 'Stats'] },
+    
   ];
 
   // End of larger display set up
@@ -109,15 +109,14 @@ const NavBar = () => {
         <Toolbar 
         sx={{ 
           display: {xs: 'flex'}, 
-          justifyContent: {xs:'space-between', sm: 'space-evenly'},
-          border: '2px solid red'}}
+          justifyContent: {xs:'space-between', sm: 'space-evenly'}}}
           >
 
           <Link to='/'>
 
               {/* <SportsIcon sx={{ color: '#86C232', fontSize: {xs:'40px'}, padding: 0}}/> */}
 
-              <Box width={{xs: 50}} >
+              <Box width={{xs: 42}} >
 
                 <img src="https://res.cloudinary.com/djrkottjd/image/upload/v1711418501/Dominica_national_football_team_600e878744.png" width='100%' />
 
@@ -128,12 +127,51 @@ const NavBar = () => {
 
           <Stack direction='row' sx={{ display: {xs: 'none', sm: 'flex'}}} spacing={2}>
 
+            <Link to='/'>
+              <Button>
+                Home
+              </Button>
+            </Link>
 
-            {buttonData.map((button) => (
+            <Link to='/DFA/Fixtures'>
+              <Button>
+                Fixtures
+              </Button>
+            </Link>
+
+            <Link to='/DFA/Table'>
+              <Button>
+                Tables
+              </Button>
+            </Link>
+
+            <Link to='/DFA/Teams'>
+              <Button>
+                Clubs
+              </Button>
+            </Link>
+
+            <Link to='/DFA/Stats'>
+              <Button>
+                Stats
+              </Button>
+            </Link>
+
+            <Link to='/'>
+              <Button>
+                About us
+              </Button>
+            </Link>
+
+
+
+
+
+            {/* {buttonData.map((button) => (
 
               <Box key={button.id}>
 
-                <Button onClick={(event) => handleClick(event, button)} endIcon={<KeyboardArrowDownIcon style={{ color: 'white'}} />}>
+                <Button onClick={(event) => handleClick(event, button)} endIcon={button.menuItems.length != 0?<KeyboardArrowDownIcon style={{ color: 'white'}} />: ''}>
                   {button.label}
                 </Button>
 
@@ -146,9 +184,6 @@ const NavBar = () => {
                       
                       <MenuItem key={index} onClick={handleClose}>
 
-                        {/* <Link to={`/${button.label}/${item}`}>
-                          {item}
-                        </Link> */}
                         <Link className="hyperlinkactive" to={button.label === 'DFA' ?`/DFA/${item}`: button.label === 'DABA' ?`/DABA/${item}` :'/'} style={{ textDecoration: 'none', cursor: 'pointer'}}>
                           {item}
                         </Link>
@@ -158,7 +193,8 @@ const NavBar = () => {
                   </Menu>
                   
               </Box>
-            ))}
+            ))} */}
+
 
           </Stack>
 
@@ -198,11 +234,16 @@ const NavBar = () => {
                    
           >
             <Link to='/' style={{ textDecoration: 'none'}}><MenuItem style={{ fontSize: '18px', color: `var(--color-color4, ${theme.colors.color4})` }} onClick={closeMenu}>Home</MenuItem></Link>
-            <Link to='/DFA/Home' style={{ textDecoration: 'none'}}><MenuItem style={{ fontSize: '18px', color: `var(--color-color4, ${theme.colors.color4})` }} onClick={closeMenu}>DFA</MenuItem></Link>
-            <Link to='/DABA/Home' style={{ textDecoration: 'none'}}><MenuItem style={{ fontSize: '18px', color: `var(--color-color4, ${theme.colors.color4})` }} onClick={closeMenu}>DABA</MenuItem></Link>
-            <Link to='/' style={{ textDecoration: 'none'}}><MenuItem style={{ fontSize: '18px', color: `var(--color-color4, ${theme.colors.color4})` }} onClick={closeMenu}>DAVA</MenuItem></Link>
-            <Link to='/' style={{ textDecoration: 'none'}}><MenuItem style={{ fontSize: '18px', color: `var(--color-color4, ${theme.colors.color4})` }} onClick={closeMenu}>DNA</MenuItem></Link>
+
+            <Link to='/' style={{ textDecoration: 'none'}}><MenuItem style={{ fontSize: '18px', color: `var(--color-color4, ${theme.colors.color4})` }} onClick={closeMenu}>CLUBS</MenuItem></Link>
+
+
             <Link to='/' style={{ textDecoration: 'none'}}><MenuItem style={{ fontSize: '18px', color: `var(--color-color4, ${theme.colors.color4})` }} onClick={closeMenu}>MEDIA</MenuItem></Link>
+
+            <Link to='/' style={{ textDecoration: 'none'}}><MenuItem style={{ fontSize: '18px', color: `var(--color-color4, ${theme.colors.color4})` }} onClick={closeMenu}>STAFF</MenuItem></Link>
+
+            <Link to='/' style={{ textDecoration: 'none'}}><MenuItem style={{ fontSize: '18px', color: `var(--color-color4, ${theme.colors.color4})` }} onClick={closeMenu}>ABOUT US</MenuItem></Link>
+
             <Link to={userSignedIn?'/Profile': '/Login'} style={{ textDecoration: 'none'}}><MenuItem style={{ fontSize: '18px', color: `var(--color-color4, ${theme.colors.color4})` }} onClick={closeMenu}>{userSignedIn?'PROFILE': 'LOGIN'}</MenuItem></Link>
 
           </Menu>

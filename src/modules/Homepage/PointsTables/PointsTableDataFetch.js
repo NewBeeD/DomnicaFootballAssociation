@@ -6,7 +6,7 @@ import DabaPoints from "../../GetPoints/DabaPoints";
 export default function GetPoints(league){
 
   DfaPoints()
-  DabaPoints()
+  // DabaPoints()
   
   // return structured_data;
 }

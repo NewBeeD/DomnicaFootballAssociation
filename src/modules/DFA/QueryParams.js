@@ -170,7 +170,9 @@ export const queryParams_dfa_teams = {
   
   populate: {
     dfa_players: {
-      populate: true
+      populate: {
+        Profile_Pic: { fields: ['url'] } // Ensure Player_Image is fetched
+      },
     },
     dfa_league:{
       populate: true
@@ -180,7 +182,11 @@ export const queryParams_dfa_teams = {
     },
     Staff: {
       populate: true
+    },
+    Team_Photo: {
+      populate: true
     }
+
   }   
 }
 
