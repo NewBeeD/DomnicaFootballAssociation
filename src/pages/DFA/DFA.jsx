@@ -37,6 +37,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'; //Fixtures
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered'; //Tables
 import AssessmentIcon from '@mui/icons-material/Assessment'; //Stats
 import GroupsIcon from '@mui/icons-material/Groups'; //Players
+import HeadlineFeature from "../../components/DFAPage/Headline/HeadlineFeature";
 
 
 
@@ -258,14 +259,6 @@ const DFA = () => {
   const { window_width } = getVideoDimensions();
 
   
-
-  // GetArticles()
-
-  // let articles = useSelector((state) => state.articles)
-  // articles = articles[0]
-
-  // 6mfXc8gw9mA
-
   if(page == 'home'){
 
     return (
@@ -285,8 +278,10 @@ const DFA = () => {
 
       </Box> */}
 
-      {/* <MainNews /> */}
-      <Box paddingTop={4} />
+      {/* <HeadlineFeature /> */}
+
+      {/* This is the extra space below the navbar */}
+      {/* <Box paddingTop={4} /> */} 
       <DfaArticles level='first' size='small' />
 
       <Divider sx={{ marginTop: 2}} />

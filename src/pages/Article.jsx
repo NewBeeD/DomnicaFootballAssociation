@@ -93,7 +93,7 @@ const Article = () => {
         // Parse the JSON data
         const result = await response.data.data;
 
-        let final_data = SingleStructuredDisplay(result)  
+        let final_data = SingleStructuredDisplay(result)         
                     
         // Set the data state
         setArticles(final_data);
@@ -138,9 +138,22 @@ const Article = () => {
                   <img loading='lazy' width='100%' src={articles.url[0]}/>
                 </Box>:<Box paddingTop={4} />}
   
-                <Box style={{ color: `var(--color-color3, ${theme.colors.color3})`}} marginTop={1} sx={{ fontSize: {xs: '12px'}, fontWeight: 'bolder'}}>{articles.league}</Box>
+                <Box 
+                style={{ color: `var(--color-color3, ${theme.colors.color3})`}} 
+                marginTop={1} 
+                sx={{ fontSize: {xs: '20px'}, 
+                fontWeight: 'bolder'}}
+                letterSpacing={2}>
+                  {articles.type}
+                </Box>
   
-                <Box style={{ color: `var(--color-color3, ${theme.colors.color3})`}} marginTop={0.5} sx={{ fontSize: {xs: '12px'}}}>{articles.author}</Box>
+                <Box 
+                style={{ color: `var(--color-color3, ${theme.colors.color3})`}} 
+                marginTop={0.5} 
+                sx={{ fontSize: {xs: '12px'}}}
+                >
+                  {articles.author}
+                </Box>
                 
                 <Box style={{ color: `var(--color-color1, ${theme.colors.color1})`}} marginTop={0.5} sx={{ fontSize: {xs: '12px'}}}>{articles.date}</Box>
   

@@ -15,6 +15,8 @@ import Divider from '@mui/material/Divider'
 // Function to fetch article data and structured data
 import GetArticles from '../../modules/Homepage/TrendingSection/TrendingSectionDataFetch'
 
+import HeadlineFeature from './Headline/HeadlineFeature'
+
 import theme from '../../css/theme';
 
 import { Link } from "react-router-dom";
@@ -82,6 +84,10 @@ const DfaArticles = ({ level, size }) => {
     
     <Box >
 
+      <HeadlineFeature />
+
+      <Box paddingY={2} />
+
       {articles_length > 0 ? 
       
       <Box
@@ -115,7 +121,7 @@ const DfaArticles = ({ level, size }) => {
                         {/* TODO: Link this page to the premiere league home page */}
 
                         <Link to='/DFA/Home'>
-                        <Typography style={{ color: `var(--color-color5, ${theme.colors.color5})`}} sx={{ fontSize: {xs: 13}, textDecoration: 'underline', fontWeight: 900}}>{item.league}</Typography>
+                        <Typography style={{ color: `var(--color-color5, ${theme.colors.color5})`}} sx={{ fontSize: {xs: 13}, textDecoration: 'underline', fontWeight: 900}}>{item.type}</Typography>
                         </Link>
 
 
@@ -203,7 +209,7 @@ const DfaArticles = ({ level, size }) => {
 
                               <Link to='/'>
 
-                                <Typography style={{ color: `var(--color-color5, ${theme.colors.color5})`}} sx={{ fontSize: {xs: 13}, textDecoration: 'underline', fontWeight: 900}}>{item.league}</Typography>
+                                <Typography style={{ color: `var(--color-color5, ${theme.colors.color5})`}} sx={{ fontSize: {xs: 13}, textDecoration: 'underline', fontWeight: 900}}>{item.type}</Typography>
 
                               </Link>
 
@@ -337,7 +343,7 @@ const DfaArticles = ({ level, size }) => {
 
                 </Grid>
               
-            </Box>
+      </Box>
 
 
       : <Skeleton width='100%' height='400px' />}

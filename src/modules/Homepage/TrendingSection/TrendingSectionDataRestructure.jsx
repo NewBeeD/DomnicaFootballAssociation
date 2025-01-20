@@ -1,10 +1,4 @@
 
-
-
-
-
-
-
 // This function identifies the entries in the array/oject that will be used for display in the cards on the Homepage
 export default function ArticlesStructuredDisplay(data){
 
@@ -28,6 +22,7 @@ export default function ArticlesStructuredDisplay(data){
     required_data_fields['url'] = getAllImages(item.attributes['Article_Img'].data)?? null;
     required_data_fields['date'] = formatDate(item.attributes['publishedAt'])    
     required_data_fields['Rich_Text'] = item.attributes['RichText'] ?? 'none'
+    required_data_fields['type'] = item.attributes['Type'] ?? 'News'
 
     return required_data_fields
   })
@@ -197,39 +192,4 @@ function getAllImages(data){
 
 }
 
-// function leagueNameChange(leagueName){
 
-
-//   if(leagueName == null){return 'Dsport'}
- 
-
-
-//   switch(leagueName.attributes['name']){
-
-//       case 'DFA_Division_One':     
-//       case 'DFA_Women':
-//       case 'DFA_Premier_League_Men':
-//       case 'President Cup':
-//         return 'DFA';
-      
-//       case 'DABA_First_Division':
-//       case 'DABA_Premier_League':
-//       case 'DABA_Women':
-//         return 'DABA';
-
-//       case 'DAVA_MEN':
-//       case 'DAVA_WOMEN':
-//           return 'DAVA';
-      
-//       case 'DNA_Men':
-//       case 'DNA_Women':
-//         return 'DNA';
-
-//       case null:
-//         return 'DSport';
-      
-//       default:
-//         return '';
-
-//     }
-// }

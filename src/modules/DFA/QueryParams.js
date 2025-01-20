@@ -209,6 +209,16 @@ export const queryParams_daba_teams = {
   }   
 }
 
+// Headline Feature
+export const queryParams_headlinefeature = {
+  
+  populate: {
+    CardImage: {
+      populate: true
+    }
+  }   
+}
+
 
 
 

@@ -18,6 +18,7 @@ export default function SingleStructuredDisplay(data){
   required_data_fields['body_content'] = data.attributes['Body_Content']
   required_data_fields['RichText'] = data.attributes['RichText'] ?? 'none'
   required_data_fields['headline'] = data.attributes['Headline']
+  required_data_fields['type'] = data.attributes['Type']
   required_data_fields['league'] = leagueNameChange(data.attributes['all_league'].data.attributes['name'])
 
   required_data_fields['league_name'] = SpecificleagueName(data.attributes['all_league'].data.attributes['name'])

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 
 const FeaturedPlayer = ({ players }) => {
+ 
 
   let totalPlayers = players.length > 0 ? players[0].length: 0;
 
@@ -54,10 +55,16 @@ const FeaturedPlayer = ({ players }) => {
                       {player.FirstName}
                     </Typography>
 
-                    <Typography variant="h5" fontWeight={900}>
+                    <Typography variant="h6" fontWeight={900}>
                       {player.Last_Name}
                     </Typography>
 
+                  </Box>
+
+                  <Box paddingTop={0.5}>
+                    <Typography variant="h6" fontWeight='bolder'>
+                      {player.Current_Team}
+                    </Typography>
                   </Box>
 
 
