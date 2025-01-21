@@ -86,7 +86,7 @@ const HeadlineFeature = () => {
     <Stack 
       width={{xs: '99%', sm: '100%'}} 
       margin={{xs:'auto'}} 
-      height={{ xs: 570, sm: 500}}
+      height={{ xs: 570, sm: 450}}
       borderRadius={1}
     >
 
@@ -108,7 +108,8 @@ const HeadlineFeature = () => {
             marginBottom={2} 
             >
               
-              {/* <Box 
+              <Box
+              display={{xs: 'none', sm: 'inherit'}} 
                 sx={{ width: '100%', height: {xs:330, sm: 430}, marginY: 1, backgroundColor: '#222629', padding: {xs: 1}}}
                 >
   
@@ -134,9 +135,10 @@ const HeadlineFeature = () => {
 
                     </Box>
     
-              </Box> */}
+              </Box>
 
-              <Box 
+              <Box
+                display={{sm: 'none'}} 
                 sx={{ 
                   position: 'relative', 
                   width: '100%', 
