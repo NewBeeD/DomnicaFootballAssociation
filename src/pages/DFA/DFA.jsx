@@ -279,13 +279,7 @@ const DFA = () => {
       </Box> */}
 
       <HeadlineFeature />
-
-      {/* This is the extra space below the navbar */}
-      {/* <Box paddingTop={4} /> */} 
-      <DfaArticles level='first' size='small' />
-
-      <Divider sx={{ marginTop: 2}} />
-
+      
       <Box marginTop={{ sm: 7}} height='100%'>
 
         <TabContext value={value}>
@@ -312,17 +306,24 @@ const DFA = () => {
 
       </Box>
 
+      {/* This is the extra space below the navbar */}
+      {/* <Box paddingTop={4} /> */} 
+      <DfaArticles level='first' size='small' />
+
+      {/* <Divider sx={{ marginTop: 2}} /> */}
+
+
       <Divider sx={{ marginTop: 2, display: {xs: 'none'}}} />
       
-      <Box style={{ backgroundColor: `var(--color-color3, ${theme.colors.color3})`}} paddingBottom={3} marginTop={2} textAlign='center' sx={{ display: {xs: 'none'}}}>
+      {/* <Box style={{ backgroundColor: `var(--color-color3, ${theme.colors.color3})`}} paddingBottom={3} marginTop={2} textAlign='center' sx={{ display: {xs: 'none'}}}>
         <Typography variant="h5" style={{ textDecoration: 'underline', color: 'white'}}>Weekend Highlights</Typography>
         
         <Video VideoLocation='Dfa1'/>
 
 
-      </Box>
+      </Box> */}
 
-      <Divider sx={{ marginTop: 2}} />
+      {/* <Divider sx={{ marginTop: 2}} /> */}
 
       <Box marginY={1.5} />
       {/* <Points_Table page='Homepage'/> */}
@@ -333,10 +334,10 @@ const DFA = () => {
 
       {/* Removed video compnents till further notice */}
 
-      <Box display={{ xs: 'none'}}>
+      {/* <Box display={{ xs: 'none'}}>
         <Video VideoLocation='Dfa2'/>
 
-      </Box>
+      </Box> */}
 
 
       <Box height={{xs:50}} marginY={1} />

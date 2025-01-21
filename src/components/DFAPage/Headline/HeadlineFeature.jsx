@@ -52,10 +52,7 @@ const HeadlineFeature = () => {
         // Parse the JSON data
         const result = await response.data.data;        
 
-        let final_data = headlineFeatureModule(result) 
-
-        console.log(final_data);
-        
+        let final_data = headlineFeatureModule(result)        
                               
         // Set the data state
         setArticles(final_data);
@@ -87,7 +84,7 @@ const HeadlineFeature = () => {
     >
 
     <Stack 
-      width={{xs: '90%', sm: '100%'}} 
+      width={{xs: '99%', sm: '100%'}} 
       margin={{xs:'auto'}} 
       height={{ xs: 570, sm: 500}}
       borderRadius={1}
@@ -95,10 +92,13 @@ const HeadlineFeature = () => {
 
       <Stack 
       direction={{xs:'column', sm:'row'}} 
+      spacing={2}
+      justifyContent={{xs: 'center'}}
+      alignItems={{xs: 'center'}}
       >
 
         <Box 
-        maxWidth={{xs: '95%',sm:'70%'}}
+        maxWidth={{xs: '100%',sm:'70%'}}
         margin='auto'
         >
 
@@ -108,24 +108,25 @@ const HeadlineFeature = () => {
             marginBottom={2} 
             >
               
-              <Card 
+              {/* <Box 
                 sx={{ width: '100%', height: {xs:330, sm: 430}, marginY: 1, backgroundColor: '#222629', padding: {xs: 1}}}
                 >
   
-                  <CardMedia 
-                    component='img' 
+                  <img  
                     loading='lazy'
                     maxHeight={300} 
+                    width='100%'
                     src={articles[0].image} 
                     alt='News Image'
                     sx={{ objectFit: 'cover', objectPosition: "50% 50%"}}
+                    style={{ borderRadius: '5px'}}
                     />
 
                     <Box paddingLeft={1}>
 
                       <Stack direction={{ xs: 'column'}}>
 
-                        <Typography variant='caption' color='white' fontWeight={900}>{articles[0].type}</Typography>
+                        <Typography variant='caption' color='grey' fontWeight={900}>{articles[0].type}</Typography>
 
                         <Typography variant='h6' color='white' fontWeight={900}>{articles[0].title}</Typography>
 
@@ -133,7 +134,62 @@ const HeadlineFeature = () => {
 
                     </Box>
     
-              </Card>
+              </Box> */}
+
+              <Box 
+                sx={{ 
+                  position: 'relative', 
+                  width: '100%', 
+                  height: { xs: 330, sm: 430 }, 
+                  marginY: 1, 
+                  backgroundColor: '#222629', 
+                  padding: { xs: 1 },
+                  borderRadius: '5px', 
+                  overflow: 'hidden'
+                }}
+              >
+                
+                {/* Image */}
+                <img  
+                  loading='lazy'
+                  style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'cover', 
+                    objectPosition: '50% 50%', 
+                    borderRadius: '5px' 
+                  }}
+                  src={articles[0].image} 
+                  alt='News Image'
+                />
+
+                {/* Overlay */}
+                <Box 
+                  sx={{ 
+                    position: 'absolute', 
+                    top: 0, 
+                    left: 0, 
+                    width: '100%', 
+                    height: '100%', 
+                    backgroundColor: 'rgba(0, 0, 0, 0.4)', // Adjust opacity here
+                    borderRadius: '5px'
+                  }} 
+                />
+
+                {/* Text Content */}
+                <Box sx={{ position: 'absolute', bottom: 10, left: 15 }}>
+                  <Stack direction="column">
+                    <Typography variant='caption' color='grey' fontWeight={900}>
+                      {articles[0].type}
+                    </Typography>
+                    <Typography variant='h6' color='white' fontWeight={900}>
+                      {articles[0].title}
+                    </Typography>
+                  </Stack>
+                </Box>
+              </Box>
+
+
             </Box>
           )}
 
@@ -141,23 +197,25 @@ const HeadlineFeature = () => {
 
 
 
-        <Box marginRight={{sm: 1}}>
+        <Box 
+        width='100%'
+        >
 
           <Stack 
           direction={{xs:'row', sm: 'column'}} 
-          spacing={2}>
+          spacing={2}
+          justifyContent={{xs: 'center'}}>
 
             {articles && articles.slice(1).map((item, idx) => {
 
 
                 return(
 
-                  <Card 
+                  <Box 
                   key={idx}
                   sx={{height: 200, marginY: 1, backgroundColor: '#222629'}}>
 
-                    <CardMedia 
-                      component='img' 
+                    <img 
                       loading='lazy'
                       height={120} 
                       src={item.image} 
@@ -169,7 +227,7 @@ const HeadlineFeature = () => {
 
                       <Stack direction={{ xs: 'column'}}>
 
-                        <Typography variant='caption' color='white' fontWeight={900}>{item.type}</Typography>
+                        <Typography variant='caption' color='grey' fontWeight={900}>{item.type}</Typography>
 
                         <Typography variant='body2' color='white' fontWeight={900}>{item.title}</Typography>
 
@@ -177,7 +235,60 @@ const HeadlineFeature = () => {
 
                     </Box>
 
-                  </Card>
+                  </Box>
+
+                //   <Box 
+                //   sx={{ 
+                //     position: 'relative', 
+                //     width: '100%', 
+                //     height: { xs: 330, sm: 430 }, 
+                //     marginY: 1, 
+                //     backgroundColor: '#222629', 
+                //     padding: { xs: 1 },
+                //     borderRadius: '5px', 
+                //     overflow: 'hidden'
+                //   }}
+                // >
+                  
+                //   {/* Image */}
+                //   <img  
+                //     loading='lazy'
+                //     style={{ 
+                //       width: '100%', 
+                //       height: '100%', 
+                //       objectFit: 'cover', 
+                //       objectPosition: '50% 50%', 
+                //       borderRadius: '5px' 
+                //     }}
+                //     src={item.image} 
+                //     alt='News Image'
+                //   />
+  
+                //   {/* Overlay */}
+                //   <Box 
+                //     sx={{ 
+                //       position: 'absolute', 
+                //       top: 0, 
+                //       left: 0, 
+                //       width: '100%', 
+                //       height: '100%', 
+                //       backgroundColor: 'rgba(0, 0, 0, 0.4)', // Adjust opacity here
+                //       borderRadius: '5px'
+                //     }} 
+                //   />
+  
+                //   {/* Text Content */}
+                //   <Box sx={{ position: 'absolute', bottom: 10, left: 15 }}>
+                //     <Stack direction="column">
+                //       <Typography variant='caption' color='grey' fontWeight={900}>
+                //         {item.type}
+                //       </Typography>
+                //       <Typography variant='h6' color='white' fontWeight={900}>
+                //         {item.title}
+                //       </Typography>
+                //     </Stack>
+                //   </Box>
+                // </Box>
 
                 )
 
