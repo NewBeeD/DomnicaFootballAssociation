@@ -83,28 +83,33 @@ const HeadlineFeature = () => {
     width='100%'
     sx={{ backgroundColor: '#222629'}}
     paddingTop={0}
+    borderRadius={{sm: 2}}
     >
 
-    <Stack
-      display={{ sm:'none'}} 
-      direction={{xs:'column', sm:'row'}} 
-      spacing={2} 
-      width={{xs: '90%'}} 
+    <Stack 
+      width={{xs: '90%', sm: '100%'}} 
       margin={{xs:'auto'}} 
-      height={{ xs: 570}}
+      height={{ xs: 570, sm: 500}}
       borderRadius={1}
     >
 
-      <Stack direction='column'>
+      <Stack 
+      direction={{xs:'column', sm:'row'}} 
+      >
 
-        <Box>
+        <Box 
+        maxWidth={{xs: '95%',sm:'70%'}}
+        margin='auto'
+        >
 
           {articles && (
             
-            <Box marginBottom={2}>
+            <Box 
+            marginBottom={2} 
+            >
               
               <Card 
-                sx={{height: 330, marginY: 1, backgroundColor: '#222629'}}
+                sx={{ width: '100%', height: {xs:330, sm: 430}, marginY: 1, backgroundColor: '#222629', padding: {xs: 1}}}
                 >
   
                   <CardMedia 
@@ -136,9 +141,11 @@ const HeadlineFeature = () => {
 
 
 
-        <Box>
+        <Box marginRight={{sm: 1}}>
 
-          <Stack direction='row' spacing={2}>
+          <Stack 
+          direction={{xs:'row', sm: 'column'}} 
+          spacing={2}>
 
             {articles && articles.slice(1).map((item, idx) => {
 
@@ -185,7 +192,8 @@ const HeadlineFeature = () => {
 
     </Stack>
 
-    <Box width={2}
+    <Box 
+    width={2}
     height={20} />
     
     </Box>

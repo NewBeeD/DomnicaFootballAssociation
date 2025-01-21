@@ -278,7 +278,7 @@ const DFA = () => {
 
       </Box> */}
 
-      {/* <HeadlineFeature /> */}
+      <HeadlineFeature />
 
       {/* This is the extra space below the navbar */}
       {/* <Box paddingTop={4} /> */} 

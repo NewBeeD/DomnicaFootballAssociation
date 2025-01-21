@@ -17,6 +17,7 @@ import FixturesData from '../../components/homePage/Fixtures';
 import FeaturedPlayer from '../../components/homePage/FeaturedPlayer';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import HeadlineFeature from '../../components/DFAPage/Headline/HeadlineFeature';
 
 
 
@@ -138,6 +139,8 @@ const DfaPageLargeScreens = () => {
            width='auto'
            padding={2}
            >
+
+            <HeadlineFeature />
             
             <DfaArticles level='first' />
             <DfaArticles level='second' />
