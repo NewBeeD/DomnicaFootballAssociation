@@ -157,9 +157,9 @@ const NavBar = () => {
               </Button>
             </Link>
 
-            <Link to='/'>
+            <Link to='http://www.dominicafa.com/' target="_blank">
               <Button>
-                About us
+                DFA
               </Button>
             </Link>
 
@@ -242,7 +242,7 @@ const NavBar = () => {
 
             <Link to='/' style={{ textDecoration: 'none'}}><MenuItem style={{ fontSize: '18px', color: `var(--color-color4, ${theme.colors.color4})` }} onClick={closeMenu}>STAFF</MenuItem></Link>
 
-            <Link to='/' style={{ textDecoration: 'none'}}><MenuItem style={{ fontSize: '18px', color: `var(--color-color4, ${theme.colors.color4})` }} onClick={closeMenu}>ABOUT US</MenuItem></Link>
+            <Link to='http://www.dominicafa.com/' target="_blank" style={{ textDecoration: 'none'}}><MenuItem style={{ fontSize: '18px', color: `var(--color-color4, ${theme.colors.color4})` }} onClick={closeMenu}>DFA</MenuItem></Link>
 
             <Link to={userSignedIn?'/Profile': '/Login'} style={{ textDecoration: 'none'}}><MenuItem style={{ fontSize: '18px', color: `var(--color-color4, ${theme.colors.color4})` }} onClick={closeMenu}>{userSignedIn?'PROFILE': 'LOGIN'}</MenuItem></Link>
 

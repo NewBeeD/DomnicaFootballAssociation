@@ -109,18 +109,17 @@ const HeadlineFeature = () => {
             >
               
               <Box
-              display={{xs: 'none', sm: 'inherit'}} 
+                display={{xs: 'none', sm: 'inherit'}} 
                 sx={{ width: '100%', height: {xs:330, sm: 430}, marginY: 1, backgroundColor: '#222629', padding: {xs: 1}}}
                 >
   
                   <img  
                     loading='lazy'
-                    maxHeight={300} 
+                    height={300} 
                     width='100%'
                     src={articles[0].image} 
                     alt='News Image'
-                    sx={{ objectFit: 'cover', objectPosition: "50% 50%"}}
-                    style={{ borderRadius: '5px'}}
+                    style={{ borderRadius: '5px', objectFit: 'cover', objectPosition: "50% 50%"}}
                     />
 
                     <Box paddingLeft={1}>
