@@ -11,9 +11,7 @@ import { useState, useEffect } from 'react'
 
 import qs from 'qs'
 import axios from "axios"
-
 import { queryParams_headlinefeature } from '../../../modules/DFA/QueryParams'
-
 import headlineFeatureModule from './headlineFeatureStructure'
 
 
