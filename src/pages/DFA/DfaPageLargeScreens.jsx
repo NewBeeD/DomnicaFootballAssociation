@@ -17,7 +17,7 @@ import FixturesData from '../../components/homePage/Fixtures';
 import FeaturedPlayer from '../../components/homePage/FeaturedPlayer';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import HeadlineFeature from '../../components/DFAPage/Headline/HeadlineFeature';
+import HeadlineFeature from '../../components/DFAPage/HeadlineFeature.jsx/HeadlineFeature';
 
 
 

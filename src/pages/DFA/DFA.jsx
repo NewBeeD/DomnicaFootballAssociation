@@ -37,7 +37,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'; //Fixtures
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered'; //Tables
 import AssessmentIcon from '@mui/icons-material/Assessment'; //Stats
 import GroupsIcon from '@mui/icons-material/Groups'; //Players
-import HeadlineFeature from "../../components/DFAPage/Headline/HeadlineFeature";
+import HeadlineFeature from "../../components/DFAPage/HeadlineFeature.jsx/HeadlineFeature";
 
 
 

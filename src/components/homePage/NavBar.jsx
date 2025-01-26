@@ -157,6 +157,12 @@ const NavBar = () => {
               </Button>
             </Link>
 
+            <Link to='/DFA/Cups'>
+              <Button>
+                Cups
+              </Button>
+            </Link>
+
             <Link to='http://www.dominicafa.com/' target="_blank">
               <Button>
                 DFA
