@@ -35,6 +35,7 @@ import DivisionOneStatsPage from './pages/DFA/DivisionOne/DivisionOneStatsPage';
 import FixturesPage from './pages/DFA/FixturesPage'
 import DfaPageLargeScreens from './pages/DFA/DfaPageLargeScreens'
 import AllTeamsFixtures from './pages/DFA/AllTeamsFixtures';
+import TournamentBrackets from './components/TournamentBrackets/TournamentBrackets';
 
 
 
@@ -74,6 +75,7 @@ const isAboveSM = useMediaQuery(theme.breakpoints.up('sm'));
         <Route path='/DFA/Teams' element={<AllTeamsPage />} />
         <Route path='/DFA/Stats' element={<StatsPage />} />
         <Route path='/DFA/DivisionOneStats' element={<DivisionOneStatsPage />} />
+        <Route path='/DFA/Cup' element={<TournamentBrackets />} />
 
 
         {/* <Route path='/DFA/Fixtures' element={<FixturesPage />} /> */}
