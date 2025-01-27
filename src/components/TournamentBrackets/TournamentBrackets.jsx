@@ -1,9 +1,61 @@
-import { SingleEliminationBracket, DoubleEliminationBracket, Match, SVGViewer } from 'react-tournament-brackets';
+import { SingleEliminationBracket, DoubleEliminationBracket, Match, SVGViewer, createTheme } from 'react-tournament-brackets';
+
+import useResizeObserver from "use-resize-observer";
+
+// import '../../css/TournamentRounds.css'
 
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+
+
+import NavBar from '../homePage/NavBar';
+import { Stack } from '@mui/material';
 
 
 const TournamentBrackets = () => {
+
+
+
+
+
+
+  
+
+
+  // const GlootTheme = createTheme({
+  //   textColor: { main: "#000000", highlighted: "#F4F2FE", dark: "#707582" },
+
+  //   matchBackground: { wonColor: "#2D2D59", lostColor: "#1B1D2D" },
+    
+  //   score: {
+  //     background: {
+  //       wonColor: `#10131C`,
+  //       lostColor: "#10131C"
+  //     },
+  //     text: { highlightedWonColor: "#7BF59D", highlightedLostColor: "#FB7E94" }
+  //   },
+
+  //   border: {
+  //     color: "#292B43",
+  //     highlightedColor: "RGBA(152,82,242,0.4)"
+  //   },
+    
+  //   roundHeader: { backgroundColor: "#3B3F73", fontColor: "#F4F2FE" },
+  //   connectorColor: "#3B3F73",
+  //   connectorColorHighlight: "RGBA(152,82,242,0.4)",
+  //   svgBackground: "#0F121C"
+  // });
+
+
+  const { ref, width, height } = useResizeObserver();
+
+  const getSVGSize = () => {
+    if (width >= 1200) return { width: 1200, height: 800 };
+    if (width >= 1166) return { width: 1000, height: 600 };
+    if (width >= 866) return { width: 800, height: 800 };
+    if (width >= 566) return { width: 500, height: 700 };
+    return { width: 380, height: 900 };
+  };
 
 
 
@@ -2116,79 +2168,249 @@ const TournamentBrackets = () => {
     },
   ];
 
+  // const tournamentBracket = [
+  //   // Final Match
+  //   { id: 10001, nextMatchId: null, tournamentRoundText: '4', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  
+  //   // Semi-Finals
+  //   { id: 10002, nextMatchId: 10001, tournamentRoundText: '3', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  //   { id: 10003, nextMatchId: 10001, tournamentRoundText: '3', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  
+  //   // Quarter-Finals
+  //   { id: 10004, nextMatchId: 10002, tournamentRoundText: '2', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  //   { id: 10005, nextMatchId: 10002, tournamentRoundText: '2', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  //   { id: 10006, nextMatchId: 10003, tournamentRoundText: '2', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  //   { id: 10007, nextMatchId: 10003, tournamentRoundText: '2', startTime: '2025-01-23', state: 'SCHEDULED', participants: [{ id: 'team-14', resultText: null, isWinner: true, status: null, name: 'Steel Raptors', picture: 'teamlogos/steel_raptors' },{ id: 'team-16', resultText: null, isWinner: false, status: null, name: 'Solar Blades', picture: 'teamlogos/solar_blades' }] },
+  
+  //   // Round 1 Matches
+  //   { id: 10008, nextMatchId: 10004, tournamentRoundText: '1', startTime: '2025-01-23', state: 'SCHEDULED', participants: [
+  //     { id: 'team-01', resultText: '1', isWinner: false, status: null, name: 'Thunder Strikers', picture: 'teamlogos/thunder_strikers' },
+  //     { id: 'team-02', resultText: "2", isWinner: false, status: null, name: 'Shadow Warriors', picture: 'teamlogos/shadow_warriors' },
+  //   ]},
+  //   { id: 10009, nextMatchId: 10004, tournamentRoundText: '1', startTime: '2025-01-23', state: 'SCHEDULED', participants: [
+  //     { id: 'team-03', resultText: null, isWinner: false, status: null, name: 'Crimson Vipers', picture: 'teamlogos/crimson_vipers' },
+  //     { id: 'team-04', resultText: null, isWinner: false, status: null, name: 'Blazing Falcons', picture: 'teamlogos/blazing_falcons' },
+  //   ]},
+  //   { id: 10010, nextMatchId: 10005, tournamentRoundText: '1', startTime: '2025-01-23', state: 'SCHEDULED', participants: [
+  //     { id: 'team-05', resultText: null, isWinner: false, status: null, name: 'Iron Titans', picture: 'teamlogos/iron_titans' },
+  //     { id: 'team-06', resultText: null, isWinner: false, status: null, name: 'Stealth Panthers', picture: 'teamlogos/stealth_panthers' },
+  //   ]},
+  //   { id: 10011, nextMatchId: 10005, tournamentRoundText: '1', startTime: '2025-01-23', state: 'SCHEDULED', participants: [
+  //     { id: 'team-07', resultText: null, isWinner: false, status: null, name: 'Frost Wolves', picture: 'teamlogos/frost_wolves' },
+  //     { id: 'team-08', resultText: null, isWinner: false, status: null, name: 'Golden Hawks', picture: 'teamlogos/golden_hawks' },
+  //   ]},
+  //   { id: 10012, nextMatchId: 10006, tournamentRoundText: '1', startTime: '2025-01-23', state: 'SCHEDULED', participants: [
+  //     { id: 'team-09', resultText: null, isWinner: false, status: null, name: 'Storm Breakers', picture: 'teamlogos/storm_breakers' },
+  //     { id: 'team-10', resultText: null, isWinner: false, status: null, name: 'Venom Fangs', picture: 'teamlogos/venom_fangs' },
+  //   ]},
+  //   { id: 10013, nextMatchId: 10006, tournamentRoundText: '1', startTime: '2025-01-23', state: 'SCHEDULED', participants: [
+  //     { id: 'team-11', resultText: null, isWinner: false, status: null, name: 'Onyx Reapers', picture: 'teamlogos/onyx_reapers' },
+  //     { id: 'team-12', resultText: null, isWinner: false, status: null, name: 'Celestial Guardians', picture: 'teamlogos/celestial_guardians' },
+  //   ]},
+  //   { id: 10014, nextMatchId: 10007, tournamentRoundText: '1', startTime: '2025-01-23', state: 'SCHEDULED', participants: [
+  //     { id: 'team-13', resultText: null, isWinner: false, status: null, name: 'Inferno Knights', picture: 'teamlogos/inferno_knights' },
+  //     { id: 'team-14', resultText: null, isWinner: true, status: null, name: 'Steel Raptors', picture: 'teamlogos/steel_raptors' },
+  //   ]},
+  //   { id: 10015, nextMatchId: 10007, tournamentRoundText: '1', startTime: '2025-01-23', state: 'SCHEDULED', participants: [
+  //     { id: 'team-15', resultText: null, isWinner: false, status: null, name: 'Phantom Strikers', picture: 'teamlogos/phantom_strikers' },
+  //     { id: 'team-16', resultText: null, isWinner: true, status: null, name: 'Solar Blades', picture: 'teamlogos/solar_blades' },
+  //   ]},
+  // ];
+  
+  // const tournamentBracket = [
+  //   // Final Match
+  //   { id: 10001, nextMatchId: null, tournamentRoundText: '5', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+
+  //   // Semi-Finals
+  //   { id: 10002, nextMatchId: 10001, tournamentRoundText: '4', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  //   { id: 10003, nextMatchId: 10001, tournamentRoundText: '4', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+
+  //   // Quarter-Finals
+  //   { id: 10004, nextMatchId: 10002, tournamentRoundText: '3', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  //   { id: 10005, nextMatchId: 10002, tournamentRoundText: '3', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  //   { id: 10006, nextMatchId: 10003, tournamentRoundText: '3', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  //   { id: 10007, nextMatchId: 10003, tournamentRoundText: '3', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+
+  //   // Round 2 Matches
+  //   { id: 10008, nextMatchId: 10004, tournamentRoundText: '2', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  //   { id: 10009, nextMatchId: 10004, tournamentRoundText: '2', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  //   { id: 10010, nextMatchId: 10005, tournamentRoundText: '2', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  //   { id: 10011, nextMatchId: 10005, tournamentRoundText: '2', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  //   { id: 10012, nextMatchId: 10006, tournamentRoundText: '2', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  //   { id: 10013, nextMatchId: 10006, tournamentRoundText: '2', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  //   { id: 10014, nextMatchId: 10007, tournamentRoundText: '2', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+  //   { id: 10015, nextMatchId: 10007, tournamentRoundText: '2', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+
+  //   // Round 1 Matches (32 Teams)
+  //   ...Array.from({ length: 16 }, (_, index) => ({
+  //       id: 10016 + index,
+  //       nextMatchId: 10008 + Math.floor(index / 2),
+  //       tournamentRoundText: '1',
+  //       startTime: '2025-01-23',
+  //       state: 'SCHEDULED',
+  //       participants: [
+  //           { id: `team-${index * 2 + 1}`, resultText: null, isWinner: false, status: null, name: `Team ${index * 2 + 1}`, picture: `teamlogos/team_${index * 2 + 1}` },
+  //           { id: `team-${index * 2 + 2}`, resultText: null, isWinner: false, status: null, name: `Team ${index * 2 + 2}`, picture: `teamlogos/team_${index * 2 + 2}` }
+  //       ]
+  //   }))
+  // ];
+
   const tournamentBracket = [
     // Final Match
-    { id: 10001, nextMatchId: null, tournamentRoundText: '4', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+    { id: 10001, nextMatchId: null, tournamentRoundText: "6", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
   
     // Semi-Finals
-    { id: 10002, nextMatchId: 10001, tournamentRoundText: '3', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
-    { id: 10003, nextMatchId: 10001, tournamentRoundText: '3', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
+    { id: 10002, nextMatchId: 10001, tournamentRoundText: "5", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10003, nextMatchId: 10001, tournamentRoundText: "5", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
   
     // Quarter-Finals
-    { id: 10004, nextMatchId: 10002, tournamentRoundText: '2', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
-    { id: 10005, nextMatchId: 10002, tournamentRoundText: '2', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
-    { id: 10006, nextMatchId: 10003, tournamentRoundText: '2', startTime: '2025-01-23', state: 'SCHEDULED', participants: [] },
-    { id: 10007, nextMatchId: 10003, tournamentRoundText: '2', startTime: '2025-01-23', state: 'SCHEDULED', participants: [{ id: 'team-14', resultText: null, isWinner: true, status: null, name: 'Steel Raptors', picture: 'teamlogos/steel_raptors' },{ id: 'team-16', resultText: null, isWinner: false, status: null, name: 'Solar Blades', picture: 'teamlogos/solar_blades' }] },
+    { id: 10004, nextMatchId: 10002, tournamentRoundText: "4", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10005, nextMatchId: 10002, tournamentRoundText: "4", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10006, nextMatchId: 10003, tournamentRoundText: "4", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10007, nextMatchId: 10003, tournamentRoundText: "4", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
   
-    // Round 1 Matches
-    { id: 10008, nextMatchId: 10004, tournamentRoundText: '1', startTime: '2025-01-23', state: 'SCHEDULED', participants: [
-      { id: 'team-01', resultText: '1', isWinner: false, status: null, name: 'Thunder Strikers', picture: 'teamlogos/thunder_strikers' },
-      { id: 'team-02', resultText: "2", isWinner: false, status: null, name: 'Shadow Warriors', picture: 'teamlogos/shadow_warriors' },
-    ]},
-    { id: 10009, nextMatchId: 10004, tournamentRoundText: '1', startTime: '2025-01-23', state: 'SCHEDULED', participants: [
-      { id: 'team-03', resultText: null, isWinner: false, status: null, name: 'Crimson Vipers', picture: 'teamlogos/crimson_vipers' },
-      { id: 'team-04', resultText: null, isWinner: false, status: null, name: 'Blazing Falcons', picture: 'teamlogos/blazing_falcons' },
-    ]},
-    { id: 10010, nextMatchId: 10005, tournamentRoundText: '1', startTime: '2025-01-23', state: 'SCHEDULED', participants: [
-      { id: 'team-05', resultText: null, isWinner: false, status: null, name: 'Iron Titans', picture: 'teamlogos/iron_titans' },
-      { id: 'team-06', resultText: null, isWinner: false, status: null, name: 'Stealth Panthers', picture: 'teamlogos/stealth_panthers' },
-    ]},
-    { id: 10011, nextMatchId: 10005, tournamentRoundText: '1', startTime: '2025-01-23', state: 'SCHEDULED', participants: [
-      { id: 'team-07', resultText: null, isWinner: false, status: null, name: 'Frost Wolves', picture: 'teamlogos/frost_wolves' },
-      { id: 'team-08', resultText: null, isWinner: false, status: null, name: 'Golden Hawks', picture: 'teamlogos/golden_hawks' },
-    ]},
-    { id: 10012, nextMatchId: 10006, tournamentRoundText: '1', startTime: '2025-01-23', state: 'SCHEDULED', participants: [
-      { id: 'team-09', resultText: null, isWinner: false, status: null, name: 'Storm Breakers', picture: 'teamlogos/storm_breakers' },
-      { id: 'team-10', resultText: null, isWinner: false, status: null, name: 'Venom Fangs', picture: 'teamlogos/venom_fangs' },
-    ]},
-    { id: 10013, nextMatchId: 10006, tournamentRoundText: '1', startTime: '2025-01-23', state: 'SCHEDULED', participants: [
-      { id: 'team-11', resultText: null, isWinner: false, status: null, name: 'Onyx Reapers', picture: 'teamlogos/onyx_reapers' },
-      { id: 'team-12', resultText: null, isWinner: false, status: null, name: 'Celestial Guardians', picture: 'teamlogos/celestial_guardians' },
-    ]},
-    { id: 10014, nextMatchId: 10007, tournamentRoundText: '1', startTime: '2025-01-23', state: 'SCHEDULED', participants: [
-      { id: 'team-13', resultText: null, isWinner: false, status: null, name: 'Inferno Knights', picture: 'teamlogos/inferno_knights' },
-      { id: 'team-14', resultText: null, isWinner: true, status: null, name: 'Steel Raptors', picture: 'teamlogos/steel_raptors' },
-    ]},
-    { id: 10015, nextMatchId: 10007, tournamentRoundText: '1', startTime: '2025-01-23', state: 'SCHEDULED', participants: [
-      { id: 'team-15', resultText: null, isWinner: false, status: null, name: 'Phantom Strikers', picture: 'teamlogos/phantom_strikers' },
-      { id: 'team-16', resultText: null, isWinner: true, status: null, name: 'Solar Blades', picture: 'teamlogos/solar_blades' },
-    ]},
+    // Round 3 Matches
+    { id: 10008, nextMatchId: 10004, tournamentRoundText: "3", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10009, nextMatchId: 10004, tournamentRoundText: "3", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10010, nextMatchId: 10005, tournamentRoundText: "3", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10011, nextMatchId: 10005, tournamentRoundText: "3", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10012, nextMatchId: 10006, tournamentRoundText: "3", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10013, nextMatchId: 10006, tournamentRoundText: "3", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10014, nextMatchId: 10007, tournamentRoundText: "3", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10015, nextMatchId: 10007, tournamentRoundText: "3", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+  
+    // Round 2 Matches
+    { id: 10016, nextMatchId: 10008, tournamentRoundText: "2", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10017, nextMatchId: 10008, tournamentRoundText: "2", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10018, nextMatchId: 10009, tournamentRoundText: "2", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10019, nextMatchId: 10009, tournamentRoundText: "2", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10020, nextMatchId: 10010, tournamentRoundText: "2", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10021, nextMatchId: 10010, tournamentRoundText: "2", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10022, nextMatchId: 10011, tournamentRoundText: "2", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10023, nextMatchId: 10011, tournamentRoundText: "2", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10024, nextMatchId: 10012, tournamentRoundText: "2", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10025, nextMatchId: 10012, tournamentRoundText: "2", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10026, nextMatchId: 10013, tournamentRoundText: "2", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10027, nextMatchId: 10013, tournamentRoundText: "2", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10028, nextMatchId: 10014, tournamentRoundText: "2", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10029, nextMatchId: 10014, tournamentRoundText: "2", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10030, nextMatchId: 10015, tournamentRoundText: "2", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+    { id: 10031, nextMatchId: 10015, tournamentRoundText: "2", startTime: "2025-01-23", state: "SCHEDULED", participants: [] },
+  
+    // Round 1 Matches (32 Teams)
+    { id: 10032, nextMatchId: 10016, tournamentRoundText: "1", startTime: "2025-01-23", state: "SCHEDULED", participants: [{ id: "team-1", name: "Team 1" }, { id: "team-2", name: "Team 2" }] },
+    { id: 10033, nextMatchId: 10016, tournamentRoundText: "1", startTime: "2025-01-23", state: "SCHEDULED", participants: [{ id: "team-3", name: "Team 3" }, { id: "team-4", name: "Team 4" }] },
+    { id: 10034, nextMatchId: 10017, tournamentRoundText: "1", startTime: "2025-01-23", state: "SCHEDULED", participants: [{ id: "team-5", name: "Team 5" }, { id: "team-6", name: "Team 6" }] },
+    { id: 10035, nextMatchId: 10017, tournamentRoundText: "1", startTime: "2025-01-23", state: "SCHEDULED", participants: [{ id: "team-7", name: "Team 7" }, { id: "team-8", name: "Team 8" }] },
+    { id: 10036, nextMatchId: 10018, tournamentRoundText: "1", startTime: "2025-01-23", state: "SCHEDULED", participants: [{ id: "team-9", name: "Team 9" }, { id: "team-10", name: "Team 10" }] },
+    { id: 10037, nextMatchId: 10018, tournamentRoundText: "1", startTime: "2025-01-23", state: "SCHEDULED", participants: [{ id: "team-11", name: "Team 11" }, { id: "team-12", name: "Team 12" }] },
+    { id: 10038, nextMatchId: 10019, tournamentRoundText: "1", startTime: "2025-01-23", state: "SCHEDULED", participants: [{ id: "team-13", name: "Team 13" }, { id: "team-14", name: "Team 14" }] },
+    { id: 10039, nextMatchId: 10019, tournamentRoundText: "1", startTime: "2025-01-23", state: "SCHEDULED", participants: [{ id: "team-15", name: "Team 15" }, { id: "team-16", name: "Team 16" }] },
+    { id: 10040, nextMatchId: 10020, tournamentRoundText: "1", startTime: "2025-01-23", state: "SCHEDULED", participants: [{ id: "team-17", name: "Team 17" }, { id: "team-18", name: "Team 18" }] },
+    { id: 10041, nextMatchId: 10020, tournamentRoundText: "1", startTime: "2025-01-23", state: "SCHEDULED", participants: [{ id: "team-19", name: "Team 19" }, { id: "team-20", name: "Team 20" }] },
+    { id: 10042, nextMatchId: 10021, tournamentRoundText: "1", startTime: "2025-01-23", state: "SCHEDULED", participants: [{ id: "team-21", name: "Team 21" }, { id: "team-22", name: "Team 22" }] },
+    { id: 10043, nextMatchId: 10021, tournamentRoundText: "1", startTime: "2025-01-23", state: "SCHEDULED", participants: [{ id: "team-23", name: "Team 23" }, { id: "team-24", name: "Team 24" }] },
+    { id: 10044, nextMatchId: 10022, tournamentRoundText: "1", startTime: "2025-01-23", state: "SCHEDULED", participants: [{ id: "team-25", name: "Team 25" }, { id: "team-26", name: "Team 26" }] },
+    { id: 10045, nextMatchId: 10022, tournamentRoundText: "1", startTime: "2025-01-23", state: "SCHEDULED", participants: [{ id: "team-27", name: "Team 27" }, { id: "team-28", name: "Team 28" }] },
+    { id: 10046, nextMatchId: 10023, tournamentRoundText: "1", startTime: "2025-01-23", state: "SCHEDULED", participants: [{ id: "team-29", name: "Team 29" }, { id: "team-30", name: "Team 30" }] },
+    { id: 10047, nextMatchId: 10023, tournamentRoundText: "1", startTime: "2025-01-23", state: "SCHEDULED", participants: [{ id: "team-31", name: "Team 31" }, { id: "team-32", name: "Team 32" }] }
+  
+
   ];
   
-  
+
+  const GlootTheme = createTheme({
+    textColor: { main: "#000000", highlighted: "#F4F2FE", dark: "#707582" },
+    matchBackground: { wonColor: "#2D2D59", lostColor: "#1B1D2D" },
+    score: {
+      background: {
+        wonColor: `#10131C`,
+        lostColor: "#10131C"
+      },
+      text: { highlightedWonColor: "#7BF59D", highlightedLostColor: "#FB7E94" }
+    },
+    border: {
+      color: "#292B43",
+      highlightedColor: "#a8eb34"
+    },
+    roundHeader: { backgroundColor: "#3B3F73", fontColor: "#F4F2FE" },
+    connectorColor: "#3B3F73",
+    connectorColorHighlight: "RGBA(152,82,242,0.4)",
+    svgBackground: "#0F121C"
+  });
+
+
+  // const roundOneMatches = tournamentBracket.filter(
+  //   (match) => parseInt(match.tournamentRoundText, 10) === 1
+  // );
+
+
+
   return (
 
-    <Box 
-    width='100%' 
-    height={600} 
-    display='flex' 
-    justifyContent='center' 
-    alignContent='center' 
-    marginTop={4} 
-    overflow='auto' 
-    border='2px solid #ccc'>
+    <Box height='100%' ref={ref}>
 
-      <SingleEliminationBracket
-      matches={tournamentBracket}
-      matchComponent={Match}
-      svgWrapper={({ children, ...props }) => (
-        <SVGViewer width={800} height={800} {...props}>
-          {children}
-        </SVGViewer>
-      )}
-      />
+      <NavBar />
+
+      <Box paddingTop={4}>
+
+        <Typography variant='h3' textAlign='center'>
+
+          President's Cup
+
+        </Typography>
+
+      </Box>
+
+      
+
+      <Stack
+      margin='auto'
+      justifyContent='center'
+      alignItems='center'
+      paddingY={10}
+      >
+
+        <Box 
+        width='auto'
+        height='auto' 
+        display='flex' 
+        justifyContent='center' 
+        alignContent='center' 
+        overflow='auto' 
+        border='1px solid black'
+        borderRadius='10px'
+        >
+
+
+
+          <SingleEliminationBracket
+          theme={GlootTheme}
+          matches={simpleSmallBracket}
+          matchComponent={Match}
+          svgWrapper={({ children, ...props }) => (
+
+            <SVGViewer 
+            {...getSVGSize()}
+            background="rgb(11, 13, 19)"
+            SVGBackground="rgb(11, 13, 19)"
+            {...props}>
+              
+              {children}
+
+            </SVGViewer>
+          )}
+          />
+          
+
+        </Box>
+
+
+      </Stack>
+
 
     </Box>
+
 
 
   )
