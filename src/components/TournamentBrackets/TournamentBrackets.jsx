@@ -2348,13 +2348,13 @@ const TournamentBrackets = () => {
 
   return (
 
-    <Box height='100%' ref={ref}>
+    <Box height='100%' ref={ref} sx={{ backgroundImage: `url("https://cdn.britannica.com/69/228369-050-0B18A1F6/Asian-Cup-Final-2019-Hasan-Al-Haydos-Qatar-Japan-Takumi-Minamino.jpg")` }}>
 
       <NavBar />
 
       <Box paddingTop={4}>
 
-        <Typography variant='h3' textAlign='center'>
+        <Typography color='white' fontWeight={900} variant='h3' textAlign='center'>
 
           President's Cup
 
