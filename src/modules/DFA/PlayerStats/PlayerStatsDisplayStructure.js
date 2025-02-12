@@ -24,7 +24,9 @@ export default function PlayerStatsDisplayStructure(data){
   
       stat['Foot'] = item.attributes['dfa_player'].data.attributes['Foot']
   
-      stat['url'] = item.attributes['Profile_Pic'].data.attributes['formats']['medium']['url']
+      // stat['url'] = item.attributes['Profile_Pic'].data.attributes['formats']['medium']['url']
+
+      stat['url'] = item.attributes['dfa_player'].data.attributes['Profile_Pic'].data.attributes['formats']['medium']['url']
   
       stat['league'] = item.attributes['all_league'].data.attributes['name']
       
