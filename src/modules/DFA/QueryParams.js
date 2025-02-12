@@ -103,7 +103,11 @@ export const queryParams_prem_players_stats = {
   
   populate: {
     dfa_player: {
-      populate: true,
+      populate: {
+        Profile_Pic: {
+          populate: true,
+        }
+      },
     },
     all_league:{
       populate: true
