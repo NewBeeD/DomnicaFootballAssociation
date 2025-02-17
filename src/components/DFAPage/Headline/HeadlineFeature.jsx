@@ -11,8 +11,9 @@ import { useState, useEffect } from 'react'
 
 import qs from 'qs'
 import axios from "axios"
-import { queryParams_headlinefeature } from '../../../modules/DFA/QueryParams'
+import { queryParams_articles } from '../../../modules/DFA/QueryParams'
 import headlineFeatureModule from './headlineFeatureStructure'
+import { Link } from 'react-router-dom'
 
 
 
@@ -32,11 +33,11 @@ const HeadlineFeature = () => {
         // Set loading to true when starting the fetch
         setLoading(true);
 
-        const queryString = qs.stringify(queryParams_headlinefeature);
+        const queryString = qs.stringify(queryParams_articles);
 
         // Your API endpoint URL
-        // const apiUrl = `https://strapi-dominica-sport.onrender.com/api/headline-features/${id}?${queryParams_headlinefeature}`;
-        const apiUrl = `https://strapi-dominica-sport.onrender.com/api/headline-features?populate=*`;
+        const apiUrl = `https://strapi-dominica-sport.onrender.com/api/articles?${queryString}`;
+        // const apiUrl = `https://strapi-dominica-sport.onrender.com/api/articles?populate=*`;
   
 
         // Make the fetch request
@@ -100,98 +101,107 @@ const HeadlineFeature = () => {
         margin='auto'
         >
 
-          {articles && (
-            
-            // Major Headlines
-            <Box 
-            marginBottom={2} 
-            >
-              
-              <Box
-                display={{xs: 'none', sm: 'inherit'}} 
-                sx={{ width: {sm: 480},  marginY: 1, backgroundColor: '#222629', padding: {xs: 1}}}
-                >
-  
-                  <img  
-                    loading='lazy'
-                    height={350} 
-                    width='100%'
-                    src={articles[0].image} 
-                    alt='News Image'
-                    style={{ borderRadius: '5px', objectFit: 'cover', objectPosition: "50% 50%"}}
-                  />
+          {articles && articles.filter(articleType => articleType.Mainheadline === 'Yes').map((item, idx) => (
 
-                  <Box paddingLeft={1}>
+            <Box key={idx}>
+                <Box marginBottom={2}>
 
-                    <Stack direction={{ xs: 'column'}}>
+                  <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
 
-                      <Typography variant='caption' color='grey' fontWeight={900}>{articles[0].type}</Typography>
+                  { 
 
-                      <Typography variant='h6' color='white' fontWeight={900}>{articles[0].title}</Typography>
+                    <Box
+                      display={{xs: 'none', sm: 'inherit'}} 
+                      sx={{ width: {sm: 480},  marginY: 1, backgroundColor: '#222629', padding: {xs: 1}}}
+                      >
 
-                    </Stack>
+                        <img  
+                          loading='lazy'
+                          height={350} 
+                          width='100%'
+                          src={articles[0].image} 
+                          alt='News Image'
+                          style={{ borderRadius: '5px', objectFit: 'cover', objectPosition: "50% 50%"}}
+                        />
 
-                  </Box>
-    
-              </Box>
+                        <Box paddingLeft={1}>
 
-              <Box
-                display={{sm: 'none'}} 
-                sx={{ 
-                  position: 'relative', 
-                  width: '100%', 
-                  height: { xs: 330, sm: 430 }, 
-                  marginY: 1, 
-                  backgroundColor: '#222629', 
-                  padding: { xs: 1 },
-                  borderRadius: '5px', 
-                  overflow: 'hidden'
-                }}
-              >
-                
-                {/* Image */}
-                <img  
-                  loading='lazy'
-                  style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    objectFit: 'cover', 
-                    objectPosition: '50% 50%', 
-                    borderRadius: '5px' 
-                  }}
-                  src={articles[0].image} 
-                  alt='News Image'
-                />
+                          <Stack direction={{ xs: 'column'}}>
 
-                {/* Overlay */}
-                <Box 
-                  sx={{ 
-                    position: 'absolute', 
-                    top: 0, 
-                    left: 0, 
-                    width: '100%', 
-                    height: '100%', 
-                    backgroundColor: 'rgba(0, 0, 0, 0.4)', // Adjust opacity here
-                    borderRadius: '5px'
-                  }} 
-                />
+                            <Typography variant='caption' color='grey' fontWeight={900}>{articles[0].type}</Typography>
 
-                {/* Text Content */}
-                <Box sx={{ position: 'absolute', bottom: 10, left: 15 }}>
-                  <Stack direction="column">
-                    <Typography variant='caption' color='grey' fontWeight={900}>
-                      {articles[0].type}
-                    </Typography>
-                    <Typography variant='h6' color='white' fontWeight={900}>
-                      {articles[0].title}
-                    </Typography>
-                  </Stack>
+                            <Typography variant='h6' color='white' fontWeight={900}>{articles[0].title}</Typography>
+
+                          </Stack>
+
+                        </Box>
+
+                    </Box>
+                  }
+
+
+                  </Link>
+
+                  <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
+
+                    <Box
+                      display={{sm: 'none'}} 
+                      sx={{ 
+                        position: 'relative', 
+                        width: '100%', 
+                        height: { xs: 330, sm: 430 }, 
+                        marginY: 1, 
+                        backgroundColor: '#222629', 
+                        padding: { xs: 1 },
+                        borderRadius: '5px', 
+                        overflow: 'hidden'
+                      }}
+                    >
+                      
+                      {/* Image */}
+                      <img  
+                        loading='lazy'
+                        style={{ 
+                          width: '100%', 
+                          height: '100%', 
+                          objectFit: 'cover', 
+                          objectPosition: '50% 50%', 
+                          borderRadius: '5px' 
+                        }}
+                        src={articles[0].image} 
+                        alt='News Image'
+                      />
+
+                      {/* Overlay */}
+                      <Box 
+                        sx={{ 
+                          position: 'absolute', 
+                          top: 0, 
+                          left: 0, 
+                          width: '100%', 
+                          height: '100%', 
+                          backgroundColor: 'rgba(0, 0, 0, 0.4)', // Adjust opacity here
+                          borderRadius: '5px'
+                        }} 
+                      />
+
+                      {/* Text Content */}
+                      <Box sx={{ position: 'absolute', bottom: 10, left: 15 }}>
+                        <Stack direction="column">
+                          <Typography variant='caption' color='grey' fontWeight={900}>
+                            {articles[0].type}
+                          </Typography>
+                          <Typography variant='h6' color='white' fontWeight={900}>
+                            {articles[0].title}
+                          </Typography>
+                        </Stack>
+                      </Box>
+                    </Box>
+
+                  </Link>
                 </Box>
-              </Box>
-
-
             </Box>
-          )}
+          ))}
 
         </Box>
 
@@ -205,92 +215,50 @@ const HeadlineFeature = () => {
           <Stack 
           direction={{xs:'row', sm: 'column'}} 
           spacing={2}
-          justifyContent={{xs: 'center'}}>
+          justifyContent={{xs: 'center'}}
+          >
 
-            {articles && articles.slice(1).map((item, idx) => {
+            {articles && articles.filter(articleType => articleType.headline === 'Yes').map((item, idx) => {
 
 
                 return(
 
-                  <Box 
-                  key={idx}
-                  sx={{width: {sm: 240},marginY: 1, backgroundColor: '#222629'}}>
 
-                    <img 
-                      loading='lazy'
-                      height={120} 
-                      width='100%'
-                      src={item.image} 
-                      alt='News Image'
-                      style={{ objectFit: 'cover', objectPosition: "50% 50%"}}
-                      />
+                  <Box key={idx}>
 
-                    <Box paddingLeft={1}>
+                    <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
+                    
+                      <Box 
+                      key={idx}
+                      sx={{width: {sm: 240},marginY: 1, backgroundColor: '#222629'}}>
 
-                      <Stack direction={{ xs: 'column'}}>
+                        <img 
+                          loading='lazy'
+                          height={120} 
+                          width='100%'
+                          src={item.image} 
+                          alt='News Image'
+                          style={{ objectFit: 'cover', objectPosition: "50% 50%"}}
+                          />
 
-                        <Typography variant='caption' color='grey' fontWeight={900}>{item.type}</Typography>
+                        <Box paddingLeft={1}>
 
-                        <Typography variant='body2' color='white' fontWeight={900}>{item.title}</Typography>
+                          <Stack direction={{ xs: 'column'}}>
 
-                      </Stack>
+                            <Typography variant='caption' color='grey' fontWeight={900}>{item.type}</Typography>
 
-                    </Box>
+                            <Typography color='white' fontWeight={900} sx={{ fontSize: '11px'}}>{item.title}</Typography>
+
+                          </Stack>
+
+                        </Box>
+
+                      </Box>
+
+
+                    </Link>
 
                   </Box>
-
-                //   <Box 
-                //   sx={{ 
-                //     position: 'relative', 
-                //     width: '100%', 
-                //     height: { xs: 330, sm: 430 }, 
-                //     marginY: 1, 
-                //     backgroundColor: '#222629', 
-                //     padding: { xs: 1 },
-                //     borderRadius: '5px', 
-                //     overflow: 'hidden'
-                //   }}
-                // >
-                  
-                //   {/* Image */}
-                //   <img  
-                //     loading='lazy'
-                //     style={{ 
-                //       width: '100%', 
-                //       height: '100%', 
-                //       objectFit: 'cover', 
-                //       objectPosition: '50% 50%', 
-                //       borderRadius: '5px' 
-                //     }}
-                //     src={item.image} 
-                //     alt='News Image'
-                //   />
-  
-                //   {/* Overlay */}
-                //   <Box 
-                //     sx={{ 
-                //       position: 'absolute', 
-                //       top: 0, 
-                //       left: 0, 
-                //       width: '100%', 
-                //       height: '100%', 
-                //       backgroundColor: 'rgba(0, 0, 0, 0.4)', // Adjust opacity here
-                //       borderRadius: '5px'
-                //     }} 
-                //   />
-  
-                //   {/* Text Content */}
-                //   <Box sx={{ position: 'absolute', bottom: 10, left: 15 }}>
-                //     <Stack direction="column">
-                //       <Typography variant='caption' color='grey' fontWeight={900}>
-                //         {item.type}
-                //       </Typography>
-                //       <Typography variant='h6' color='white' fontWeight={900}>
-                //         {item.title}
-                //       </Typography>
-                //     </Stack>
-                //   </Box>
-                // </Box>
 
                 )
 

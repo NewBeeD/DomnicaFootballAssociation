@@ -39,6 +39,7 @@ import TournamentBrackets from './components/TournamentBrackets/TournamentBracke
 
 
 
+
 function App() {
 
   const theme = useTheme();
@@ -55,6 +56,7 @@ const isAboveSM = useMediaQuery(theme.breakpoints.up('sm'));
         {/* <Route path='/' element={<HomePage />} /> */}
         <Route path="/" element={isAboveSM ? <DfaPageLargeScreens />: <DFA />} />
         <Route path='/:id' element={<Article />} />
+
         
            
         {/* <Route path='/DFA/Home' element={<DFA />} /> */}
