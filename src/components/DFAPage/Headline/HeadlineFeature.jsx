@@ -225,7 +225,7 @@ const HeadlineFeature = () => {
 
 
                   <Box key={idx}>
-                    
+
                     <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
                     
                       <Box 
@@ -259,12 +259,6 @@ const HeadlineFeature = () => {
                     </Link>
 
                   </Box>
-
-
-
-
-
-                
 
                 )
 
