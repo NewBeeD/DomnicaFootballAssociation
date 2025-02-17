@@ -223,85 +223,48 @@ const HeadlineFeature = () => {
 
                 return(
 
-                  <Box 
-                  key={idx}
-                  sx={{width: {sm: 240},marginY: 1, backgroundColor: '#222629'}}>
 
-                    <img 
-                      loading='lazy'
-                      height={120} 
-                      width='100%'
-                      src={item.image} 
-                      alt='News Image'
-                      style={{ objectFit: 'cover', objectPosition: "50% 50%"}}
-                      />
+                  <Box key={idx}>
+                    
+                    <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
+                    
+                      <Box 
+                      key={idx}
+                      sx={{width: {sm: 240},marginY: 1, backgroundColor: '#222629'}}>
 
-                    <Box paddingLeft={1}>
+                        <img 
+                          loading='lazy'
+                          height={120} 
+                          width='100%'
+                          src={item.image} 
+                          alt='News Image'
+                          style={{ objectFit: 'cover', objectPosition: "50% 50%"}}
+                          />
 
-                      <Stack direction={{ xs: 'column'}}>
+                        <Box paddingLeft={1}>
 
-                        <Typography variant='caption' color='grey' fontWeight={900}>{item.type}</Typography>
+                          <Stack direction={{ xs: 'column'}}>
 
-                        <Typography color='white' fontWeight={900} sx={{ fontSize: '11px'}}>{item.title}</Typography>
+                            <Typography variant='caption' color='grey' fontWeight={900}>{item.type}</Typography>
 
-                      </Stack>
+                            <Typography color='white' fontWeight={900} sx={{ fontSize: '11px'}}>{item.title}</Typography>
 
-                    </Box>
+                          </Stack>
+
+                        </Box>
+
+                      </Box>
+
+
+                    </Link>
 
                   </Box>
 
-                //   <Box 
-                //   sx={{ 
-                //     position: 'relative', 
-                //     width: '100%', 
-                //     height: { xs: 330, sm: 430 }, 
-                //     marginY: 1, 
-                //     backgroundColor: '#222629', 
-                //     padding: { xs: 1 },
-                //     borderRadius: '5px', 
-                //     overflow: 'hidden'
-                //   }}
-                // >
-                  
-                //   {/* Image */}
-                //   <img  
-                //     loading='lazy'
-                //     style={{ 
-                //       width: '100%', 
-                //       height: '100%', 
-                //       objectFit: 'cover', 
-                //       objectPosition: '50% 50%', 
-                //       borderRadius: '5px' 
-                //     }}
-                //     src={item.image} 
-                //     alt='News Image'
-                //   />
-  
-                //   {/* Overlay */}
-                //   <Box 
-                //     sx={{ 
-                //       position: 'absolute', 
-                //       top: 0, 
-                //       left: 0, 
-                //       width: '100%', 
-                //       height: '100%', 
-                //       backgroundColor: 'rgba(0, 0, 0, 0.4)', // Adjust opacity here
-                //       borderRadius: '5px'
-                //     }} 
-                //   />
-  
-                //   {/* Text Content */}
-                //   <Box sx={{ position: 'absolute', bottom: 10, left: 15 }}>
-                //     <Stack direction="column">
-                //       <Typography variant='caption' color='grey' fontWeight={900}>
-                //         {item.type}
-                //       </Typography>
-                //       <Typography variant='h6' color='white' fontWeight={900}>
-                //         {item.title}
-                //       </Typography>
-                //     </Stack>
-                //   </Box>
-                // </Box>
+
+
+
+
+                
 
                 )
 
