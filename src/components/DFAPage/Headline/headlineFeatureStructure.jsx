@@ -2,19 +2,20 @@
 
 export default function headlineFeatureModule(data){
 
-  const headlines = data.map(item => {
 
-    let data_point = {}
-
-    data_point['author'] = item.attributes['Author']
-    data_point['headline'] = item.attributes['Headline']
-    data_point['title'] = item.attributes['Title']
-    data_point['type'] = item.attributes['Type']
-    data_point['content'] = item.attributes['HeadlineContent']
-    data_point['image'] = item.attributes['CardImage'].data.attributes.url
-
-    return data_point
-  }) 
+  const headlines = data.filter(item => item.attributes.Page_Headline === 'Yes' || item.attributes.Headline === 'Yes')
+  .map(item => {
+    
+    return {
+      author: item.attributes.Author,
+      headline: item.attributes.Headline,
+      Mainheadline: item.attributes.Page_Headline,
+      title: item.attributes.Title,
+      type: item.attributes.Type,
+      image: item.attributes.Article_Img?.data?.[0]?.attributes?.url || '',
+      id: item.id
+    };
+  });  
 
   return headlines 
 
