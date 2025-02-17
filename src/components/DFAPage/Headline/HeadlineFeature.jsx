@@ -102,35 +102,36 @@ const HeadlineFeature = () => {
 
           {articles && (
             
+            // Major Headlines
             <Box 
             marginBottom={2} 
             >
               
               <Box
                 display={{xs: 'none', sm: 'inherit'}} 
-                sx={{ width: '100%', height: {xs:330, sm: 430}, marginY: 1, backgroundColor: '#222629', padding: {xs: 1}}}
+                sx={{ width: {sm: 480},  marginY: 1, backgroundColor: '#222629', padding: {xs: 1}}}
                 >
   
                   <img  
                     loading='lazy'
-                    height={300} 
+                    height={350} 
                     width='100%'
                     src={articles[0].image} 
                     alt='News Image'
                     style={{ borderRadius: '5px', objectFit: 'cover', objectPosition: "50% 50%"}}
-                    />
+                  />
 
-                    <Box paddingLeft={1}>
+                  <Box paddingLeft={1}>
 
-                      <Stack direction={{ xs: 'column'}}>
+                    <Stack direction={{ xs: 'column'}}>
 
-                        <Typography variant='caption' color='grey' fontWeight={900}>{articles[0].type}</Typography>
+                      <Typography variant='caption' color='grey' fontWeight={900}>{articles[0].type}</Typography>
 
-                        <Typography variant='h6' color='white' fontWeight={900}>{articles[0].title}</Typography>
+                      <Typography variant='h6' color='white' fontWeight={900}>{articles[0].title}</Typography>
 
-                      </Stack>
+                    </Stack>
 
-                    </Box>
+                  </Box>
     
               </Box>
 
@@ -200,6 +201,7 @@ const HeadlineFeature = () => {
         width='100%'
         >
 
+          {/* Minor headlines */}
           <Stack 
           direction={{xs:'row', sm: 'column'}} 
           spacing={2}
@@ -212,14 +214,15 @@ const HeadlineFeature = () => {
 
                   <Box 
                   key={idx}
-                  sx={{height: 200, marginY: 1, backgroundColor: '#222629'}}>
+                  sx={{width: {sm: 240},marginY: 1, backgroundColor: '#222629'}}>
 
                     <img 
                       loading='lazy'
                       height={120} 
+                      width='100%'
                       src={item.image} 
                       alt='News Image'
-                      sx={{ objectFit: 'cover', objectPosition: "50% 50%"}}
+                      style={{ objectFit: 'cover', objectPosition: "50% 50%"}}
                       />
 
                     <Box paddingLeft={1}>
@@ -302,9 +305,7 @@ const HeadlineFeature = () => {
 
     </Stack>
 
-    <Box 
-    width={2}
-    height={20} />
+
     
     </Box>
 
