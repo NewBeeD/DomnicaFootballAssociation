@@ -3,7 +3,7 @@
 // This function identifies the entries in the array/oject that will be used for display in the cards on the Homepage
 export default function GroupingFixturesByDate(league_fixtures_data){
 
-  
+ 
 
   let articles_data = league_fixtures_data.data
 
@@ -14,8 +14,18 @@ export default function GroupingFixturesByDate(league_fixtures_data){
 
     let req_data = {}
 
-    req_data['Home'] = item.attributes['Home_Team']
-    req_data['Away'] = item.attributes['Away_Team']
+
+    req_data['Home'] = item.attributes['dfa_team_home'].data['attributes']['Name']
+
+    req_data['Away'] = item.attributes['dfa_team_away'].data['attributes']['Name']
+
+    req_data['Home_Id'] = item.attributes['dfa_team_home'].data.id
+
+    req_data['Away_Id'] = item.attributes['dfa_team_away'].data.id
+
+
+
+
     req_data['Date'] = getOnlyDate(item.attributes['Date'])
     req_data['Time'] = getTimeOnly(item.attributes['Date'])
     req_data['Venue'] = item.attributes['venue'].data != null ? item.attributes['venue'].data['attributes']['Name']: 'TBA'

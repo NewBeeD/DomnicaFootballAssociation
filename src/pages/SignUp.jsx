@@ -26,7 +26,6 @@ const Signup = () => {
     try{
       await signInWithPopup(auth, googleProvider).then((userCredentials)=>{
 
-        console.log(userCredentials);
         navigation('/')
       })
     }

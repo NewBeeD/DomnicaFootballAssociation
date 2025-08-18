@@ -113,6 +113,7 @@ const StatsPage = () => {
 
         let final_data = StatsPageStructureData(result)
         final_data = final_data.map(goals => goals).sort(Sort)
+        
 
         setCurrentSeason(final_data[0].Season.substring(1).replace('-', '/'))
         

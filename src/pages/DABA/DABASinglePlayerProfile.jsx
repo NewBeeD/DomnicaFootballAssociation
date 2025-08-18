@@ -57,8 +57,6 @@ const DABASinglePlayer = () => {
         const result = await response.data.data;
 
         let final_data = DABASinglePlayerDisplay(result)
-
-        console.log(final_data);
         
         // Set the data state
         setData(final_data);

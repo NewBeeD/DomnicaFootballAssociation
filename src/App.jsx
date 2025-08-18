@@ -5,15 +5,7 @@ import HomePage from "./pages/HomePage"
 import Article from "./pages/Article"
 import "./App.css"
 import DFA from './pages/DFA/DFA'
-import DABA from './pages/DABA/DABA'
-import DABAFixtures from './pages/DABA/DABAFixtures';
-import DABAStats from './pages/DABA/DABAStats';
-import DABATable from './pages/DABA/DABATable';
-import DABATeams from './pages/DABA/DABATeams';
-import DABASinglePlayer from './pages/DABA/DABASinglePlayerProfile';
 
-import DAVA from './pages/DAVA/DAVA'
-import DNA from './pages/DNA/DNA'
 
 import PlayerProfile from './pages/DFA/PlayerProfile'
 
@@ -83,18 +75,6 @@ const isAboveSM = useMediaQuery(theme.breakpoints.up('sm'));
         {/* <Route path='/DFA/Fixtures' element={<FixturesPage />} /> */}
         <Route path='/DFA/Fixtures' element={<AllTeamsFixtures />} />
         {/* <Route path='/Signup' element={<SignUp />} /> */}
-
-
-        {/* DABA Routes */}
-
-        <Route path='/DABA/Home' element={<DABA />} />
-        <Route path='/DABA/Fixtures' element={<DABAFixtures />} />
-        <Route path='/DABA/Table' element={<DABATable />} />
-        <Route path='/DABA/Teams' element={<DABATeams />} />
-        <Route path='/DABA/Stats' element={<DABAStats />} />
-        <Route path='/DABA/Home/Player/:id' element={<DABASinglePlayer />} />
-
-
         
        
 

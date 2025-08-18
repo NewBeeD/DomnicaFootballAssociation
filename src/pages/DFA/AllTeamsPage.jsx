@@ -50,7 +50,7 @@ const AllTeamsPage = () => {
 
         // Your API endpoint URL
         const apiUrl = `https://strapi-dominica-sport.onrender.com/api/dfa-teams?${queryString}`;
-  
+
 
         // Make the fetch request
         const response = await axios.get(apiUrl);
@@ -64,6 +64,10 @@ const AllTeamsPage = () => {
         // Parse the JSON data
         const result = await response.data.data;
         let final_data = AllTeamsDataStructure(result)
+
+
+        console.log(final_data);
+        
 
         // Set the data state
         setData(final_data);

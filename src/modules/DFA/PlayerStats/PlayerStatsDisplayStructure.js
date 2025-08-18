@@ -2,6 +2,8 @@
 
 export default function PlayerStatsDisplayStructure(data){
 
+  
+
   if(data != null){   
     
 
@@ -28,9 +30,9 @@ export default function PlayerStatsDisplayStructure(data){
 
       stat['url'] = item.attributes['dfa_player'].data.attributes['Profile_Pic'].data.attributes['formats']['medium']['url']
   
-      stat['league'] = item.attributes['all_league'].data.attributes['name']
+      stat['league'] = item.attributes['dfa_player'].data.attributes['all_league'].data.attributes['name']
       
-      stat['team'] = item.attributes['dfa_team'].data.attributes['Name']
+      stat['team'] =  item.attributes['dfa_player'].data.attributes['dfa_team'].data.attributes['Name']
   
       return stat
     })

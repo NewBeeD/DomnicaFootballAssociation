@@ -106,6 +106,12 @@ export const queryParams_prem_players_stats = {
       populate: {
         Profile_Pic: {
           populate: true,
+        },
+        all_league:{
+          populate: true
+        },
+        dfa_team:{
+          populate: true
         }
       },
     },
