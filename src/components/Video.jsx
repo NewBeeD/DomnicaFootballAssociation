@@ -119,7 +119,6 @@ const Video = ({ VideoLocation }) => {
 
         let final_data = VideoStructure(result)
 
-        // console.log(final_data);
 
         final_data = final_data.filter(item => item.Location === videoLocate)
         

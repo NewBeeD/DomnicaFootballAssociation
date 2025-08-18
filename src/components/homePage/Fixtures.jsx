@@ -16,12 +16,10 @@ const FixturesData = ({ page, type, league}) => {
   GetFixtures()
 
   let fixtures_raw = useSelector((state) => state.fixtures)
+  
   let fixtures_all = fixtures_raw && fixtures_raw[0]? fixtures_raw[0]: []
   let fixtures_dfa = fixtures_raw && fixtures_raw[0]? fixtures_raw[0].filter(item => item.League === league): [];
 
-
-
-  // let fixtures_raw_daba = fixtures_raw && fixtures_raw[0]? fixtures_raw[0].filter(item => item.League == 'DABA'): [];
 
 
   if( page === 'home'){
@@ -41,6 +39,7 @@ const FixturesData = ({ page, type, league}) => {
               <Card sx={{ marginY: {xs: 0}, height: 'auto', boxShadow: 'none', borderBottom: {xs: '1px solid #D3E1FF'}, borderRadius: {xs: '4px'}}}>
 
                 <Box >
+
     
                     <Typography style={{ fontSize: 12 }} sx={{ textAlign: 'center', color: 'blue'}}>{item.LeagueName}</Typography>
 
@@ -951,14 +950,26 @@ const FixturesData = ({ page, type, league}) => {
   
                 <Stack direction={{xs: 'row'}} justifyContent='space-between' marginX={2} paddingTop={1}>
   
-                  <Stack direction='column' spacing={0.5}>
+                  <Stack direction='column' spacing={1}>
+
+
+                    <Link to={`/DFA/Home/Team/${item.Home_Id}`} style={{ textDecoration: 'none', color: 'blue'}}>
+                      <Typography style={{ fontSize: 12, fontWeight: 'bold' }}>{item.Home}</Typography>
+                    
+                    </Link>
+
+
+                    <Link to={`/DFA/Home/Team/${item.Away_Id}`} style={{ textDecoration: 'none', color: 'blue'}}>
+                      <Typography style={{ fontSize: 12, fontWeight: 'bold' }}>{item.Away}</Typography>
+                    
+                    </Link>
   
-                    <Typography style={{ fontSize: 12, fontWeight: 'bold' }}>{item.Home}</Typography>
-                    <Typography style={{ fontSize: 12, fontWeight: 'bold' }}>{item.Away}</Typography>
+
+
   
                   </Stack>
   
-                  <Stack direction='column' spacing={0.5}>
+                  <Stack direction='column' spacing={1}>
 
                     {item.HomeScore ? 
                     

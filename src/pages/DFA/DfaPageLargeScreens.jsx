@@ -55,13 +55,16 @@ const DfaPageLargeScreens = () => {
   
   return (
 
-    <Box paddingTop={10} >
+    <Box 
+    paddingTop={10}
+    >
       
       <NavBar />
 
 
       <Box 
-      width={{ sm: 800, md: 1200}} 
+      // width={{ sm: 800, md: 1100}} 
+      maxWidth={1100}
       margin='auto' 
       >
 
@@ -85,7 +88,7 @@ const DfaPageLargeScreens = () => {
 
         <Stack 
         direction={{xs: 'column', sm:'row'}} 
-        spacing={2} 
+        spacing={0.5} 
         margin={{xs:'auto'}} 
         divider={<Divider orientation='horizontal' flexItem />} 
         

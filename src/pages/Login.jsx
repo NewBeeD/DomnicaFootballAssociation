@@ -26,7 +26,6 @@ const Login = () => {
     try{
       await signInWithPopup(auth, googleProvider).then((userCredentials)=>{
 
-        console.log(userCredentials);
         navigation('/')
       })
     }
@@ -40,7 +39,7 @@ const Login = () => {
     try{
       await signInWithEmailAndPassword(auth, email, password).then((userCredentials)=>{
 
-        console.log(userCredentials);
+
         navigation('/')
       })
     }

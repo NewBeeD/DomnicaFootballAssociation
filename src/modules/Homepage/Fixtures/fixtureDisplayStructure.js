@@ -39,7 +39,7 @@ export default function displayFixture(fixtures_data){
     fixture_date_arr.push(game_fixture_arr)   
   }
 
-      console.log(fixture_date_arr);
+
 }
 
 function date_setup(data_entry, date){
