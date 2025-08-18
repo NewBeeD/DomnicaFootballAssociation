@@ -73,9 +73,12 @@ export default function GetDFA(){
   //   })
   // })
 
+  
+
   const women_table = useQuery({
     queryKey: ['Women-Table'], 
     queryFn: () => fetchData_women_tables(queryParams_women_table).then((value) =>{
+
 
       dispatch(setWomenTableData(value))
       return value
@@ -98,6 +101,7 @@ export default function GetDFA(){
     queryFn: () => fetchData_players_stats(queryParams_prem_players_stats).then((value) =>{      
 
       let finalData = PlayerStatsDisplayStructure(value.data);
+      
 
       dispatch(setDfaPlayersStatsData(finalData))
       return value

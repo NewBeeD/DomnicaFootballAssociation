@@ -91,7 +91,7 @@ const DfaArticles = ({ level, size }) => {
       sx={{ display: { sm: 'flex' }, flexDirection: 'row'}}
       >
 
-              
+              {/* Phones */}
         <Stack 
         display={{ sm:'none'}} 
         direction='column' 
@@ -168,7 +168,7 @@ const DfaArticles = ({ level, size }) => {
 
         </Stack>
 
-
+        {/* Large Screens */}
         <Grid 
         display={{ xs:'none', sm: 'inherit'}}  
         container 
@@ -192,9 +192,8 @@ const DfaArticles = ({ level, size }) => {
               display={{sm: 'none', md: 'inherit'}}
               >       
                                   
-              
                 <Card 
-                sx={{ boxShadow: 'none', backgroundColor: 'white', border: '1px solid #86C232', height: {sm: '400px'}, maxWidth: 300, margin: 1}}
+                sx={{ boxShadow: 'none', backgroundColor: 'white', border: '1px solid #86C232', height: {sm: '380px'}, maxWidth: 260, margin: 1}}
                 >
 
                   <CardActions >
@@ -208,13 +207,6 @@ const DfaArticles = ({ level, size }) => {
                         <Typography style={{ color: `var(--color-color5, ${theme.colors.color5})`}} sx={{ fontSize: {xs: 13}, textDecoration: 'underline', fontWeight: 900}}>{item.type}</Typography>
 
                       </Link>
-
-
-                      {/* <Stack direction='row' spacing={0.5}>
-                        <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} sx={{ fontSize: {xs: 8}}}>{item.author}</Typography>
-                        <Divider orientation='vertical' flexItem />
-                        <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} sx={{ fontSize: {xs: 8}}}>{item.time}</Typography>
-                      </Stack> */}
 
 
                     </Stack>
@@ -241,7 +233,7 @@ const DfaArticles = ({ level, size }) => {
                   />
 
                   <CardContent sx={{ marginTop: 0, paddingTop: 2 }}>
-                    <Typography sx={{ color: 'black', fontSize: {xs: 13}}}>
+                    <Typography sx={{ color: 'black', fontSize: {xs: 11}}}>
                       {item.body_content.length < 25? item.body_content: (item.body_content.substr(0, 80) + "...")}
                     </Typography>
                   </CardContent>
@@ -255,18 +247,13 @@ const DfaArticles = ({ level, size }) => {
               <Box
               key={idx}
               display={{sm: 'inherit', md: 'none'}}>       
-                                  
-              
+                                    
                 <Card 
-                sx={{ boxShadow: 'none', backgroundColor: 'white', border: '1px solid #86C232', height: {sm: 'auto'}, maxWidth: 300, margin: 1}}
+                sx={{ boxShadow: 'none', backgroundColor: 'white', border: '1px solid #86C232', height: {sm: 'auto'}, maxWidth: 220, margin: 1}}
                 >
 
                   <Stack direction='column-reverse'>
 
-
-                    <Stack>
-
-                    </Stack>
 
                     <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
                       
@@ -301,13 +288,6 @@ const DfaArticles = ({ level, size }) => {
                       </Stack>
 
                     </CardActions >
-
-                    
-
-
-
-                  
-
 
 
                     <CardMedia 

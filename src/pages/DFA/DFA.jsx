@@ -2,7 +2,7 @@ import NavBar from "../../components/homePage/NavBar"
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useNavigate } from "react-router-dom";
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 
 import '../../css/DfaMainPage.css'
@@ -11,6 +11,15 @@ import { Link } from "react-router-dom";
 
 import theme from "../../css/theme";
 
+
+import qs from 'qs'
+import axios from "axios";
+
+import { queryParams_dfa_teams } from "../../modules/DFA/QueryParams";
+import AllTeamsDataStructure from "../../components/DFAPage/AllTeamsPage/AllTeamsDataStructure";
+
+
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 // Redux
 import { useSelector } from 'react-redux';
@@ -23,7 +32,7 @@ import GetDFA from "../../modules/DFA/AllDfaData";
 
 import DfaArticles from "../../components/DFAPage/DfaArticles";
 import Points_Table from "../../components/homePage/Points_Table";
-import Video from "../../components/Video";
+
 
 import FixturesData from "../../components/homePage/Fixtures"
 
@@ -46,16 +55,48 @@ import HeadlineFeature from "../../components/DFAPage/Headline/HeadlineFeature";
 
 const DFA = () => {
 
-  GetDFA()
+  // GetDFA()
 
   let players = useSelector((state) => state.DfaPlayers)
   let player_stats = useSelector((state) => state.DfaPlayerStats)
+
+
+  // Clubs Display
+
+  const [anchorEl_Clubs, setAnchorEl_Clubs] = useState(null);
+  const [selectedChoice_Clubs, setSelectedChoice_Clubs] = useState('DFA_Premier_League_Men');
+
+  const handleClick_Clubs = (event) => {
+    setAnchorEl_Clubs(event.currentTarget);
+  };
+
+  const handleClose_Clubs = () => {
+    setAnchorEl_Clubs(null);
+  };
+
+  const handleMenuItemClick_Clubs = (choice) => {
+    setSelectedChoice_Clubs(choice);
+    handleClose_Clubs();
+  };
+
+
+
+
+  // End of Clubs Display
+
+
+  
 
 
 
   let team_most_goals = player_stats && player_stats.length > 0 ? TeamGoalsStructure(player_stats[0]): []
 
   player_stats = player_stats && player_stats.length > 0 ? playStatCleanUp(player_stats[0]): [];
+
+
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
 
   const navigate = useNavigate()  
@@ -220,6 +261,26 @@ const DFA = () => {
 
   const handleChangeTabsPlayers = (event, newValue) => {
     setValuePlayers(newValue);
+
+
+    switch (newValue) {
+      case '1':
+        setSelectedChoice_Clubs('DFA_Premier_League_Men');      
+        break;
+
+      case '2':
+        setSelectedChoice_Clubs("DFA_Division_One");
+        break;
+      
+      case '3':
+        setSelectedChoice_Clubs("DFA_Women");
+        break;
+    
+      default:
+        break;
+    }
+
+    
   };
 
 
@@ -258,11 +319,58 @@ const DFA = () => {
 
   const { window_width } = getVideoDimensions();
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Set loading to true when starting the fetch
+        setLoading(true);
+
+        const queryString = qs.stringify(queryParams_dfa_teams);
+
+        // Your API endpoint URL
+        const apiUrl = `https://strapi-dominica-sport.onrender.com/api/dfa-teams?${queryString}`;
+
+
+        // Make the fetch request
+        const response = await axios.get(apiUrl);
+
+
+        // Check if the request was successful (status code 2xx)
+        if (response.status !== 200) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
+        // Parse the JSON data
+        const result = await response.data.data;
+        let final_data = AllTeamsDataStructure(result)
+
+        // Set the data state
+        setData(final_data);
+      } catch (error) {
+        // Set the error state if there's an issue
+        setError(error.message);
+      } finally {
+        // Set loading to false regardless of success or failure
+        setLoading(false);
+      }
+    };
+
+    // Call the fetchData function when the component mounts
+    fetchData();
+  }, []);
+
+
+
+
+
   
   if(page == 'home'){
 
     return (
       <>
+
+      {/* <GetDFA /> */}
   
       <NavBar />
 
@@ -278,7 +386,9 @@ const DFA = () => {
 
       </Box> */}
 
-      <HeadlineFeature />
+      
+
+      {/* <HeadlineFeature /> */}
       
       <Box marginTop={{ sm: 7}} height='100%'>
 
@@ -1067,224 +1177,276 @@ const DFA = () => {
 
           <TabPanel value="1">
 
-            <Stack paddingTop={1} marginTop={1} direction='row' justifyContent='center' alignContent='center'>
+  
+            <Box display='flex' justifyContent='center' marginBottom={5}>
 
-              {/* Choose team */}
-              <Box>
-                
-                {selectedChoice == 'Men'? 
-                (<FormControl sx={{ m: 1, minWidth: 80 }}>
-                  <InputLabel id="demo-simple-select-autowidth-label">Team</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-autowidth-label"
-                      id="demo-simple-select-autowidth"
-                      value={team}
-                      onChange={handleChange}
-                      autoWidth
-                      label="Team"
-                    >
-                      <MenuItem value={'CCCUL Dublanc FC'}>Dublanc Fc</MenuItem>
-                      <MenuItem value={'Bombers FC'}>Bombers FC</MenuItem>
-                      <MenuItem value={'Blue Waters Bath Estate FC'}>Bathestate FC</MenuItem>
-                      <MenuItem value={'Connect 767 East Central FC'}>East Central FC</MenuItem>
-                      <MenuItem value={'Valvoline We United FC'}>We United FC</MenuItem>
-                      <MenuItem value={'Mahaut Soca Strikers FC'}>Mahaut FC</MenuItem>
-                      <MenuItem value={'Petro Caribe Point Michel FC'}>Point Michel FC</MenuItem>
-                      <MenuItem value={'Promex Harlem FC'}>Harlem FC</MenuItem>
-                      <MenuItem value={'Sagicor South East FC'}>South East FC</MenuItem>
-                      <MenuItem value={'Tranquility Beach Middleham United FC'}>Middleham FC</MenuItem>
-                    </Select>
-                </FormControl>):selectedChoice == 'Women'? 
-                
-                (<FormControl sx={{ m: 1, minWidth: 80 }}>
-                  <InputLabel id="demo-simple-select-autowidth-label">Team</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-autowidth-label"
-                      id="demo-simple-select-autowidth"
-                      value={team}
-                      onChange={handleChange}
-                      autoWidth
-                      label="Team"
-                    >
-                      <MenuItem value={1}>Goodwill Runner FC</MenuItem>
-                      <MenuItem value={2}>Bombers FC</MenuItem>
-                      <MenuItem value={3}>Mahaut Soca Strikers</MenuItem>
-                      <MenuItem value={4}>Dublanc FC</MenuItem>
-                      <MenuItem value={5}>Kalinago Warriors FC</MenuItem>
-                      <MenuItem value={6}>Mighty Avengers FC</MenuItem>
-                      <MenuItem value={7}>Harlem United FC</MenuItem>
-                      <MenuItem value={8}>All Saints FC</MenuItem>
-                      <MenuItem value={9}>Wooty Blazers FC</MenuItem>
-                      <MenuItem value={10}>Middleham FC</MenuItem>
-                    </Select>
-                </FormControl>): 'First Division Team'}
-                
-              </Box>
+      
+              <Box width={{sm: 800, md: 900}}>
+      
+                {/* <Box marginTop={10} display='flex' justifyContent='center'>
+      
+                  <Button variant='contained' size='large' aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick_Clubs} endIcon={<KeyboardArrowDownIcon style={{ color: 'white'}} />} sx={{ backgroundColor: `var(--color-color1, ${theme.colors.color1})` }}>
 
-            </Stack>
-
-            {players.length > 0 ? players[0].filter(item => item.Current_Team == team && item.League === 'DFA_Premier_League_Men').map((item, idx) => {
-
-            return (
-              <Paper  key={idx} sx={{ width: {xs: '93%'}, height: {xs: '100px'}, margin: 'auto', textDecoration: 'none'}}>
-
-                <Link to={`/DFA/Home/Player/${item.id}`} style={{ textDecoration: 'none'}}>
-
-                  <Card style={{ height: '100%'}}  sx={{ display: 'flex', justifyContent: 'space-between', marginY: 2}}>
+                  {selectedChoice == 'DFA_Premier_League_Men'? 'Premier League': selectedChoice == 'DFA_Division_One'? 'Division One': 'Women Division'}
                   
-                  <Box sx={{ display: 'flex', flexDirection: 'column'}}>
+                  </Button>
 
-                    <CardContent sx={{ flex: '1 0 auto' }}>
-                      <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} component="div" variant="h5">
-                        {item.FirstName}
-                      </Typography>
 
-                      <Typography style={{ color: `var(--color-color2, ${theme.colors.color2})`}}  variant="subtitle1" color="text.secondary" component="div">
-                        {item.Last_Name}
-                      </Typography>
 
-                      <Typography style={{ color: `var(--color-color1, ${theme.colors.color1})`}}  variant="caption" color="text.secondary" component="div">
-                        {item.Position}
-                      </Typography>
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl_Clubs}
+                    keepMounted
+                    open={Boolean(anchorEl_Clubs)}
+                    onClose={handleClose_Clubs}
+                  >
+                    <MenuItem onClick={() => handleMenuItemClick_Clubs("DFA_Premier_League_Men")}>Premier League</MenuItem>
+                    <MenuItem onClick={() => handleMenuItemClick_Clubs("DFA_Division_One")}>Division One</MenuItem>
+                    <MenuItem onClick={() => handleMenuItemClick_Clubs("DFA_Women")}>Women</MenuItem>
+                  </Menu>
+      
+      
+                </Box> */}
+      
+      
+      
+                <Box marginTop={3}>
+      
+                  {/* <Grid container spacing={{xs:1, md: 2}} justify="center" alignItems="center">
+      
+                    {data && data.filter(team => team.League == selectedChoice_Clubs).map((item, idx) => {
+      
+                      return(
+      
+                          <Grid  key={idx} item xs={6} sm={6} md={4}>
+      
+                            <Link to={`/DFA/Home/Team/${item.ID}`} style={{ textDecoration: 'none'}}>
+      
+                              <Card sx={{ height: {md: '270px', lg: '270px'}}}>
+      
+                                <Stack direction='column'>
+      
+                                  <CardMedia component='img' height='100px' image={item.team_crest} />
+      
+                                  <CardContent>
+                                    <Typography textAlign='center' sx={{ fontWeight: 900}}>{item.Team}</Typography>
+                                  </CardContent>
+      
+                                </Stack>
+      
+                              </Card>
+      
+                              </Link>
+      
+                          </Grid>
+      
+                      )
+      
+                    })}
+      
+                  </Grid>  */}
 
-                    </CardContent>
 
-                  </Box>
+                  <Grid container spacing={{ xs: 1, md: 2 }} justify="center" alignItems="center">
+                    {data && data.filter(team => team.League === selectedChoice_Clubs).map((item, idx) => (
+                      <Grid key={idx} item xs={6} sm={6} md={4}>
+                        <Link to={`/DFA/Home/Team/${item.ID}`} style={{ textDecoration: 'none' }}>
+                          <Card sx={{ 
+                            height: { xs: '200px', md: '270px' }, 
+                            display: 'flex', 
+                            flexDirection: 'column' 
+                          }}>
+                            {/* Image container with fixed aspect ratio */}
+                            <Box sx={{ 
+                              width: '100%', 
+                              height: '70%', 
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              p: 1
+                            }}>
+                              <CardMedia
+                                component="img"
+                                sx={{ 
+                                  maxHeight: '100%', 
+                                  maxWidth: '100%', 
+                                  objectFit: 'contain' 
+                                }}
+                                image={item.team_crest}
+                                alt={item.Team}
+                              />
+                            </Box>
 
-                  <CardMedia
-                    component="img"
-                    sx={{ width: 80 }}
-                    image={item.url}
-                    loading="lazy"
-                  />
+                            {/* Text container with fixed height */}
+                            <CardContent sx={{ 
+                              height: '30%', 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              justifyContent: 'center',
+                              p: 1
+                            }}>
+                              <Typography 
+                                variant="subtitle1" 
+                                sx={{ 
+                                  fontWeight: 900, 
+                                  textAlign: 'center',
+                                  display: '-webkit-box',
+                                  WebkitLineClamp: 2,
+                                  WebkitBoxOrient: 'vertical',
+                                  overflow: 'hidden',
+                                  fontSize: '13px'
+                                }}
+                              >
+                                {item.Team}
+                              </Typography>
+                            </CardContent>
+                          </Card>
+                        </Link>
+                      </Grid>
+                    ))}
+                  </Grid>
+      
+                </Box>
+      
+              </Box>
+      
+            </Box>
 
-                  </Card>
-                
-                </Link>
-
-                
-              </Paper>
-            )
-            }): <Skeleton />}
             
+
           </TabPanel>
 
           <TabPanel value="2">
 
-            <Stack paddingTop={1} marginTop={1} direction='row' justifyContent='center' alignContent='center'>
+            <Box marginTop={3}>
+    
+                  <Grid container spacing={{ xs: 1, md: 2 }} justify="center" alignItems="center">
+                    {data && data.filter(team => team.League === selectedChoice_Clubs).map((item, idx) => (
+                      <Grid key={idx} item xs={6} sm={6} md={4}>
+                        <Link to={`/DFA/Home/Team/${item.ID}`} style={{ textDecoration: 'none' }}>
+                          <Card sx={{ 
+                            height: { xs: '200px', md: '270px' }, 
+                            display: 'flex', 
+                            flexDirection: 'column' 
+                          }}>
+                            {/* Image container with fixed aspect ratio */}
+                            <Box sx={{ 
+                              width: '100%', 
+                              height: '70%', 
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              p: 1
+                            }}>
+                              <CardMedia
+                                component="img"
+                                sx={{ 
+                                  maxHeight: '100%', 
+                                  maxWidth: '100%', 
+                                  objectFit: 'contain' 
+                                }}
+                                image={item.team_crest}
+                                alt={item.Team}
+                              />
+                            </Box>
 
-              {/* Choose team */}
-              <Box>
-                
-                {selectedChoice == 'Men'? 
-                (<FormControl sx={{ m: 1, minWidth: 80 }}>
-                  <InputLabel id="demo-simple-select-autowidth-label-division-one">Team</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-autowidth-label-division-one"
-                      id="demo-simple-select-autowidth"
-                      value={teamDivOne}
-                      onChange={handleChangeDivOne}
-                      autoWidth
-                      label="Team"
-                    >
-                      <MenuItem value={'All Saints FC'}>All Saints FC</MenuItem>
-                      <MenuItem value={'Calibishe Diaspora FC'}>Calibishe Diaspora FC</MenuItem>
-                      <MenuItem value={'Colihaut FC'}>Colihaut FC</MenuItem>
-                      <MenuItem value={'Derby Boys FC'}>Derby Boys FC</MenuItem>
-                      <MenuItem value={'DS FC'}>DS FC</MenuItem>
-                      <MenuItem value={'Exodus FC'}>Exodus FC</MenuItem>
-                      <MenuItem value={'Fond Cole United FC'}>Fond Cole United FC</MenuItem>
-                      <MenuItem value={'Glanvilla United FC'}>Glanvilla United FC</MenuItem>
-                      <MenuItem value={'Kensborough United SC'}>Kensborough FC</MenuItem>
-                      <MenuItem value={'L.A Stars FC'}>L.A Stars FC</MenuItem>
-                      <MenuItem value={'Marigot United FC'}>Marigot United FC</MenuItem>
-                      <MenuItem value={'Mighty Avengers FC'}>Mighty Avengers FC</MenuItem>
-                      <MenuItem value={'North Side FC'}>North Side FC</MenuItem>
-                      <MenuItem value={'Police Sports Club'}>Police FC</MenuItem>
-                      <MenuItem value={'RC Doctors FC'}>RC Doctors FC</MenuItem>
-                      <MenuItem value={'South City FC'}>South City FC</MenuItem>
-                      <MenuItem value={'St. Joseph United FC'}>St. Joseph United FC</MenuItem>
-                      <MenuItem value={'Tarish United Sport Club'}>Tarish United FC</MenuItem>
-                      <MenuItem value={'Trafalgar FC'}>Trafalgar FC</MenuItem>
-                      <MenuItem value={'Busta Warner Sports Club'}>Busta Warner FC</MenuItem>
-                      <MenuItem value={'Wayne George FC'}>Wayne George FC</MenuItem>
-                      <MenuItem value={'Wooty Blazers Sports Club'}>Wooty Blazers FC</MenuItem>
-                    </Select>
-                </FormControl>):selectedChoice == 'Women'? 
-                
-                (<FormControl sx={{ m: 1, minWidth: 80 }}>
-                  <InputLabel id="demo-simple-select-autowidth-label-division-one">Team</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-autowidth-label-division-one"
-                      id="demo-simple-select-autowidth"
-                      value={teamDivOne}
-                      onChange={handleChangeDivOne}
-                      autoWidth
-                      label="Team"
-                    >
-                      <MenuItem value={1}>Goodwill Runner FC</MenuItem>
-                      <MenuItem value={2}>Bombers FC</MenuItem>
-                      <MenuItem value={3}>Mahaut Soca Strikers</MenuItem>
-                      <MenuItem value={4}>Dublanc FC</MenuItem>
-                      <MenuItem value={5}>Kalinago Warriors FC</MenuItem>
-                      <MenuItem value={6}>Mighty Avengers FC</MenuItem>
-                      <MenuItem value={7}>Harlem United FC</MenuItem>
-                      <MenuItem value={8}>All Saints FC</MenuItem>
-                      <MenuItem value={9}>Wooty Blazers FC</MenuItem>
-                      <MenuItem value={10}>Middleham FC</MenuItem>
-                    </Select>
-                </FormControl>): 'First Division Team'}
-                
-              </Box>
-
-            </Stack>
-
-            {players.length > 0 ? players[0].filter(item => item.Current_Team == teamDivOne && item.League === 'DFA_Division_One').map((item, idx) => {
-
-            return (
-              <Paper  key={idx} sx={{ width: {xs: '93%'}, height: {xs: '100px'}, margin: 'auto', textDecoration: 'none'}}>
-
-                <Link to={`/DFA/Home/Player/${item.id}`} style={{ textDecoration: 'none'}}>
-
-                  <Card style={{ height: '100%'}}  sx={{ display: 'flex', justifyContent: 'space-between', marginY: 2}}>
-                  
-                  <Box sx={{ display: 'flex', flexDirection: 'column'}}>
-
-                    <CardContent sx={{ flex: '1 0 auto' }}>
-                      <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} component="div" variant="h5">
-                        {item.FirstName}
-                      </Typography>
-
-                      <Typography style={{ color: `var(--color-color2, ${theme.colors.color2})`}}  variant="subtitle1" color="text.secondary" component="div">
-                        {item.Last_Name}
-                      </Typography>
-
-                      <Typography style={{ color: `var(--color-color1, ${theme.colors.color1})`}}  variant="caption" color="text.secondary" component="div">
-                        {item.Position}
-                      </Typography>
-
-                    </CardContent>
-
-                  </Box>
-
-                  <CardMedia
-                    component="img"
-                    sx={{ width: 80 }}
-                    image={item.url}
-                  />
-
-                  </Card>
-                
-                </Link>
-
-                
-              </Paper>
-            )
-            }): <Skeleton />}
+                            {/* Text container with fixed height */}
+                            <CardContent sx={{ 
+                              height: '30%', 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              justifyContent: 'center',
+                              p: 1
+                            }}>
+                              <Typography 
+                                variant="subtitle1" 
+                                sx={{ 
+                                  fontWeight: 900, 
+                                  textAlign: 'center',
+                                  display: '-webkit-box',
+                                  WebkitLineClamp: 2,
+                                  WebkitBoxOrient: 'vertical',
+                                  overflow: 'hidden',
+                                  fontSize: '13px'
+                                }}
+                              >
+                                {item.Team}
+                              </Typography>
+                            </CardContent>
+                          </Card>
+                        </Link>
+                      </Grid>
+                    ))}
+                  </Grid>
+    
+            </Box>
             
           </TabPanel>
 
           <TabPanel value="3">
+
+            <Box marginTop={3}>
+    
+                   <Grid container spacing={{ xs: 1, md: 2 }} justify="center" alignItems="center">
+                    {data && data.filter(team => team.League === selectedChoice_Clubs).map((item, idx) => (
+                      <Grid key={idx} item xs={6} sm={6} md={4}>
+                        <Link to={`/DFA/Home/Team/${item.ID}`} style={{ textDecoration: 'none' }}>
+                          <Card sx={{ 
+                            height: { xs: '200px', md: '270px' }, 
+                            display: 'flex', 
+                            flexDirection: 'column' 
+                          }}>
+                            {/* Image container with fixed aspect ratio */}
+                            <Box sx={{ 
+                              width: '100%', 
+                              height: '70%', 
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              p: 1
+                            }}>
+                              <CardMedia
+                                component="img"
+                                sx={{ 
+                                  maxHeight: '100%', 
+                                  maxWidth: '100%', 
+                                  objectFit: 'contain' 
+                                }}
+                                image={item.team_crest}
+                                alt={item.Team}
+                              />
+                            </Box>
+
+                            {/* Text container with fixed height */}
+                            <CardContent sx={{ 
+                              height: '30%', 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              justifyContent: 'center',
+                              p: 1
+                            }}>
+                              <Typography 
+                                variant="subtitle1" 
+                                sx={{ 
+                                  fontWeight: 900, 
+                                  textAlign: 'center',
+                                  display: '-webkit-box',
+                                  WebkitLineClamp: 2,
+                                  WebkitBoxOrient: 'vertical',
+                                  overflow: 'hidden',
+                                  fontSize: '13px'
+                                }}
+                              >
+                                {item.Team}
+                              </Typography>
+                            </CardContent>
+                          </Card>
+                        </Link>
+                      </Grid>
+                    ))}
+                  </Grid>
+    
+            </Box>
 
           </TabPanel>
 

@@ -2,7 +2,7 @@
 
 export default function PlayerDisplayStructure(data){
 
-  
+    
 
   let final_data = data.map(item => {
 

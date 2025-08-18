@@ -94,24 +94,28 @@ const TeamPage = () => {
         alignItems='center' 
         width={{xs:'98%'}}
         paddingTop={1}
+        
         >
 
 
           <Stack
-          maxWidth={{ xs: 200, sm: 1200}}
+          maxWidth={{ xs: '98%', sm: 1200}}
           minHeight={500}
           paddingBottom={1}
           sx={{ border: '1px solid black', borderRadius: '8px', boxShadow: 5}}
-          justifyContent='space-between'
-          paddingX={5}
+          justifyContent={{xs: 'center', sm:'space-between'}}
+          paddingX={2}
           alignItems='center'
-          direction={{sm:'column-reverse', md: 'row'}}
-          spacing={10}
+          direction={{xs: 'column-reverse', sm:'column-reverse', md: 'row'}}
+          spacing={4}
+          
           >
 
             <Stack 
             direction='row'
             spacing={2}
+            width='100%'
+            justifyContent='center'
             >
 
 
@@ -138,7 +142,7 @@ const TeamPage = () => {
               >
                 
                 <Typography 
-                variant="h3"  
+                variant="h5"  
                 sx={{ paddingTop: 1}} 
                 fontWeight={900}
                 width='200px'
@@ -163,9 +167,9 @@ const TeamPage = () => {
 
 
             <Stack
-              height='100%'
-              width={{xs: 200 ,sm:600}}
-              justifyContent='center'
+            height='100%'
+            width={{xs: '100%' , sm:600}}
+            justifyContent='center'
               >
 
                 <img 

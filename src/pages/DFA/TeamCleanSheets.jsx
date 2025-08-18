@@ -128,9 +128,6 @@ const TeamCleanSheets = () => {
 
     // let display_data = final_data.filter(cleanSheet => { cleanSheet.Clean_Sheets > 0})
 
-    console.log(final_data);
-
-
     setCombineData(final_data)    
   }, [team_data, players_data]); 
 
