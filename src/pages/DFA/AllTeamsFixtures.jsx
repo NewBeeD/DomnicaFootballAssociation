@@ -41,11 +41,11 @@ const AllTeamsFixtures = () => {
 
 
 
-    <Stack paddingTop={4} margin='auto'  maxWidth={1200} >
+    <Stack paddingTop={4} margin='auto' maxWidth={1200}>
 
-      <TabContext value={valueFixtures}>
+      <TabContext value={valueFixtures} >
 
-        <TabList onChange={handleChangeTabsPrem} aria-label="tabs example" centered>
+        <TabList onChange={handleChangeTabsPrem} aria-label="tabs example" centered sx={{ paddingBottom: 2 }}>
 
           <Tab label='Premier' value='1' onClick={() => handleType()}/>
 
@@ -55,19 +55,21 @@ const AllTeamsFixtures = () => {
 
         </TabList>
 
-        <TabPanel value="1" >
+
+
+        <TabPanel value="1" sx={{ padding: "6px"}}>
 
           <FixturesData page='dfa' type={type} league="DFA_Premier_League_Men"/>
 
         </TabPanel>
 
-        <TabPanel value="2" >
+        <TabPanel value="2" sx={{ padding: "6px"}}>
 
           <FixturesData page='div_1' type={type} league="DFA_Division_One"/>
           
         </TabPanel>
 
-        <TabPanel value="3" >
+        <TabPanel value="3" sx={{ padding: "6px"}}>
 
           <FixturesData page='dfa' type={type} league="DFA_Women"/>
 

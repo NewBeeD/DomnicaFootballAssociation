@@ -100,7 +100,7 @@ const DfaPageLargeScreens = () => {
             <Stack 
               width={{ sm:'350px'}} 
               display={{xs:'none', sm:'inherit'}} 
-              height={1000}     
+              height='auto'    
             >
 
               <Points_Table page='DfaHomepage'/>
@@ -111,22 +111,26 @@ const DfaPageLargeScreens = () => {
 
               <Box marginY={2}/>
 
-              <FeaturedPlayer players={players} />
+              <Typography fontWeight={900} textAlign='left' paddingY={2} paddingLeft={3}>
+                Featured Players
+              </Typography>
+
+              <FeaturedPlayer />
 
               <Box marginY={2}/>
 
-              <FeaturedPlayer players={players} />
+              <FeaturedPlayer  />
 
               <Box  marginY={2} display={{ sm: 'none', lg: 'inherit'}}>
-                <FeaturedPlayer players={players} />
+                <FeaturedPlayer />
               </Box>
 
               <Box  marginY={2} display={{ sm: 'none', lg: 'inherit'}}>
-                <FeaturedPlayer players={players} />
+                <FeaturedPlayer />
               </Box>
 
               <Box  marginY={2} display={{ sm: 'none', lg: 'inherit'}}>
-                <FeaturedPlayer players={players} />
+                <FeaturedPlayer />
               </Box>
 
               
@@ -144,6 +148,9 @@ const DfaPageLargeScreens = () => {
            >
 
             <HeadlineFeature />
+
+
+            <Box border='2px solid blue' marginY={2} sx={{ width: '100%', height: '1px', borderRadius: '20px'}} />
             
             <DfaArticles level='first' />
             <DfaArticles level='second' />

@@ -64,9 +64,6 @@ const AllTeamsPage = () => {
         // Parse the JSON data
         const result = await response.data.data;
         let final_data = AllTeamsDataStructure(result)
-
-
-        console.log(final_data);
         
 
         // Set the data state

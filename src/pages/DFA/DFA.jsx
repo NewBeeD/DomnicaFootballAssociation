@@ -388,9 +388,9 @@ const DFA = () => {
 
       
 
-      {/* <HeadlineFeature /> */}
+      <HeadlineFeature />
       
-      <Box marginTop={{ sm: 7}} height='100%'>
+      <Box marginTop={{ sm: 7}} height='100%' >
 
         <TabContext value={value}>
 

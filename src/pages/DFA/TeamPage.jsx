@@ -5,7 +5,7 @@ import qs from 'qs'
 import axios from "axios";
 
 
-import {  Box, Typography, Stack, Button, Card, CardHeader, CardContent, CardMedia, CardActions,  Grid, Skeleton, Divider, Menu, MenuItem, Paper, FormControl, Select, InputLabel, Tab } from '@mui/material'
+import {  Box, Typography, Stack,  Card,  CardContent, CardMedia,  Grid, Skeleton, Divider, Paper, Tab } from '@mui/material'
 
 
 import { TabContext, TabList, TabPanel } from "@mui/lab";
@@ -62,6 +62,7 @@ const TeamPage = () => {
         const result = await response.data.data;
 
         let final_data = TeamDataStructure(result)
+      
 
 
         // Set the data state
@@ -262,7 +263,7 @@ const TeamPage = () => {
 
                       return (
 
-                          <Card key={idx} sx={{ marginTop: 1, width: {xs: 350}}}>
+                          <Card key={idx} sx={{ marginTop: 1, width: {xs: 350, sm: 350}}}>
 
                             <Link to={`/DFA/Home/Player/${item.id}`} style={{ textDecoration: 'none'}}>
 
@@ -346,7 +347,6 @@ const TeamPage = () => {
 
 
                   </Box>
-
 
                   <Box  marginTop={6}>
 
