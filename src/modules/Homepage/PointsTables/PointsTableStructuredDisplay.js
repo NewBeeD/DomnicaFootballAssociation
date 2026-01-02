@@ -34,10 +34,6 @@ export default function PointsTableStructuredDisplay(data){
 
   premierTable = sortTablePoints(premierTable)
 
-
-
-  console.log(premierTable);
-
   
   
   return premierTable

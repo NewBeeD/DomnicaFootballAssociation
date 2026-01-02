@@ -1,4 +1,9 @@
-import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell, TablePagination , Paper, Box, Stack, Typography, Skeleton, Button, Tab } from "@mui/material"
+
+import Box from '@mui/material/Box';
+
+import Typography from '@mui/material/Typography';
+
+import Tab from '@mui/material/Tab';
 
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 

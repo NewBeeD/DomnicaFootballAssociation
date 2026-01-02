@@ -11,7 +11,20 @@ import PlayerStatsDisplayStructure from '../../modules/DFA/PlayerStats/PlayerSta
 import theme from '../../css/theme';
 
 
-import {  Box, Typography, Stack, Button, Card, CardHeader, CardContent, CardMedia, CardActions, Grid, Skeleton, Divider, Menu, MenuItem, Paper, FormControl, Select, InputLabel, Table, TableContainer, TableHead, TableBody, TableRow, TableCell } from '@mui/material'
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+
+import Skeleton from '@mui/material/Skeleton';
+
+import Paper from '@mui/material/Paper';
+
+import Table from '@mui/material/Table';
+
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
 
 import { useState, useEffect } from 'react';
 

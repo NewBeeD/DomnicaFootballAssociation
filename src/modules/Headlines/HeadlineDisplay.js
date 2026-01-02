@@ -6,7 +6,7 @@
 
 
 // This function identifies the entries in the array/oject that will be used for display in the cards on the Homepage
-export default function SingleStructuredDisplay(data){
+export default function HeadLineDisplay(data){
 
   console.log(data);
   
@@ -16,19 +16,16 @@ export default function SingleStructuredDisplay(data){
 
   required_data_fields['id'] = data.id
   required_data_fields['title'] = data.attributes['Title'],
-  required_data_fields['time'] = daysElapsed(data.attributes['publishedAt'])
   required_data_fields['author'] = data.attributes['Author']
-  required_data_fields['body_content'] = data.attributes['Body_Content']
-  required_data_fields['RichText'] = data.attributes['RichText'] ?? 'none'
-  required_data_fields['headline'] = data.attributes['Headline']
+  required_data_fields['RichText'] = data.attributes['HeadlineContent'] ?? 'none'
   required_data_fields['type'] = data.attributes['Type']
-  required_data_fields['league'] = leagueNameChange(data.attributes['all_league'].data.attributes['name'])
+  // required_data_fields['league'] = leagueNameChange(data.attributes['all_league'].data.attributes['name'])
 
-  required_data_fields['league_name'] = SpecificleagueName(data.attributes['all_league'].data.attributes['name'])
+  // required_data_fields['league_name'] = SpecificleagueName(data.attributes['all_league'].data.attributes['name'])
 
   // required_data_fields['url'] = data.attributes['Article_Img'].data[0].attributes['formats']['small']['url']
 
-    required_data_fields['url'] = getAllImages(data.attributes['Article_Img'].data)
+    // required_data_fields['url'] = getAllImages(data.attributes['Article_Img'].data)
 
 
   required_data_fields['date'] = formatDate(data.attributes['publishedAt'])

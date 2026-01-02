@@ -7,15 +7,6 @@ export default function TeamDataStructure(data){
    // Function to organize teams in proper order
 
 
-
-   
-   
-
-
-
-
-   
-
     let teamPoints = {}
 
     teamPoints['Team_Abbrev'] = TeamNameChange(data.attributes['Name'])

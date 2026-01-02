@@ -1,331 +1,302 @@
 
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import Stack from '@mui/material/Stack'
-import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
-import CardMedia from '@mui/material/CardMedia'
-import CardActions from '@mui/material/CardActions'
-import Grid from '@mui/material/Grid'
-import Skeleton from '@mui/material/Skeleton'
-import Divider from '@mui/material/Divider'
 
 
-// Function to fetch article data and structured data
-import GetArticles from '../../modules/Homepage/TrendingSection/TrendingSectionDataFetch'
-
-import theme from '../../css/theme';
-
-import { Link } from "react-router-dom";
-
-// Redux
+import React from 'react';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
+import Divider from '@mui/material/Divider';
 import { useSelector } from 'react-redux';
 
-
-
+import GetArticles from '../../modules/Homepage/TrendingSection/TrendingSectionDataFetch';
+import theme from '../../css/theme';
+import ArticleCardMobile from '../../components/DFAPage/DfaArticleResponsive/ArticleCardMobile';
+import ArticleCardTablet from '../../components/DFAPage/DfaArticleResponsive/ArticleCardTablet';
+import ArticleCardDesktop from '../../components/DFAPage/DfaArticleResponsive/ArticleCardDesktop';
+import LoadingSkeleton from '../../components/DFAPage/DfaArticleResponsive/LoadingSkeleton';
 
 const DfaArticles = ({ level, size }) => {
+  GetArticles();
 
-  GetArticles()
+  const articles_raw = useSelector((state) => state.articles);
+  const players = useSelector((state) => state.DfaPlayers);
 
+  let articles = articles_raw && articles_raw[0] 
+    ? articles_raw[0].filter(item => item.league === 'DFA' && item.headline !== 'YES')
+    : null;
 
-  let players = useSelector((state) => state.DfaPlayers)
-  
+  const articles_length = articles && articles_raw[0] ? articles.length : 0;
+  const part_size = articles_length ? Math.ceil(articles_length / 3) : 0;
 
-  const articles_raw = useSelector((state) => state.articles)
-  let articles = articles_raw && articles_raw[0] ? articles_raw[0].filter(item => item.league == 'DFA' && item.headline != 'YES') : null;
+  // Slice articles based on level and size
+  const getSlicedArticles = () => {
+    if (!articles) return null;
 
+    // const slices = {
+    //   first: size === 'small' ? [0, 3] : [0, 4],
+    //   second: size === 'small' ? [3, 7] : [4, 8],
+    //   third: size === 'small' ? [7, 11] : [8, 12],
+    //   fourth: size === 'small' ? [11, 13] : [12, 16],
+    //   fifth: size === 'small' ? [13, 16] : [16, 20],
+    // };
+    const slices = {
+      first: size === 'small' ? [0, 4] : [0, 4],
+      second: size === 'small' ? [3, 7] : [4, 8],
+      third: size === 'small' ? [7, 11] : [8, 12],
+      fourth: size === 'small' ? [11, 13] : [12, 16],
+      fifth: size === 'small' ? [13, 16] : [16, 20],
+    };
 
-  
+    const [start, end] = slices[level] || [0, 4];
+    return articles.slice(start, end);
+  };
 
-  let articles_length = articles && articles_raw[0] ? articles.length: 0;
-  let part_size = articles_length ? Math.ceil(articles_length/3): 0;
-
-
-  // TODO: Set up articles in slices
-
-
-  switch(level){
-
-
-    case 'first':
-
-      if(size == 'small'){articles = articles ? articles.slice(0, 3): null;}
-      else{articles = articles ? articles.slice(0, 4): null;}
-      break;
-    
-    case 'second':
-      if(size == 'small'){articles = articles ? articles.slice(3, 7): null;}
-      else{articles = articles ? articles.slice(4, 8): null;}
-      break;
-    
-    case 'third':
-      if(size == 'small'){articles = articles ? articles.slice(7, 11): null;}
-      else{articles = articles ? articles.slice(8, 12): null;}
-      break;
-
-    case 'fourth':
-      if(size == 'small'){articles = articles ? articles.slice(11, 13): null;}
-      else{articles = articles ? articles.slice(12, 16): null;}
-      break;
-
-    case 'fifth':
-      if(size == 'small'){articles = articles ? articles.slice(13, 16): null;}
-      else{articles = articles ? articles.slice(16, 20): null;}      
-      break;
-  }
-
-
+  const slicedArticles = getSlicedArticles();
 
   return (
-    
-    <Box >
-
-      <Box paddingY={2} />
-
-      {articles_length > 0 ? 
-      
-      <Box
-      direction={{ xs: 'column', sm: 'row' }} 
-      sx={{ display: { sm: 'flex' }, flexDirection: 'row'}}
-      >
-
-              {/* Phones */}
-        <Stack 
-        display={{ sm:'none'}} 
-        direction='column' 
-        spacing={2} 
-        width={{xs: '90%'}} 
-        margin={{xs:'auto'}} 
-        divider={<Divider orientation='horizontal' flexItem />} >
-
-      
-
-          {articles ? articles.map((item, idx) => {
-
-          return (
-            <Box key={idx} >
-
-              
-              <Card sx={{ boxShadow: 'none', backgroundColor: 'white', border: '1px solid #86C232'}}>
-
-                <CardActions>
-
-                  <Stack>
-
-                    {/* TODO: Link this page to the premiere league home page */}
-
-                    <Link to='/DFA/Home'>
-                    <Typography style={{ color: `var(--color-color5, ${theme.colors.color5})`}} sx={{ fontSize: {xs: 13}, textDecoration: 'underline', fontWeight: 900}}>{item.type}</Typography>
-                    </Link>
-
-
-                    <Stack direction='row' spacing={0.5}>
-                      <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} sx={{ fontSize: {xs: 9}}}>{item.author}</Typography>
-                      <Divider orientation='vertical' flexItem />
-                      <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} sx={{ fontSize: {xs: 9}}}>{item.time}</Typography>
-                    </Stack>
-
-
-                  </Stack>
-
-                </CardActions>
-
-                <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
-                  <CardHeader titleTypographyProps={{variant:'body2', fontWeight: 900 }} title={item.title} style={{ color: `var(--color-color3, ${theme.colors.color3})`}}/>
-                </Link>
-
-
-                <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
-
-                  <CardMedia 
-                  component='img' 
-                  height={200} 
-                  src={item.url[0]} 
-                  alt={item.alt}
-                  sx={{ objectFit: 'cover', objectPosition: "50% 50%"}}/>
-                
-                </Link>
-
-                <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
-                  <CardContent>
-                    <Typography sx={{ color: 'black', fontSize: {xs: 13}}}>
-                      {item.body_content.length < 25? item.body_content: (item.body_content.substr(0, 40) + "...")}
-                    </Typography>
-                  </CardContent>
-                </Link>
-
-
-
-                
-              </Card>
-
-            </Box>)
-
-        }): <Skeleton variant="rectangular" width='100%' height={60} />}
-                  
-
-        </Stack>
-
-        {/* Large Screens */}
-        <Grid 
-        display={{ xs:'none', sm: 'inherit'}}  
-        container 
-        spacing={1.5} 
-        direction={{ sm: 'row' }} 
-        justifyContent="left"  
-        width='100%'
-        >
-
+    <Box sx={{ py: 2 }}>
+      {articles_length > 0 && slicedArticles ? (
+        <Grid container spacing={{ xs: 2, sm: 2, md: 3 }}>
           
-
-          {articles ? articles.map((item, idx) => (
-
-            <Box
-            key={idx}
+          {/* Mobile View */}
+          <Grid item xs={12} sx={{ display: { xs: 'block', sm: 'none' } }}>
+            <Stack 
+              spacing={2} 
+              divider={<Divider orientation="horizontal" flexItem />}
+              sx={{ width: '90%', mx: 'auto' }}
             >
+              {slicedArticles.map((item) => (
+                <ArticleCardMobile key={item.id} item={item} theme={theme} />
+              ))}
+            </Stack>
+          </Grid>
 
-            
+          {/* Tablet View */}
+          <Grid item xs={12} sx={{ display: { xs: 'none', sm: 'block', md: 'none' } }}>
+            <Grid container spacing={2}>
+              {slicedArticles.map((item) => (
+                <Grid item xs={12} sm={6} key={item.id}>
+                  <ArticleCardTablet item={item} theme={theme} />
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
 
-              <Box
-              display={{sm: 'none', md: 'inherit'}}
-              >       
-                                  
-                <Card 
-                sx={{ boxShadow: 'none', backgroundColor: 'white', border: '1px solid #86C232', height: {sm: '380px'}, maxWidth: 260, margin: 1}}
-                >
-
-                  <CardActions >
-
-                    <Stack>
-
-                      {/* TODO: Change the league name to the article Category */}
-
-                      <Link to='/'>
-
-                        <Typography style={{ color: `var(--color-color5, ${theme.colors.color5})`}} sx={{ fontSize: {xs: 13}, textDecoration: 'underline', fontWeight: 900}}>{item.type}</Typography>
-
-                      </Link>
-
-
-                    </Stack>
-
-                  </CardActions >
-
-                  <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
-                    
-                    <CardHeader 
-                    titleTypographyProps={{variant:'body2', fontWeight: 900 }} title={item.title} 
-                    style={{ color: `var(--color-color3, ${theme.colors.color3})`}}
-                    sx={{ marginTop: 0, paddingTop: 0 }}
-                    />
-
-                  </Link>
-
-
-                  <CardMedia 
-                  component='img' 
-                  height={200} 
-                  src={item.url[0]} 
-                  alt={item.alt}
-                  sx={{ objectFit: 'cover', objectPosition: "50% 50%"}}
-                  />
-
-                  <CardContent sx={{ marginTop: 0, paddingTop: 2 }}>
-                    <Typography sx={{ color: 'black', fontSize: {xs: 11}}}>
-                      {item.body_content.length < 25? item.body_content: (item.body_content.substr(0, 80) + "...")}
-                    </Typography>
-                  </CardContent>
-
-                </Card>
-
-              </Box>
-
-              {/* Set up the media horizontallly */}
-
-              <Box
-              key={idx}
-              display={{sm: 'inherit', md: 'none'}}>       
-                                    
-                <Card 
-                sx={{ boxShadow: 'none', backgroundColor: 'white', border: '1px solid #86C232', height: {sm: 'auto'}, maxWidth: 220, margin: 1}}
-                >
-
-                  <Stack direction='column-reverse'>
-
-
-                    <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
-                      
-                      <CardHeader 
-                      titleTypographyProps={{variant:'body2', fontWeight: 900 }} title={item.title} 
-                      style={{ color: `var(--color-color3, ${theme.colors.color3})`}}
-                      sx={{ marginTop: 0, paddingTop: 0, paddingLeft: 1 }}
-                      />
-
-                    </Link>
-
-                    <CardActions >
-
-                      <Stack>
-
-                        {/* TODO: Change the league name to the article Category */}
-
-                        <Link to='/'>
-
-                          <Typography style={{ color: `var(--color-color5, ${theme.colors.color5})`}} sx={{ fontSize: {xs: 13}, textDecoration: 'underline', fontWeight: 900}}>{item.league}</Typography>
-
-                        </Link>
-
-
-                        {/* <Stack direction='row' spacing={0.5}>
-                          <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} sx={{ fontSize: {xs: 8}}}>{item.author}</Typography>
-                          <Divider orientation='vertical' flexItem />
-                          <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} sx={{ fontSize: {xs: 8}}}>{item.time}</Typography>
-                        </Stack> */}
-
-
-                      </Stack>
-
-                    </CardActions >
-
-
-                    <CardMedia 
-                    component='img' 
-                    height={200} 
-                    src={item.url[0]} 
-                    alt={item.alt}
-                    sx={{ objectFit: 'cover', objectPosition: "50% 50%"}}
-                    />
-
-
-                </Stack>
-
-                  {/* <CardContent sx={{ marginTop: 0, paddingTop: 2 }}>
-                    <Typography sx={{ color: 'black', fontSize: {xs: 13}}}>
-                      {item.body_content.length < 25? item.body_content: (item.body_content.substr(0, 80) + "...")}
-                    </Typography>
-                  </CardContent> */}
-
-                </Card>
-
-              </Box>
-
-            </Box>
-
-
-
-          )) : <Skeleton variant="rectangular" width={{xs: '60px', sm: '100px'}} height={60} />}
-
+          {/* Desktop View */}
+          <Grid item xs={12} sx={{ display: { xs: 'none', md: 'block' } }}>
+            <Grid container spacing={3}>
+              {articles.map((item) => (
+                <Grid item xs={12} md={4} lg={4} key={item.id}>
+                  <ArticleCardDesktop item={item} theme={theme} />
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
         </Grid>
-              
-      </Box>
+      ) : (
+        <LoadingSkeleton />
+      )}
+    </Box>
+  );
+};
+
+export default DfaArticles;
 
 
-      : <Skeleton width='100%' height='400px' />}
 
-  </Box>
-  )
-}
 
-export default DfaArticles
+
+
+
+
+
+// import React, { useState, useEffect, useCallback } from 'react';
+// import Box from '@mui/material/Box';
+// import Grid from '@mui/material/Grid';
+// import Stack from '@mui/material/Stack';
+// import Divider from '@mui/material/Divider';
+// import { useSelector } from 'react-redux';
+
+// import GetArticles from '../../modules/Homepage/TrendingSection/TrendingSectionDataFetch';
+// import theme from '../../css/theme';
+// import ArticleCardMobile from '../../components/DFAPage/DfaArticleResponsive/ArticleCardMobile';
+// import ArticleCardTablet from '../../components/DFAPage/DfaArticleResponsive/ArticleCardTablet';
+// import ArticleCardDesktop from '../../components/DFAPage/DfaArticleResponsive/ArticleCardDesktop';
+// import LoadingSkeleton from '../../components/DFAPage/DfaArticleResponsive/LoadingSkeleton';
+// import useInfiniteScroll from '../../hooks/useInfiniteScroll';
+
+// const DfaArticles = ({ level, size }) => {
+//   GetArticles();
+
+//   const articles_raw = useSelector((state) => state.articles);
+//   const [displayedArticles, setDisplayedArticles] = useState([]);
+//   const [page, setPage] = useState(1);
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [hasMore, setHasMore] = useState(true);
+
+//   // Get all filtered articles once
+//   const allArticles = React.useMemo(() => {
+//     return articles_raw && articles_raw[0] 
+//       ? articles_raw[0].filter(item => item.league === 'DFA' && item.headline !== 'YES')
+//       : [];
+//   }, [articles_raw]);
+
+//   // Calculate initial articles per page based on screen size
+//   const getInitialArticlesPerPage = () => {
+//     if (size === 'small') {
+//       switch(level) {
+//         case 'first': return 3;
+//         case 'second': return 4;
+//         case 'third': return 4;
+//         case 'fourth': return 2;
+//         case 'fifth': return 3;
+//         default: return 3;
+//       }
+//     } else {
+//       switch(level) {
+//         case 'first': return 9;
+//         case 'second': return 4;
+//         case 'third': return 4;
+//         case 'fourth': return 4;
+//         case 'fifth': return 4;
+//         default: return 9;
+//       }
+//     }
+//   };
+
+//   const ARTICLES_PER_PAGE = getInitialArticlesPerPage();
+
+//   // Load more articles function
+//   const loadMoreArticles = useCallback(() => {
+//     if (isLoading || !hasMore) return;
+
+//     setIsLoading(true);
+    
+//     setTimeout(() => {
+//       const nextPage = page + 1;
+//       const startIndex = 0;
+//       const endIndex = nextPage * ARTICLES_PER_PAGE;
+      
+//       if (endIndex >= allArticles.length) {
+//         setHasMore(false);
+//       }
+      
+//       setDisplayedArticles(allArticles.slice(startIndex, endIndex));
+//       setPage(nextPage);
+//       setIsLoading(false);
+//     }, 500); // Simulate network delay
+//   }, [page, isLoading, hasMore, allArticles, ARTICLES_PER_PAGE]);
+
+//   // Initial load
+//   useEffect(() => {
+//     if (allArticles.length > 0) {
+//       const initialArticles = allArticles.slice(0, ARTICLES_PER_PAGE);
+//       setDisplayedArticles(initialArticles);
+//       setHasMore(initialArticles.length < allArticles.length);
+//     }
+//   }, [allArticles, ARTICLES_PER_PAGE]);
+
+//   // Setup infinite scroll
+//   const loaderRef = useInfiniteScroll(loadMoreArticles);
+
+//   // Render loading skeleton
+//   const renderLoadingSkeletons = () => {
+//     return Array.from({ length: ARTICLES_PER_PAGE }).map((_, index) => (
+//       <Grid item xs={12} sm={6} md={4} lg={3} key={`skeleton-${index}`}>
+//         <LoadingSkeleton />
+//       </Grid>
+//     ));
+//   };
+
+//   return (
+//     <Box sx={{ py: 2 }}>
+//       {displayedArticles.length > 0 ? (
+//         <>
+//           <Grid container spacing={{ xs: 2, sm: 2, md: 3 }}>
+//             {/* Mobile View */}
+//             <Grid item xs={12} sx={{ display: { xs: 'block', sm: 'none' } }}>
+//               <Stack 
+//                 spacing={2} 
+//                 divider={<Divider orientation="horizontal" flexItem />}
+//                 sx={{ width: '90%', mx: 'auto' }}
+//               >
+//                 {displayedArticles.map((item) => (
+//                   <ArticleCardMobile key={item.id} item={item} theme={theme} />
+//                 ))}
+//               </Stack>
+//             </Grid>
+
+//             {/* Tablet View */}
+//             <Grid item xs={12} sx={{ display: { xs: 'none', sm: 'block', md: 'none' } }}>
+//               <Grid container spacing={2}>
+//                 {displayedArticles.map((item) => (
+//                   <Grid item xs={12} sm={6} key={item.id}>
+//                     <ArticleCardTablet item={item} theme={theme} />
+//                   </Grid>
+//                 ))}
+//               </Grid>
+//             </Grid>
+
+//             {/* Desktop View */}
+//             <Grid item xs={12} sx={{ display: { xs: 'none', md: 'block' } }}>
+//               <Grid container spacing={3}>
+//                 {displayedArticles.map((item) => (
+//                   <Grid item xs={12} md={4} lg={3} key={item.id}>
+//                     <ArticleCardDesktop item={item} theme={theme} />
+//                   </Grid>
+//                 ))}
+//               </Grid>
+//             </Grid>
+//           </Grid>
+
+//           {/* Loading state */}
+//           {isLoading && (
+//             <Grid container spacing={3} sx={{ mt: 2 }}>
+//               {renderLoadingSkeletons()}
+//             </Grid>
+//           )}
+
+//           {/* Sentinel element for Intersection Observer */}
+//           {hasMore && !isLoading && (
+//             <Box 
+//               ref={loaderRef} 
+//               sx={{ 
+//                 height: '20px', 
+//                 width: '100%',
+//                 display: 'flex',
+//                 justifyContent: 'center',
+//                 alignItems: 'center',
+//                 my: 4
+//               }}
+//             >
+//               <Box 
+//                 sx={{ 
+//                   width: '40px', 
+//                   height: '40px', 
+//                   borderRadius: '50%',
+//                   backgroundColor: '#f0f0f0',
+//                   display: 'flex',
+//                   justifyContent: 'center',
+//                   alignItems: 'center'
+//                 }}
+//               >
+//                 ↓
+//               </Box>
+//             </Box>
+//           )}
+
+//           {/* No more articles message */}
+//           {!hasMore && displayedArticles.length > 0 && (
+//             <Box sx={{ textAlign: 'center', py: 4, color: 'text.secondary' }}>
+//               No more articles to load
+//             </Box>
+//           )}
+//         </>
+//       ) : (
+//         <LoadingSkeleton />
+//       )}
+//     </Box>
+//   );
+// };
+
+// export default DfaArticles;

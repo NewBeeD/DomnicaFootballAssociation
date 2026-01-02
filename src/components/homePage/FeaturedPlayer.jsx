@@ -1,166 +1,3 @@
-// import { Box, Stack, Paper, Card, Typography, Skeleton } from "@mui/material"
-// import { Link } from "react-router-dom";
-
-// import { useState, useEffect } from "react";
-// import qs from 'qs'
-// import axios from "axios"
-
-
-// import PlayerDisplayStructure from "../../modules/DFA/DfaPlayersDisplayStructure";
-
-
-
-// const queryParams_prem_players = {
-  
-//   populate: {
-//     dfa_team: {
-//       populate: true
-//     },
-//     all_league:{
-//       populate: true
-//     },
-//     Profile_Pic:{
-//       populate: true
-//     }
-//   }   
-// }
-
-// const FeaturedPlayer = () => { 
- 
-
-  
-
-// const [players, setPlayers] = useState([]);
-// const [error, setError] = useState()
-// const [loading, setLoading] = useState()
-// const [randomPlayer, setRandomPlayer] = useState(null);
-
-// useEffect(() => {
-//   const fetchData = async () => {
-//     try {
-      
-
-//       const queryString = qs.stringify(queryParams_prem_players);
-//       const apiUrl = `https://strapi-dominica-sport.onrender.com/api/dfa-players?${queryString}`;
-
-//       const response = await axios.get(apiUrl);
-//       if (response.status !== 200) {
-//         throw new Error(`Error: ${response.statusText}`);
-//       }
-
-//       const result = response.data.data;
-//       setPlayers(result);
-
-//       // Pick random player once after fetching
-//       if (result.length > 0) {
-//         const chosen = result[Math.floor(Math.random() * result.length)];
-//         setRandomPlayer(chosen);
-//       }
-//     } catch (error) {
-//       setError(error.message);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   fetchData();
-// }, []);
-
-  
-//   return (
-    
-//     <Box width={{ sm: '260px', md: '300px', lg: '350'}}  margin='auto'>
-
-//       { randomPlayer != null ? (
-
-
-//       <Paper sx={{ height: {sm: '400px'}, width: {sm: '250px'}}}>
-
-//         <Link to={`/DFA/Home/Player/${randomPlayer.id}`} style={{ textDecoration: 'none'}}>
-
-//           <Card sx={{ height: {sm: '400px'}, width: {sm: '250px'}}}>
-
-//             <Stack 
-//             direction={{sm:'column'}}
-                        
-//             >
-
-//               <Box  paddingTop={2} paddingLeft={1.5} width={{ sm:'90px', md: '270px' }} >
-
-//                 <img 
-//                 alt="Player" 
-//                 width='220px' 
-//                 height='200px'
-//                 style={{ objectFit: 'cover', objectPosition: "50% 50%"}}
-//                 src={randomPlayer.attributes['Profile_Pic'].data.attributes.formats['small']['url']} 
-//                 />
-
-//               </Box>
-
-//               <Stack  direction='column' paddingLeft={2}>
-                
-
-//                 <Stack direction='column' spacing={1}>
-
-//                   <Typography variant="body2" fontWeight={900}>
-//                     {randomPlayer.attributes.First_Name}
-//                   </Typography>
-
-//                   <Typography variant="h6" fontWeight={900}>
-//                     {randomPlayer.attributes.Last_Name}
-//                   </Typography>
-
-//                 </Stack>
-
-//                 <Box paddingTop={0.5}>
-//                   <Typography variant="caption" fontWeight='bolder'>
-//                     {randomPlayer.attributes['dfa_team'].data.attributes['Name']}
-//                   </Typography>
-//                 </Box>
-
-
-
-//                 <Box>
-
-//                   <Typography fontWeight={900}>
-//                     {randomPlayer.attributes.Position}
-//                   </Typography>
-//                 </Box>
-
-//               </Stack>  
-
-
-
-//             </Stack>
-
-
-//           </Card>
-//         </Link>
-        
-        
-//       </Paper>
-
-
-//     ): <Skeleton width='100%' height='90%' />}
-
-
-//     </Box>
-
-
-//   )
-// }
-
-// export default FeaturedPlayer
-
-
-
-
-
-
-
-
-
-
 
 
 import { 
@@ -438,7 +275,7 @@ const FeaturedPlayer = () => {
               </Stack>
 
               {/* Team and Position */}
-              <Stack direction="row" spacing={2} sx={{ mt: 2, mb: 2 }}>
+              <Stack direction="column" spacing={2} sx={{ mt: 2, mb: 2 }}>
                 
                 <Chip
                   icon={<SportsSoccerIcon />}
@@ -547,7 +384,7 @@ const FeaturedPlayer = () => {
               </Stack> */}
 
               {/* View Details Button (shown on hover) */}
-              <Box
+              {/* <Box
                 className="view-details"
                 sx={{
                   position: 'absolute',
@@ -578,7 +415,7 @@ const FeaturedPlayer = () => {
                 >
                   View Profile
                 </Button>
-              </Box>
+              </Box> */}
             </CardContent>
           </Card>
         </Link>

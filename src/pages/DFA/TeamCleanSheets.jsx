@@ -12,7 +12,15 @@ import theme from '../../css/theme';
 import Combine_Team_Crest from '../../modules/DFA/TeamPage/Combine_Team_Crest';
 import TeamGoalsAssists from '../../modules/DFA/TeamGoalsandAssist/TeamGoalsAssists_Img';
 
-import {  Box, Typography, Stack, Paper, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material'
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
 
 import TeamCleanSheetsStructure from '../../modules/DFA/PlayerStats/MostTeamCleanSheets'
 

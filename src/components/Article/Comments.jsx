@@ -1,4 +1,14 @@
-import {  Box, Typography, Card, CardContent, Skeleton, Divider, TextField, InputAdornment, IconButton } from '@mui/material'
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Skeleton from '@mui/material/Skeleton';
+import Divider from '@mui/material/Divider';
+import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
+
+// Only import InputAdornment if actually needed
+import InputAdornment from '@mui/material/InputAdornment';
 
 import { useState, useEffect } from 'react'
 

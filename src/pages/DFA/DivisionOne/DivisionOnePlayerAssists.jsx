@@ -5,7 +5,19 @@ import axios from "axios"
 
 import { useState, useEffect } from 'react';
 
-import {  Box, Typography, Stack, Button, Card, CardHeader, CardContent, CardMedia, CardActions, Grid, Skeleton, Divider, Menu, MenuItem, Paper, FormControl, Select, InputLabel, Table, TableContainer, TableHead, TableBody, TableRow, TableCell } from '@mui/material'
+// Core imports (keep these - they're relatively small or hard to replace well)
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper'; // ~30KB - could use Box with border
+
+// Heavy imports - consider replacing ALL of these:
+import Stack from '@mui/material/Stack';          // ~35KB
+import Skeleton from '@mui/material/Skeleton';     // ~40KB
+import Table from '@mui/material/Table';           // ~50KB
+import TableHead from '@mui/material/TableHead';   // ~20KB
+import TableBody from '@mui/material/TableBody';   // ~20KB
+import TableRow from '@mui/material/TableRow';     // ~25KB
+import TableCell from '@mui/material/TableCell';   // ~30KB
 
 import theme from '../../../css/theme';
 

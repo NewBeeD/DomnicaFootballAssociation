@@ -23,7 +23,24 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 // Redux
 import { useSelector } from 'react-redux';
-import {  Box, Typography, Stack, Button, Card, CardHeader, CardContent, CardMedia, CardActions, Grid, Skeleton, Divider, Menu, MenuItem, Paper, FormControl, Select, InputLabel, Tab  } from '@mui/material'
+// Core imports (keep these)
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+
+// Heavy imports (replace with lightweight versions)
+import Stack from '@mui/material/Stack';          // ~35KB
+
+import CardContent from '@mui/material/CardContent'; // ~25KB
+import CardMedia from '@mui/material/CardMedia';   // ~45KB
+
+import Skeleton from '@mui/material/Skeleton';     // ~40KB
+
+import Paper from '@mui/material/Paper';           // ~30KB
+
+import Tab from '@mui/material/Tab';               // ~35KB
 
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
@@ -55,7 +72,7 @@ import HeadlineFeature from "../../components/DFAPage/Headline/HeadlineFeature";
 
 const DFA = () => {
 
-  // GetDFA()
+  GetDFA()
 
   let players = useSelector((state) => state.DfaPlayers)
   let player_stats = useSelector((state) => state.DfaPlayerStats)
@@ -423,7 +440,7 @@ const DFA = () => {
       {/* <Divider sx={{ marginTop: 2}} /> */}
 
 
-      <Divider sx={{ marginTop: 2, display: {xs: 'none'}}} />
+      {/* <Divider sx={{ marginTop: 2, display: {xs: 'none'}}} /> */}
       
       {/* <Box style={{ backgroundColor: `var(--color-color3, ${theme.colors.color3})`}} paddingBottom={3} marginTop={2} textAlign='center' sx={{ display: {xs: 'none'}}}>
         <Typography variant="h5" style={{ textDecoration: 'underline', color: 'white'}}>Weekend Highlights</Typography>
@@ -435,10 +452,10 @@ const DFA = () => {
 
       {/* <Divider sx={{ marginTop: 2}} /> */}
 
-      <Box marginY={1.5} />
+      {/* <Box marginY={1.5} /> */}
       {/* <Points_Table page='Homepage'/> */}
       <DfaArticles level='second' />
-      <Box marginY={1.5} />
+      {/* <Box marginY={1.5} /> */}
       {/* <FixturesData /> */}
       <DfaArticles level='third' />
 
@@ -1535,3 +1552,498 @@ const DFA = () => {
 }
 
 export default DFA
+
+
+
+
+
+
+
+
+// // Main DFA Component - Refactored for better organization and UX
+// import { useState, useEffect } from "react"
+// import { useNavigate } from "react-router-dom"
+// import qs from 'qs'
+// import axios from "axios"
+// import { useSelector } from 'react-redux'
+
+// // Components
+// import NavBar from "../../components/homePage/NavBar"
+// import HeadlineFeature from "../../components/DFAPage/Headline/HeadlineFeature"
+// import DfaArticles from "../../components/DFAPage/DfaArticles"
+// import Points_Table from "../../components/homePage/Points_Table"
+// import FixturesData from "../../components/homePage/Fixtures"
+
+// // Utils & Modules
+// import customTheme from "../../css/theme" // Renamed to avoid conflict
+// import { queryParams_dfa_teams } from "../../modules/DFA/QueryParams"
+// import AllTeamsDataStructure from "../../components/DFAPage/AllTeamsPage/AllTeamsDataStructure"
+// import playStatCleanUp from '../../modules/DFA/PlayerStats/PlayerStatsCleanUp'
+// import TeamGoalsStructure from '../../modules/DFA/PlayerStats/MostTeamGoals'
+
+// // Material-UI Components
+// import {
+//   Box,
+//   Typography,
+//   Stack,
+//   Card,
+//   CardContent,
+//   CardMedia,
+//   Grid,
+//   Skeleton,
+//   Paper,
+//   Tab,
+//   Container,
+//   Chip,
+//   Button,
+//   IconButton,
+//   useTheme, // MUI useTheme hook
+//   useMediaQuery,
+//   alpha,
+//   Tabs,
+//   Tooltip
+// } from '@mui/material'
+
+// // Icons
+// import {
+//   Newspaper as NewspaperIcon,
+//   CalendarMonth as CalendarIcon,
+//   FormatListNumbered as TableIcon,
+//   Assessment as StatsIcon,
+//   People as PeopleIcon,
+//   Home as HomeIcon,
+//   SportsSoccer as SoccerIcon,
+//   TrendingUp as TrendingUpIcon,
+//   EmojiEvents as TrophyIcon,
+//   Groups as GroupsIcon,
+//   FilterList as FilterIcon,
+//   ChevronRight as ChevronRightIcon,
+//   Stadium as StadiumIcon
+// } from '@mui/icons-material'
+
+// // Custom Components
+// import StatsDashboard from "../../components/DFAPage/Mainpage/StatsDashboard"
+// import TeamsGallery from "../../components/DFAPage/Mainpage/TeamsGallery"
+
+// // Constants
+// const LEAGUE_TABS = [
+//   { id: 'premier', label: 'Premier League', icon: <TrophyIcon /> },
+//   { id: 'division1', label: 'First Division', icon: <TrendingUpIcon /> },
+//   { id: 'women', label: 'Women\'s League', icon: <SoccerIcon /> }
+// ]
+
+// const NAV_ITEMS = [
+//   { id: 'news', label: 'News', icon: <NewspaperIcon />, page: 'home' },
+//   { id: 'fixtures', label: 'Fixtures', icon: <CalendarIcon />, page: 'fixtures' },
+//   { id: 'table', label: 'Table', icon: <TableIcon />, page: 'table' },
+//   { id: 'stats', label: 'Stats', icon: <StatsIcon />, page: 'stats' },
+//   { id: 'players', label: 'Players', icon: <PeopleIcon />, page: 'players' }
+// ]
+
+// // Main Tabs Component
+// const MainTabs = ({ activeTab, onTabChange, tabs }) => {
+//   const theme = useTheme()
+//   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
+//   return (
+//     <Tabs
+//       value={activeTab}
+//       onChange={onTabChange}
+//       variant={isMobile ? "scrollable" : "standard"}
+//       scrollButtons="auto"
+//       centered={!isMobile}
+//       sx={{
+//         borderBottom: 1,
+//         borderColor: 'divider',
+//         '& .MuiTab-root': {
+//           minHeight: 60,
+//           fontSize: { xs: '0.875rem', sm: '1rem' }
+//         }
+//       }}
+//     >
+//       {tabs.map((tab) => (
+//         <Tab
+//           key={tab.id}
+//           value={tab.id}
+//           icon={tab.icon}
+//           iconPosition="start"
+//           label={tab.label}
+//           sx={{
+//             fontWeight: 600,
+//             textTransform: 'none',
+//             '&.Mui-selected': {
+//               color: theme.palette.primary.main,
+//               fontWeight: 700
+//             }
+//           }}
+//         />
+//       ))}
+//     </Tabs>
+//   )
+// }
+
+// // Bottom Navigation Component
+// const BottomNavigation = ({ activePage, onNavClick }) => {
+//   const theme = useTheme() // Fixed: using useTheme hook instead of undefined theme variable
+//   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
+//   if (!isMobile) return null
+
+//   return (
+//     <Paper
+//       elevation={3}
+//       sx={{
+//         position: 'fixed',
+//         bottom: 0,
+//         left: 0,
+//         right: 0,
+//         backgroundColor: theme.palette.primary.main,
+//         zIndex: 1000,
+//         borderTopLeftRadius: 12,
+//         borderTopRightRadius: 12,
+//         py: 1
+//       }}
+//     >
+//       <Grid container justifyContent="space-around" alignItems="center">
+//         {NAV_ITEMS.map((item) => (
+//           <Grid item key={item.id}>
+//             <Tooltip title={item.label} placement="top">
+//               <IconButton
+//                 onClick={() => onNavClick(item.page)}
+//                 sx={{
+//                   color: activePage === item.page ? theme.palette.secondary.main : 'white',
+//                   flexDirection: 'column',
+//                   '&:hover': {
+//                     backgroundColor: alpha('#fff', 0.1)
+//                   }
+//                 }}
+//               >
+//                 {item.icon}
+//                 <Typography variant="caption" sx={{ fontSize: 10, mt: 0.5 }}>
+//                   {item.label}
+//                 </Typography>
+//               </IconButton>
+//             </Tooltip>
+//           </Grid>
+//         ))}
+//       </Grid>
+//     </Paper>
+//   )
+// }
+
+// // Home Page Component
+// const HomePage = () => {
+//   const theme = useTheme()
+//   const [activeHomeTab, setActiveHomeTab] = useState('table')
+
+//   return (
+//     <Container maxWidth="lg" sx={{ py: 2 }}>
+//       <HeadlineFeature />
+      
+//       <Paper elevation={1} sx={{ borderRadius: 2, overflow: 'hidden', mb: 4 }}>
+//         <MainTabs
+//           activeTab={activeHomeTab}
+//           onTabChange={(e, value) => setActiveHomeTab(value)}
+//           tabs={[
+//             { id: 'table', label: 'League Table', icon: <TableIcon /> },
+//             { id: 'fixtures', label: 'Upcoming Fixtures', icon: <CalendarIcon /> }
+//           ]}
+//         />
+        
+//         <Box sx={{ p: 2 }}>
+//           {activeHomeTab === 'table' ? (
+//             <Points_Table page='Homepage' />
+//           ) : (
+//             <FixturesData page='home' type="now" league='DFA' />
+//           )}
+//         </Box>
+//       </Paper>
+
+//       <DfaArticles level='first' size='small' />
+//     </Container>
+//   )
+// }
+
+// // Fixtures Page Component
+// const FixturesPage = () => {
+//   const [activeLeague, setActiveLeague] = useState('premier')
+//   const [fixtureType, setFixtureType] = useState('now')
+
+//   const leagueMap = {
+//     premier: 'DFA_Premier_League_Men',
+//     division1: 'DFA_Division_One',
+//     women: 'DFA_Women'
+//   }
+
+//   return (
+//     <Container maxWidth="lg" sx={{ py: 2 }}>
+//       <Paper elevation={1} sx={{ borderRadius: 2, overflow: 'hidden', mb: 3 }}>
+//         <MainTabs
+//           activeTab={activeLeague}
+//           onTabChange={(e, value) => setActiveLeague(value)}
+//           tabs={LEAGUE_TABS}
+//         />
+        
+//         <Box sx={{ p: 2 }}>
+//           <FixturesData 
+//             page='dfa' 
+//             type={fixtureType} 
+//             league={leagueMap[activeLeague]}
+//           />
+//         </Box>
+//       </Paper>
+
+//       <Stack direction="row" spacing={2} justifyContent="center">
+//         <Button
+//           variant={fixtureType === 'now' ? 'contained' : 'outlined'}
+//           onClick={() => setFixtureType('now')}
+//           startIcon={<CalendarIcon />}
+//         >
+//           Upcoming Fixtures
+//         </Button>
+//         <Button
+//           variant={fixtureType === 'past' ? 'contained' : 'outlined'}
+//           onClick={() => setFixtureType('past')}
+//           startIcon={<StadiumIcon />}
+//         >
+//           Past Results
+//         </Button>
+//       </Stack>
+//     </Container>
+//   )
+// }
+
+// // Table Page Component
+// const TablePage = () => {
+//   const [activeLeague, setActiveLeague] = useState('premier')
+
+//   const pageMap = {
+//     premier: 'dfa',
+//     division1: 'div_1',
+//     women: 'dfa'
+//   }
+
+//   return (
+//     <Container maxWidth="lg" sx={{ py: 2 }}>
+//       <Paper elevation={1} sx={{ borderRadius: 2, overflow: 'hidden' }}>
+//         <MainTabs
+//           activeTab={activeLeague}
+//           onTabChange={(e, value) => setActiveLeague(value)}
+//           tabs={LEAGUE_TABS}
+//         />
+        
+//         <Box sx={{ p: 2 }}>
+//           <Points_Table page={pageMap[activeLeague]} />
+//         </Box>
+//       </Paper>
+//     </Container>
+//   )
+// }
+
+// // Stats Page Component
+// const StatsPage = ({ playerStats, teamMostGoals, loading }) => {
+//   const theme = useTheme()
+  
+//   return (
+//     <Container maxWidth="lg" sx={{ py: 2 }}>
+//       <StatsDashboard 
+//         playerStats={playerStats}
+//         teamMostGoals={teamMostGoals}
+//         loading={loading}
+//       />
+//     </Container>
+//   )
+// }
+
+// // Players Page Component
+// const PlayersPage = ({ teamsData, loading }) => {
+//   const theme = useTheme()
+//   const [activeLeague, setActiveLeague] = useState('premier')
+
+//   const leagueMap = {
+//     premier: 'DFA_Premier_League_Men',
+//     division1: 'DFA_Division_One',
+//     women: 'DFA_Women'
+//   }
+
+//   return (
+//     <Container maxWidth="lg" sx={{ py: 2 }}>
+//       <Paper elevation={1} sx={{ borderRadius: 2, overflow: 'hidden', mb: 3 }}>
+//         <MainTabs
+//           activeTab={activeLeague}
+//           onTabChange={(e, value) => setActiveLeague(value)}
+//           tabs={LEAGUE_TABS}
+//         />
+        
+//         <Box sx={{ p: 3 }}>
+//           <Typography variant="h5" fontWeight={600} sx={{ mb: 3, textAlign: 'center' }}>
+//             <GroupsIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
+//             {LEAGUE_TABS.find(t => t.id === activeLeague)?.label} Teams
+//           </Typography>
+          
+//           <TeamsGallery 
+//             teams={teamsData?.filter(team => team.League === leagueMap[activeLeague]) || []}
+//             loading={loading}
+//           />
+//         </Box>
+//       </Paper>
+
+//       {loading ? (
+//         <Grid container spacing={3}>
+//           {[1, 2, 3, 4, 5, 6].map((i) => (
+//             <Grid item xs={6} sm={4} md={3} key={i}>
+//               <Skeleton variant="rectangular" height={200} sx={{ borderRadius: 2 }} />
+//             </Grid>
+//           ))}
+//         </Grid>
+//       ) : teamsData?.filter(team => team.League === leagueMap[activeLeague]).length === 0 && (
+//         <Paper
+//           sx={{
+//             p: 4,
+//             textAlign: 'center',
+//             backgroundColor: alpha(theme.palette.info.light, 0.1),
+//             borderRadius: 2
+//           }}
+//         >
+//           <StadiumIcon sx={{ fontSize: 60, color: 'info.main', mb: 2 }} />
+//           <Typography variant="h6" color="text.secondary">
+//             No teams available for this league
+//           </Typography>
+//         </Paper>
+//       )}
+//     </Container>
+//   )
+// }
+
+// // Main DFA Component
+// const DFA = () => {
+//   const navigate = useNavigate()
+//   const theme = useTheme() // Using MUI theme hook
+//   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  
+//   // Redux state
+//   const players = useSelector((state) => state.DfaPlayers)
+//   const playerStats = useSelector((state) => state.DfaPlayerStats)
+  
+//   // Local state
+//   const [activePage, setActivePage] = useState('home')
+//   const [teamsData, setTeamsData] = useState(null)
+//   const [teamsLoading, setTeamsLoading] = useState(true)
+//   const [teamsError, setTeamsError] = useState(null)
+  
+//   // Process stats data
+//   const processedPlayerStats = playerStats && playerStats.length > 0 
+//     ? playStatCleanUp(playerStats[0]) 
+//     : []
+  
+//   const teamMostGoals = playerStats && playerStats.length > 0 
+//     ? TeamGoalsStructure(playerStats[0]) 
+//     : []
+
+//   // Fetch teams data
+//   useEffect(() => {
+//     const fetchTeamsData = async () => {
+//       try {
+//         setTeamsLoading(true)
+//         const queryString = qs.stringify(queryParams_dfa_teams)
+//         const apiUrl = `https://strapi-dominica-sport.onrender.com/api/dfa-teams?${queryString}`
+        
+//         const response = await axios.get(apiUrl)
+        
+//         if (response.status !== 200) {
+//           throw new Error(`Error: ${response.statusText}`)
+//         }
+
+//         const result = AllTeamsDataStructure(response.data.data)
+//         setTeamsData(result)
+//       } catch (error) {
+//         setTeamsError(error.message)
+//         console.error('Error fetching teams data:', error)
+//       } finally {
+//         setTeamsLoading(false)
+//       }
+//     }
+
+//     fetchTeamsData()
+//   }, [])
+
+//   // Navigation handlers
+//   const handleNavClick = (page) => {
+//     setActivePage(page)
+//     // Scroll to top when changing pages
+//     window.scrollTo({ top: 0, behavior: 'smooth' })
+//   }
+
+//   // Render current page
+//   const renderPage = () => {
+//     switch (activePage) {
+//       case 'home':
+//         return <HomePage />
+//       case 'fixtures':
+//         return <FixturesPage />
+//       case 'table':
+//         return <TablePage />
+//       case 'stats':
+//         return (
+//           <StatsPage 
+//             playerStats={processedPlayerStats}
+//             teamMostGoals={teamMostGoals}
+//             loading={playerStats.length === 0}
+//           />
+//         )
+//       case 'players':
+//         return (
+//           <PlayersPage 
+//             teamsData={teamsData}
+//             loading={teamsLoading}
+//           />
+//         )
+//       default:
+//         return <HomePage />
+//     }
+//   }
+
+//   return (
+//     <Box sx={{ 
+//       minHeight: '100vh', 
+//       bgcolor: 'background.default',
+//       pb: isMobile ? 7 : 0 // Add padding for bottom navigation
+//     }}>
+//       <NavBar />
+      
+//       {/* Page Header */}
+//       <Paper 
+//         elevation={0} 
+//         sx={{ 
+//           bgcolor: alpha(theme.palette.primary.main, 0.05),
+//           borderRadius: 0,
+//           py: 2,
+//           mb: 3
+//         }}
+//       >
+//         <Container maxWidth="lg">
+//           <Stack direction="row" alignItems="center" spacing={2}>
+//             <HomeIcon color="primary" />
+//             <Typography variant="h6" fontWeight={600} color="primary">
+//               Dominica Football Association
+//             </Typography>
+//           </Stack>
+//           <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+//             Official statistics, fixtures, and team information
+//           </Typography>
+//         </Container>
+//       </Paper>
+
+//       {/* Main Content */}
+//       {renderPage()}
+
+//       {/* Bottom Navigation (Mobile only) */}
+//       <BottomNavigation 
+//         activePage={activePage}
+//         onNavClick={handleNavClick}
+//       />
+//     </Box>
+//   )
+// }
+
+// export default DFA

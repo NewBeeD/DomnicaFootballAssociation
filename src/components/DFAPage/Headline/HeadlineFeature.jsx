@@ -1,172 +1,3 @@
-// import Box from '@mui/material/Box'
-// import Stack from '@mui/material/Stack'
-// import Typography from '@mui/material/Typography'
-// import Card from '@mui/material/Card'
-// import CardContent from '@mui/material/CardContent'
-// import CardMedia from '@mui/material/CardMedia'
-
-// import GetArticles from '../../../modules/Homepage/TrendingSection/TrendingSectionDataFetch'
-
-
-
-// import { useState, useEffect } from 'react'
-
-// import qs from 'qs'
-// import axios from "axios"
-// import { queryParams_articles } from '../../../modules/DFA/QueryParams'
-// import headlineFeatureModule from './headlineFeatureStructure'
-// import { Link } from 'react-router-dom'
-
-
-// import HeadlineFeatureSetUp from '../../../modules/HeadlineFeature/HeadlineFeatureSetUp'
-
-
-
-// import Slider from 'react-slick'
-// import 'slick-carousel/slick/slick.css'
-// import 'slick-carousel/slick/slick-theme.css'
-
-
-
-
-// const HeadlineFeature = () => {
-
-//   // GetArticles()
-
-
-//   const [articles, setArticles] = useState(null);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-
-
-//   // Sample data instead of API call
-//   // const articles = [
-//   //   {
-//   //     id: 1,
-//   //     title: "Dominica National Team Qualifies for World Cup",
-//   //     summary: "The national football team has made history by qualifying for the World Cup for the first time.",
-//   //     imageUrl: "https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=800&h=500&fit=crop",
-//   //     category: "Football"
-//   //   },
-//   //   {
-//   //     id: 2,
-//   //     title: "Local Athlete Wins Gold at Caribbean Championships",
-//   //     summary: "Sarah Johnson brings home the gold in the 400m track event, setting a new regional record.",
-//   //     imageUrl: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=800&h=500&fit=crop",
-//   //     category: "Athletics"
-//   //   },
-//   //   {
-//   //     id: 3,
-//   //     title: "New Sports Complex to Open Next Month",
-//   //     summary: "The state-of-the-art facility will host regional tournaments and training programs.",
-//   //     imageUrl: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&h=500&fit=crop",
-//   //     category: "Facilities"
-//   //   },
-//   //   {
-//   //     id: 4,
-//   //     title: "Youth Basketball League Finals This Weekend",
-//   //     summary: "After an exciting season, the top two teams will face off in the championship game.",
-//   //     imageUrl: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&h=500&fit=crop",
-//   //     category: "Basketball"
-//   //   },
-//   //   {
-//   //     id: 5,
-//   //     title: "Dominica to Host Regional Swimming Competition",
-//   //     summary: "Swimmers from across the Caribbean will compete in our new Olympic-sized pool.",
-//   //     imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=500&fit=crop",
-//   //     category: "Swimming"
-//   //   }
-//   // ];
-
-
-
-//   useEffect(() => {
-    
-//     const fetchData = async () => {
-//       try {
-//         // Set loading to true when starting the fetch
-//         setLoading(true);
-
-//         const queryString = qs.stringify(queryParams_articles);
-
-//         // Your API endpoint URL
-//         const apiUrl = `https://strapi-dominica-sport.onrender.com/api/headline-features`;
-//         // const apiUrl = `https://strapi-dominica-sport.onrender.com/api/articles?populate=*`;
-  
-
-//         // Make the fetch request
-//         const response = await axios.get(apiUrl);
-
-//         // Check if the request was successful (status code 2xx)
-//         if (response.status !== 200) {
-//           throw new Error(`Error: ${response.statusText}`);
-//         }
-
-//         // Parse the JSON data
-//         const result = await response.data.data;  
-        
-
-//         let final_data = HeadlineFeatureSetUp(result)  
-              
-                              
-//         // Set the data state
-//         setArticles(final_data);
-//         // setModalIsOpen(true);
-//       } catch (error) {
-//         // Set the error state if there's an issue
-//         setError(error.message);
-//       } finally {
-//         // Set loading to false regardless of success or failure
-//         setLoading(false);
-//       }
-
-
-//     };
-
-//     // Call the fetchData function when the component mounts
-//     fetchData();
-
-//   }, []);
-  
-  
-//   return (
-
-//     <Box 
-//     width='100%'
-//     sx={{ backgroundColor: '#222629'}}
-//     paddingTop={0}
-//     borderRadius={{sm: 2}}
-//     >
-
-//       <Stack 
-//         width={{xs: '99%', sm: '100%'}} 
-//         margin={{xs:'auto'}} 
-//         height={{ xs: 570, sm: 450}}
-//         borderRadius={1}
-//         padding={0.5}
-//       >
-
-//         {/* Add React Slick Here */}
-//         <Typography sx={{ color: 'white'}}>
-
-//           ffgg
-//         </Typography>
-
-//       </Stack>
-
-
-    
-//     </Box>
-
-    
-//   )
-// }
-
-// export default HeadlineFeature
-
-
-
-
 
 
 
@@ -451,6 +282,7 @@ const HeadlineFeature = () => {
               >
                 <Box className="embla__container" sx={{ display: 'flex', height: '100%' }}>
                   {articles.map((article) => (
+                    
                     <Box 
                       key={article.id} 
                       className="embla__slide"
@@ -460,6 +292,8 @@ const HeadlineFeature = () => {
                         padding: { xs: 0, sm: 2 }
                       }}
                     >
+
+
                       <Card 
                         sx={{ 
                           display: 'flex',
@@ -605,7 +439,7 @@ const HeadlineFeature = () => {
                             <Button
                               variant="contained"
                               component={Link}
-                              to={`/article/${article.id}`}
+                              to={`/headline/${article.id}`}
                               sx={{
                                 backgroundColor: '#FF6B00',
                                 color: 'white',

@@ -68,21 +68,7 @@ const DfaPageLargeScreens = () => {
       margin='auto' 
       >
 
-        {/* <Box sx={{display: 'flex', flexDirection: 'column', justify: 'center', alignItems: 'center'}}>
-          
-          <Typography style={{ color: `var(--color-color2, ${theme.colors.color2})`}} marginTop={{xs: 2}} marginBottom={{xs: 2}} variant="h5" sx={{ textAlign: 'center', fontWeight: 900}}>Dominica Football Association</Typography>
-
-          <Box width={{xs: 100}} height={{xs: 100}}>
-
-            <img src="https://res.cloudinary.com/djrkottjd/image/upload/v1711418501/Dominica_national_football_team_600e878744.png" width='100%' />
-
-          </Box>
-
-
-        </Box> */}
-
-        {/* <MainNews /> */}
-
+        
 
         {/* Creating the side bar */}
 
@@ -153,10 +139,10 @@ const DfaPageLargeScreens = () => {
             <Box border='2px solid blue' marginY={2} sx={{ width: '100%', height: '1px', borderRadius: '20px'}} />
             
             <DfaArticles level='first' />
-            <DfaArticles level='second' />
-            <DfaArticles level='third' />
-            <DfaArticles level='fourth' />
-            <DfaArticles level='fifth' />
+            {/* <DfaArticles level='second' /> */}
+            {/* <DfaArticles level='third' /> */}
+            {/* <DfaArticles level='fourth' /> */}
+            {/* <DfaArticles level='fifth' /> */}
 
           </Stack>
 
