@@ -2,6 +2,27 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'
+
+import { 
+  getFirestore, 
+  collection, 
+  doc, 
+  query, 
+  where, 
+  orderBy, 
+  limit, 
+  getDocs, 
+  getDoc, 
+  addDoc, 
+  updateDoc, 
+  deleteDoc, 
+  onSnapshot, 
+  writeBatch, 
+  increment,
+  serverTimestamp 
+} from 'firebase/firestore';
+
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,8 +41,42 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app)
+const db = getFirestore(app);  // Added new Firestore initialization
+const auth = getAuth(app)
+
+
 export const googleProvider = new GoogleAuthProvider()
 const analytics = getAnalytics(app);
 
-export default app;
+
+// Collections
+const collections = {
+  fixtures: 'fixtures',
+  predictions: 'predictions',
+  leaderboard: 'leaderboard',
+  users: 'users'
+};
+
+
+export { 
+  db, 
+  auth, 
+  collections,
+  collection,
+  doc,
+  query,
+  where,
+  orderBy,
+  limit,
+  getDocs,
+  getDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  onSnapshot,
+  writeBatch,
+  increment,
+  serverTimestamp
+};
+
+// export default app;

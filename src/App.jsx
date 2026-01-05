@@ -31,6 +31,13 @@ import TournamentBrackets from './components/TournamentBrackets/TournamentBracke
 import HeadlineArticle from './pages/HeadLine/HeadlineArticles';
 
 
+// Prediction Game Imports
+import PredictionPage from '../src/GamePrediction/pages/PredictionPage';
+import LeaderboardPage from '../src/GamePrediction/pages/LeaderboardPage';
+import MyPredictionsPage from '../src/GamePrediction/pages/MyPredictionsPage';
+import AdminMatchManagementPage from '../src/GamePrediction/pages/AdminMatchManagementPage';
+
+
 
 
 function App() {
@@ -80,7 +87,11 @@ const isAboveSM = useMediaQuery(theme.breakpoints.up('sm'));
         
        
 
-        {/* End of Tables and Fixtures */}
+        {/* Prediction Game Routes */}
+        <Route path='/Prediction' element={<PredictionPage />} />
+        <Route path='/Leaderboard' element={<LeaderboardPage />} />
+        <Route path='/MyPredictions' element={<MyPredictionsPage />} />
+        <Route path='/Admin/Matches' element={<AdminMatchManagementPage />} />
 
 
 
