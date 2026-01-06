@@ -36,6 +36,7 @@ exports.calculatePredictionPoints = functions.firestore
         const pointsMap = {}; // Track points per user
         const predictionsMap = {}; // Track total predictions per user
         const correctMap = {}; // Track correct predictions per user
+        const exactScoreMap = {}; // Track exact score predictions per user
 
         predictionsSnapshot.forEach((doc) => {
           const prediction = doc.data();
@@ -51,6 +52,7 @@ exports.calculatePredictionPoints = functions.firestore
           if (!predictionsMap[userId]) {
             predictionsMap[userId] = 0;
             correctMap[userId] = 0;
+            exactScoreMap[userId] = 0;
           }
 
           // Increment total predictions
@@ -64,6 +66,7 @@ exports.calculatePredictionPoints = functions.firestore
             prediction.predictedScore.away === actualScore.away
           ) {
             points = 10; // Exact score match
+            exactScoreMap[userId]++; // Track exact scores
           } else if (
             (prediction.predictedScore.home > prediction.predictedScore.away &&
               actualScore.home > actualScore.away) ||
@@ -113,6 +116,7 @@ exports.calculatePredictionPoints = functions.firestore
               totalPoints: (existingData.totalPoints || 0) + pointsMap[userId],
               totalPredictions: (existingData.totalPredictions || 0) + (predictionsMap[userId] || 0),
               correctPredictions: (existingData.correctPredictions || 0) + (correctMap[userId] || 0),
+              exactScorePredictions: (existingData.exactScorePredictions || 0) + (exactScoreMap[userId] || 0),
               displayName: displayName,
               updatedAt: admin.firestore.FieldValue.serverTimestamp(),
             });
@@ -124,6 +128,7 @@ exports.calculatePredictionPoints = functions.firestore
               totalPoints: pointsMap[userId],
               totalPredictions: predictionsMap[userId] || 0,
               correctPredictions: correctMap[userId] || 0,
+              exactScorePredictions: exactScoreMap[userId] || 0,
               createdAt: admin.firestore.FieldValue.serverTimestamp(),
               updatedAt: admin.firestore.FieldValue.serverTimestamp(),
             });

@@ -57,7 +57,7 @@ export const getTopLeaderboardUsers = async (topN = 50) => {
 };
 
 /**
- * Get user's leaderboard position
+ * Get user's leaderboard position with rank
  */
 export const getUserLeaderboardPosition = async (userId) => {
   try {
@@ -69,9 +69,29 @@ export const getUserLeaderboardPosition = async (userId) => {
       return null;
     }
 
+    const userData = docSnapshot.data();
+    const userPoints = userData.totalPoints || 0;
+
+    // Calculate rank by counting users with more points
+    const q = query(
+      collection(db, 'leaderboard'),
+      orderBy('totalPoints', 'desc')
+    );
+    const snapshot = await getDocs(q);
+
+    let rank = 1;
+    for (const doc of snapshot.docs) {
+      if (doc.id === userId) {
+        break;
+      }
+      rank++;
+    }
+
     return {
       userId: docSnapshot.id,
-      ...docSnapshot.data(),
+      rank: rank,
+      displayName: userData.displayName || 'Unknown Player',
+      ...userData,
     };
   } catch (error) {
     console.error('Error fetching user position:', error);

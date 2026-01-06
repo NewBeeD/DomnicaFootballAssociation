@@ -26,9 +26,16 @@ const UserStatsCard = ({ userId }) => {
 
     const fetchStats = async () => {
       try {
-        const userDoc = await getDoc(doc(db, 'users', userId));
-        if (userDoc.exists()) {
-          setStats(userDoc.data());
+        // Try to fetch from leaderboard first (where stats are tracked)
+        const leaderboardDoc = await getDoc(doc(db, 'leaderboard', userId));
+        if (leaderboardDoc.exists()) {
+          setStats(leaderboardDoc.data());
+        } else {
+          // Fallback to users collection if not on leaderboard yet
+          const userDoc = await getDoc(doc(db, 'users', userId));
+          if (userDoc.exists()) {
+            setStats(userDoc.data());
+          }
         }
       } catch (err) {
         setError('Failed to load statistics');
@@ -58,7 +65,7 @@ const UserStatsCard = ({ userId }) => {
               Total Points
             </Typography>
             <Typography variant="h4" sx={{ color: '#1976d2', fontWeight: 'bold' }}>
-              {stats.totalPredictionPoints || 0}
+              {stats.totalPoints || 0}
             </Typography>
           </CardContent>
         </Card>
