@@ -13,6 +13,7 @@ import {
   limit,
 } from 'firebase/firestore';
 import { db } from '../../config/firebaseConfig';
+import { getAuth } from 'firebase/auth';
 
 /**
  * Get top leaderboard users
@@ -20,16 +21,35 @@ import { db } from '../../config/firebaseConfig';
 export const getTopLeaderboardUsers = async (topN = 50) => {
   try {
     const q = query(
-      collection(db, 'leaderboard', 'current', 'entries'),
-      orderBy('rank', 'asc'),
+      collection(db, 'leaderboard'),
+      orderBy('totalPoints', 'desc'),
       limit(topN)
     );
 
     const snapshot = await getDocs(q);
-    return snapshot.docs.map((doc) => ({
-      userId: doc.id,
-      ...doc.data(),
-    }));
+    const auth = getAuth();
+    
+    // Enrich with display names from auth if missing
+    const users = await Promise.all(
+      snapshot.docs.map(async (doc, index) => {
+        const userData = doc.data();
+        let displayName = userData.displayName;
+
+        // If displayName is missing, try to get from auth
+        if (!displayName && auth.currentUser?.uid === doc.id) {
+          displayName = auth.currentUser.displayName || auth.currentUser.email;
+        }
+
+        return {
+          userId: doc.id,
+          rank: index + 1,
+          displayName: displayName || 'Unknown Player',
+          ...userData,
+        };
+      })
+    );
+
+    return users;
   } catch (error) {
     console.error('Error fetching leaderboard:', error);
     throw error;
@@ -42,7 +62,7 @@ export const getTopLeaderboardUsers = async (topN = 50) => {
 export const getUserLeaderboardPosition = async (userId) => {
   try {
     const docSnapshot = await getDoc(
-      doc(db, 'leaderboard', 'current', 'entries', userId)
+      doc(db, 'leaderboard', userId)
     );
 
     if (!docSnapshot.exists()) {

@@ -246,6 +246,7 @@ const AdminMatchManagementPage = () => {
 
   // Filter matches by status
   const upcomingMatches = matches.filter((m) => m.status === 'UPCOMING');
+  const liveMatches = matches.filter((m) => m.status === 'LIVE');
   const finishedMatches = matches.filter((m) => m.status === 'FINISHED');
 
   return (
@@ -300,8 +301,12 @@ const AdminMatchManagementPage = () => {
                   value={0}
                 />
                 <Tab
-                  label={`✅ Finished Matches (${finishedMatches.length})`}
+                  label={`🔴 Live Matches (${liveMatches.length})`}
                   value={1}
+                />
+                <Tab
+                  label={`✅ Finished Matches (${finishedMatches.length})`}
+                  value={2}
                 />
               </Tabs>
             </Box>
@@ -323,8 +328,25 @@ const AdminMatchManagementPage = () => {
               </Box>
             )}
 
-            {/* Finished Matches Tab */}
+            {/* Live Matches Tab */}
             {tabValue === 1 && (
+              <Box>
+                {liveMatches.length === 0 ? (
+                  <Alert severity="info">No live matches</Alert>
+                ) : (
+                  <Grid container spacing={3}>
+                    {liveMatches.map((match) => (
+                      <Grid item xs={12} md={6} lg={4} key={match.id}>
+                        <MatchCard match={match} onEdit={handleOpenDialog} onDelete={handleDeleteMatch} />
+                      </Grid>
+                    ))}
+                  </Grid>
+                )}
+              </Box>
+            )}
+
+            {/* Finished Matches Tab */}
+            {tabValue === 2 && (
               <Box>
                 {finishedMatches.length === 0 ? (
                   <Alert severity="info">No finished matches</Alert>

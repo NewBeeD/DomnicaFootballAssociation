@@ -128,7 +128,7 @@ const Leaderboard = ({ topN = 50, enableRealtime = false }) => {
 
       {/* User's Current Position (if logged in and ranked) */}
       {currentUser && userPosition && (
-        <UserPositionCard userPosition={userPosition} />
+        <UserPositionCard userPosition={userPosition} theme={theme} />
       )}
 
       {/* Main Leaderboard Table */}
@@ -388,8 +388,8 @@ function MedalIcon({ rank }) {
  * User Position Card Component
  * Shows current user's rank and stats
  */
-function UserPositionCard({ userPosition }) {
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+function UserPositionCard({ userPosition, theme }) {
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Card

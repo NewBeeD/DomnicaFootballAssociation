@@ -17,6 +17,12 @@ exports.calculatePredictionPoints = functions.firestore
       const matchId = context.params.matchId;
       const actualScore = matchAfter.actualScore;
 
+      // Validate actualScore exists
+      if (!actualScore || typeof actualScore.home === 'undefined' || typeof actualScore.away === 'undefined') {
+        console.error(`Invalid actualScore for match ${matchId}:`, actualScore);
+        return;
+      }
+
       try {
         // Get all predictions for this match
         const predictionsSnapshot = await db
@@ -24,31 +30,57 @@ exports.calculatePredictionPoints = functions.firestore
           .where("matchId", "==", matchId)
           .get();
 
+        console.log(`Found ${predictionsSnapshot.size} predictions for match ${matchId}`);
+
         const batch = db.batch();
         const pointsMap = {}; // Track points per user
+        const predictionsMap = {}; // Track total predictions per user
+        const correctMap = {}; // Track correct predictions per user
 
         predictionsSnapshot.forEach((doc) => {
           const prediction = doc.data();
           const userId = prediction.userId;
           
+          // Validate prediction structure
+          if (!prediction.predictedScore || typeof prediction.predictedScore.home === 'undefined') {
+            console.warn(`Invalid prediction structure for ${doc.id}:`, prediction);
+            return;
+          }
+
+          // Initialize user stats if not exists
+          if (!predictionsMap[userId]) {
+            predictionsMap[userId] = 0;
+            correctMap[userId] = 0;
+          }
+
+          // Increment total predictions
+          predictionsMap[userId]++;
+
           // Calculate points based on accuracy
           let points = 0;
 
           if (
-            prediction.homeScore === actualScore.home &&
-            prediction.awayScore === actualScore.away
+            prediction.predictedScore.home === actualScore.home &&
+            prediction.predictedScore.away === actualScore.away
           ) {
             points = 10; // Exact score match
           } else if (
-            (prediction.homeScore > prediction.awayScore &&
+            (prediction.predictedScore.home > prediction.predictedScore.away &&
               actualScore.home > actualScore.away) ||
-            (prediction.homeScore < prediction.awayScore &&
+            (prediction.predictedScore.home < prediction.predictedScore.away &&
               actualScore.home < actualScore.away) ||
-            (prediction.homeScore === prediction.awayScore &&
+            (prediction.predictedScore.home === prediction.predictedScore.away &&
               actualScore.home === actualScore.away)
           ) {
             points = 5; // Correct result (win/loss/draw)
           }
+
+          // Increment correct predictions if points > 0
+          if (points > 0) {
+            correctMap[userId]++;
+          }
+
+          console.log(`Prediction ${doc.id}: predicted ${prediction.predictedScore.home}-${prediction.predictedScore.away}, actual ${actualScore.home}-${actualScore.away}, points: ${points}`);
 
           // Update prediction
           batch.update(doc.ref, {
@@ -66,16 +98,32 @@ exports.calculatePredictionPoints = functions.firestore
           const leaderboardRef = db.collection("leaderboard").doc(userId);
           const leaderboardDoc = await leaderboardRef.get();
           
+          // Get user display name from Firebase Auth
+          let displayName = 'Unknown Player';
+          try {
+            const userRecord = await admin.auth().getUser(userId);
+            displayName = userRecord.displayName || userRecord.email || 'Unknown Player';
+          } catch (error) {
+            console.warn(`Could not fetch display name for user ${userId}:`, error);
+          }
+          
           if (leaderboardDoc.exists) {
+            const existingData = leaderboardDoc.data();
             batch.update(leaderboardRef, {
-              totalPoints: admin.firestore.FieldValue.increment(pointsMap[userId]),
+              totalPoints: (existingData.totalPoints || 0) + pointsMap[userId],
+              totalPredictions: (existingData.totalPredictions || 0) + (predictionsMap[userId] || 0),
+              correctPredictions: (existingData.correctPredictions || 0) + (correctMap[userId] || 0),
+              displayName: displayName,
               updatedAt: admin.firestore.FieldValue.serverTimestamp(),
             });
           } else {
             // Create new leaderboard entry if it doesn't exist
             batch.set(leaderboardRef, {
               userId: userId,
+              displayName: displayName,
               totalPoints: pointsMap[userId],
+              totalPredictions: predictionsMap[userId] || 0,
+              correctPredictions: correctMap[userId] || 0,
               createdAt: admin.firestore.FieldValue.serverTimestamp(),
               updatedAt: admin.firestore.FieldValue.serverTimestamp(),
             });
@@ -83,7 +131,7 @@ exports.calculatePredictionPoints = functions.firestore
         }
 
         await batch.commit();
-        console.log(`Points calculated for match ${matchId}`);
+        console.log(`Points calculated for match ${matchId}. Updated ${Object.keys(pointsMap).length} users`);
       } catch (error) {
         console.error("Error calculating points:", error);
         throw error;

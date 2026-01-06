@@ -126,6 +126,22 @@ export const updatePrediction = async (predictionId, updateData) => {
       throw new Error('Prediction not found');
     }
 
+    // Check if the match status allows edits
+    const matchId = existingDoc.data().matchId;
+    const matchRef = doc(db, 'matches', matchId);
+    const matchDoc = await getDoc(matchRef);
+
+    if (!matchDoc.exists()) {
+      throw new Error('Match not found');
+    }
+
+    const matchStatus = matchDoc.data().status;
+    
+    // Prevent edits if match is LIVE or FINISHED
+    if (matchStatus === 'LIVE' || matchStatus === 'FINISHED') {
+      throw new Error(`Cannot edit prediction for a ${matchStatus.toLowerCase()} match`);
+    }
+
     await updateDoc(predRef, {
       userId: existingDoc.data().userId, // Preserve userId for rule check
       matchId: existingDoc.data().matchId, // Preserve matchId for rule check

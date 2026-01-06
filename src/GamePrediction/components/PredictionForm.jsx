@@ -24,7 +24,7 @@ import { validatePrediction } from '../utils/predictionValidators';
 import { usePredictionMutation } from '../hooks/usePredictionMutation';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
-const PredictionForm = ({ match, onSubmitSuccess }) => {
+const PredictionForm = ({ match, onSubmitSuccess, existingPrediction = null }) => {
   const [homeScore, setHomeScore] = useState('');
   const [awayScore, setAwayScore] = useState('');
   const [predictedOutcome, setPredictedOutcome] = useState('');
@@ -33,6 +33,7 @@ const PredictionForm = ({ match, onSubmitSuccess }) => {
   const [kickoffPassed, setKickoffPassed] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [predictionScored, setPredictionScored] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
   const { submit, loading } = usePredictionMutation();
@@ -46,13 +47,29 @@ const PredictionForm = ({ match, onSubmitSuccess }) => {
     return () => unsubscribe();
   }, []);
 
-  // Check kickoff time
+  // Check if prediction is already scored (cannot edit scored predictions)
+  useEffect(() => {
+    if (existingPrediction && existingPrediction.points > 0) {
+      setPredictionScored(true);
+      setSubmitted(true);
+    } else if (existingPrediction) {
+      setHomeScore(existingPrediction.predictedScore?.home || '');
+      setAwayScore(existingPrediction.predictedScore?.away || '');
+      setPredictedOutcome(existingPrediction.predictedOutcome || '');
+      setSubmitted(true);
+    }
+  }, [existingPrediction]);
+
+  // Check kickoff time and match status
   useEffect(() => {
     if (!match?.scheduledTime) return;
 
     const checkKickoff = () => {
       const kickoffTime = new Date(match.scheduledTime.seconds * 1000);
-      setKickoffPassed(new Date() >= kickoffTime);
+      const hasKickoffPassed = new Date() >= kickoffTime;
+      // Block edits if match is LIVE or FINISHED
+      const isMatchLiveOrFinished = match.status === 'LIVE' || match.status === 'FINISHED';
+      setKickoffPassed(hasKickoffPassed || isMatchLiveOrFinished);
     };
 
     checkKickoff();
@@ -165,13 +182,14 @@ const PredictionForm = ({ match, onSubmitSuccess }) => {
     );
   }
 
-  // If kickoff has passed, always show closed message
+  // If kickoff has passed or match is live/finished, always show closed message
   if (kickoffPassed) {
+    const isMatchLiveOrFinished = match.status === 'LIVE' || match.status === 'FINISHED';
     return (
       <Card>
         <CardContent>
           <Alert severity="error" sx={{ mx: 2, mt: 2 }}>
-            ⏰ Kickoff time has passed. Predictions closed.
+            ⏰ {isMatchLiveOrFinished ? `Match ${match.status.toLowerCase()} - Predictions closed.` : 'Kickoff time has passed. Predictions closed.'}
           </Alert>
         </CardContent>
       </Card>
@@ -183,14 +201,22 @@ const PredictionForm = ({ match, onSubmitSuccess }) => {
     return (
       <Card>
         <CardContent>
-          <Alert severity="success" sx={{ mx: 2, mt: 2 }}>
-            ✅ Prediction submitted!
-          </Alert>
-          <Box sx={{ mt: 2, textAlign: 'center' }}>
-            <Button variant="outlined" onClick={() => setEditing(true)}>
-              Edit Prediction
-            </Button>
-          </Box>
+          {predictionScored ? (
+            <Alert severity="info" sx={{ mx: 2, mt: 2 }}>
+              ✅ Prediction scored! Your score has been calculated and cannot be edited.
+            </Alert>
+          ) : (
+            <>
+              <Alert severity="success" sx={{ mx: 2, mt: 2 }}>
+                ✅ Prediction submitted!
+              </Alert>
+              <Box sx={{ mt: 2, textAlign: 'center' }}>
+                <Button variant="outlined" onClick={() => setEditing(true)}>
+                  Edit Prediction
+                </Button>
+              </Box>
+            </>
+          )}
         </CardContent>
       </Card>
     );
@@ -219,7 +245,9 @@ const PredictionForm = ({ match, onSubmitSuccess }) => {
 
       {kickoffPassed && (
         <Alert severity="error" sx={{ mx: 2, mt: 2 }}>
-          ⏰ Kickoff time has passed. Predictions closed.
+          {match.status === 'LIVE' || match.status === 'FINISHED' ? 
+            `❌ Match ${match.status.toLowerCase()} - Predictions are locked.` 
+            : '⏰ Kickoff time has passed. Predictions closed.'}
         </Alert>
       )}
 
@@ -249,7 +277,7 @@ const PredictionForm = ({ match, onSubmitSuccess }) => {
                     inputProps={{ min: 0, max: 20 }}
                     error={!!errors.homeScore}
                     helperText={errors.homeScore}
-                    disabled={kickoffPassed || loading}
+                    disabled={kickoffPassed || loading || predictionScored}
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         color: 'white',
@@ -280,7 +308,7 @@ const PredictionForm = ({ match, onSubmitSuccess }) => {
                     inputProps={{ min: 0, max: 20 }}
                     error={!!errors.awayScore}
                     helperText={errors.awayScore}
-                    disabled={kickoffPassed || loading}
+                    disabled={kickoffPassed || loading || predictionScored}
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         color: 'white',
@@ -369,7 +397,7 @@ const PredictionForm = ({ match, onSubmitSuccess }) => {
             <Button
               variant="outlined"
               onClick={handleClear}
-              disabled={loading || kickoffPassed}
+              disabled={loading || kickoffPassed || predictionScored}
               sx={{
                 color: 'white',
                 borderColor: 'rgba(255, 255, 255, 0.5)',
@@ -381,7 +409,7 @@ const PredictionForm = ({ match, onSubmitSuccess }) => {
             <Button
               type="submit"
               variant="contained"
-              disabled={loading || kickoffPassed || !currentUser}
+              disabled={loading || kickoffPassed || !currentUser || predictionScored}
               sx={{
                 backgroundColor: 'rgba(255, 255, 255, 0.2)',
               }}
