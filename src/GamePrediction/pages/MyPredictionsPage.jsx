@@ -70,6 +70,7 @@ const MyPredictionsPage = () => {
           </Typography>
         </Toolbar>
       </AppBar>
+      
 
       <Toolbar />
 
