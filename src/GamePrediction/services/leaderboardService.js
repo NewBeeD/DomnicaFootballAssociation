@@ -18,23 +18,27 @@ import { db } from '../../config/firebaseConfig';
  * Get top leaderboard users
  */
 export const getTopLeaderboardUsers = async (topN = 50) => {
-  try {
-    const q = query(
-      collection(db, 'leaderboard', 'current', 'entries'),
-      orderBy('rank', 'asc'),
-      limit(topN)
-    );
+  /**
+   * Get top leaderboard users
+   */
+  export const getTopLeaderboardUsers = async (topN = 50) => {
+    try {
+      const q = query(
+        collection(db, 'leaderboard', 'current', 'entries'),
+        orderBy('rank', 'asc'),
+        limit(topN)
+      );
 
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map((doc) => ({
-      userId: doc.id,
-      ...doc.data(),
-    }));
-  } catch (error) {
-    console.error('Error fetching leaderboard:', error);
-    throw error;
-  }
-};
+      const snapshot = await getDocs(q);
+      return snapshot.docs.map((doc) => ({
+        userId: doc.id,
+        ...doc.data(),
+      }));
+    } catch (error) {
+      console.error('Error fetching leaderboard:', error);
+      throw error;
+    }
+  };
 
 /**
  * Get user's leaderboard position

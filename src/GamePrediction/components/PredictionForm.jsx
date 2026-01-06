@@ -31,6 +31,8 @@ const PredictionForm = ({ match, onSubmitSuccess }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [errors, setErrors] = useState({});
   const [kickoffPassed, setKickoffPassed] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
   const { submit, loading } = usePredictionMutation();
@@ -133,6 +135,8 @@ const PredictionForm = ({ match, onSubmitSuccess }) => {
         },
       });
 
+      setSubmitted(true);
+      setEditing(false);
       if (onSubmitSuccess) {
         onSubmitSuccess();
       }
@@ -141,18 +145,52 @@ const PredictionForm = ({ match, onSubmitSuccess }) => {
     }
   };
 
+
   const handleClear = () => {
     setHomeScore('');
     setAwayScore('');
     setPredictedOutcome('');
     setErrors({});
+    setEditing(false);
   };
+
 
   if (!match) {
     return (
       <Card>
         <CardContent>
           <Typography color="error">Match data not available</Typography>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // If kickoff has passed, always show closed message
+  if (kickoffPassed) {
+    return (
+      <Card>
+        <CardContent>
+          <Alert severity="error" sx={{ mx: 2, mt: 2 }}>
+            ⏰ Kickoff time has passed. Predictions closed.
+          </Alert>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // If submitted and not editing, show a message and edit button
+  if (submitted && !editing) {
+    return (
+      <Card>
+        <CardContent>
+          <Alert severity="success" sx={{ mx: 2, mt: 2 }}>
+            ✅ Prediction submitted!
+          </Alert>
+          <Box sx={{ mt: 2, textAlign: 'center' }}>
+            <Button variant="outlined" onClick={() => setEditing(true)}>
+              Edit Prediction
+            </Button>
+          </Box>
         </CardContent>
       </Card>
     );
