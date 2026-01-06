@@ -16,6 +16,7 @@ exports.calculatePredictionPoints = functions.firestore
     if (matchBefore.status !== "FINISHED" && matchAfter.status === "FINISHED") {
       const matchId = context.params.matchId;
       const actualScore = matchAfter.actualScore;
+      const gameweek = matchAfter.gameweek || 1; // Default to gameweek 1 if not specified
 
       // Validate actualScore exists
       if (!actualScore || typeof actualScore.home === 'undefined' || typeof actualScore.away === 'undefined') {
@@ -30,7 +31,7 @@ exports.calculatePredictionPoints = functions.firestore
           .where("matchId", "==", matchId)
           .get();
 
-        console.log(`Found ${predictionsSnapshot.size} predictions for match ${matchId}`);
+        console.log(`Found ${predictionsSnapshot.size} predictions for match ${matchId} (Gameweek ${gameweek})`);
 
         const batch = db.batch();
         const pointsMap = {}; // Track points per user
@@ -85,10 +86,11 @@ exports.calculatePredictionPoints = functions.firestore
 
           console.log(`Prediction ${doc.id}: predicted ${prediction.predictedScore.home}-${prediction.predictedScore.away}, actual ${actualScore.home}-${actualScore.away}, points: ${points}`);
 
-          // Update prediction
+          // Update prediction with gameweek
           batch.update(doc.ref, {
             points: points,
             pointsAwarded: true,
+            gameweek: gameweek,
             updatedAt: admin.firestore.FieldValue.serverTimestamp(),
           });
 
@@ -96,10 +98,12 @@ exports.calculatePredictionPoints = functions.firestore
           pointsMap[userId] = (pointsMap[userId] || 0) + points;
         });
 
-        // Update leaderboard entries
+        // Update leaderboard entries (both seasonal and gameweek-specific)
         for (const userId in pointsMap) {
           const leaderboardRef = db.collection("leaderboard").doc(userId);
+          const gameweekRef = db.collection("leaderboard").doc(userId).collection("gameweekStats").doc(`gw${gameweek}`);
           const leaderboardDoc = await leaderboardRef.get();
+          const gameweekDoc = await gameweekRef.get();
           
           // Get user display name from Firebase Auth
           let displayName = 'Unknown Player';
@@ -129,6 +133,31 @@ exports.calculatePredictionPoints = functions.firestore
               totalPredictions: predictionsMap[userId] || 0,
               correctPredictions: correctMap[userId] || 0,
               exactScorePredictions: exactScoreMap[userId] || 0,
+              createdAt: admin.firestore.FieldValue.serverTimestamp(),
+              updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+            });
+          }
+
+          // Update or create gameweek stats
+          if (gameweekDoc.exists) {
+            const existingGWData = gameweekDoc.data();
+            batch.update(gameweekRef, {
+              gameweek: gameweek,
+              gameweekPoints: (existingGWData.gameweekPoints || 0) + pointsMap[userId],
+              gameweekPredictions: (existingGWData.gameweekPredictions || 0) + (predictionsMap[userId] || 0),
+              gameweekCorrect: (existingGWData.gameweekCorrect || 0) + (correctMap[userId] || 0),
+              gameweekExactScores: (existingGWData.gameweekExactScores || 0) + (exactScoreMap[userId] || 0),
+              updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+            });
+          } else {
+            // Create new gameweek stats entry
+            batch.set(gameweekRef, {
+              gameweek: gameweek,
+              userId: userId,
+              gameweekPoints: pointsMap[userId],
+              gameweekPredictions: predictionsMap[userId] || 0,
+              gameweekCorrect: correctMap[userId] || 0,
+              gameweekExactScores: exactScoreMap[userId] || 0,
               createdAt: admin.firestore.FieldValue.serverTimestamp(),
               updatedAt: admin.firestore.FieldValue.serverTimestamp(),
             });

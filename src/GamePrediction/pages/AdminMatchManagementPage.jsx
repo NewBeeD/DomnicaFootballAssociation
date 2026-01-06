@@ -64,6 +64,7 @@ const AdminMatchManagementPage = () => {
     scheduledTime: '',
     status: 'UPCOMING',
     league: 'PREMIER',
+    gameweek: 1,
     actualScore: { home: '', away: '' },
   });
 
@@ -132,6 +133,7 @@ const AdminMatchManagementPage = () => {
           : '',
         status: match.status,
         league: match.league || 'PREMIER',
+        gameweek: match.gameweek || 1,
         actualScore: match.actualScore || { home: '', away: '' },
       });
     } else {
@@ -142,6 +144,7 @@ const AdminMatchManagementPage = () => {
         scheduledTime: '',
         status: 'UPCOMING',
         league: 'PREMIER',
+        gameweek: 1,
         actualScore: { home: '', away: '' },
       });
     }
@@ -174,6 +177,7 @@ const AdminMatchManagementPage = () => {
         scheduledTime: new Date(formData.scheduledTime),
         status: formData.status,
         league: formData.league,
+        gameweek: parseInt(formData.gameweek, 10),
         updatedAt: serverTimestamp(),
       };
 
@@ -419,6 +423,18 @@ const AdminMatchManagementPage = () => {
                 <MenuItem value="CUP">Cup</MenuItem>
               </Select>
             </FormControl>
+
+            {/* Gameweek */}
+            <TextField
+              fullWidth
+              type="number"
+              label="Gameweek"
+              name="gameweek"
+              value={formData.gameweek}
+              onChange={handleFormChange}
+              inputProps={{ min: 1, max: 50 }}
+              helperText="Week number for this match (e.g., 1, 2, 3)"
+            />
 
             {/* Status */}
             <FormControl fullWidth>

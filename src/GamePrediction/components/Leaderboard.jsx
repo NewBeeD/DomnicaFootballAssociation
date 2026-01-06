@@ -1,5 +1,5 @@
 // src/GamePrediction/components/Leaderboard.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Card,
@@ -20,20 +20,26 @@ import {
   Stack,
   Avatar,
   Container,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Tabs,
+  Tab,
 } from '@mui/material';
 import {
   EmojiEvents as TrophyIcon,
   TrendingUp as TrendingIcon,
 } from '@mui/icons-material';
 import { useLeaderboard, useUserLeaderboardPosition } from '../hooks/useLeaderboard.jsx';
+import { getAllGameweeks, getGameweekLeaderboard } from '../services/gameweekService';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../config/firebaseConfig';
 
 /**
- * Leaderboard Component
- * Displays top 50 users ranked by total prediction points
- * Highlights current logged-in user
- * Mobile-responsive with efficient Firestore reads
+ * Unified Leaderboard Component
+ * Displays both season-wide and per-gameweek rankings
+ * Toggle between "All Time" and individual gameweeks
  */
 const Leaderboard = ({ topN = 50, enableRealtime = false }) => {
   const theme = useTheme();
@@ -41,16 +47,56 @@ const Leaderboard = ({ topN = 50, enableRealtime = false }) => {
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   const [currentUser, setCurrentUser] = useState(null);
+  const [viewMode, setViewMode] = useState(0); // 0 = All Time, 1 = Gameweek
+  const [gameweeks, setGameweeks] = useState([]);
+  const [selectedGameweek, setSelectedGameweek] = useState(null);
+  const [gameweekData, setGameweekData] = useState([]);
+  const [gameweekLoading, setGameweekLoading] = useState(false);
 
   // Monitor auth state
-  React.useEffect(() => {
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
     });
     return () => unsubscribe();
   }, []);
 
-  // Fetch leaderboard data
+  // Fetch available gameweeks
+  useEffect(() => {
+    const fetchGameweeks = async () => {
+      try {
+        const gws = await getAllGameweeks();
+        setGameweeks(gws);
+        if (gws.length > 0) {
+          setSelectedGameweek(gws[gws.length - 1]); // Default to latest
+        }
+      } catch (error) {
+        console.error('Error fetching gameweeks:', error);
+      }
+    };
+    fetchGameweeks();
+  }, []);
+
+  // Fetch gameweek data when selected gameweek changes
+  useEffect(() => {
+    if (viewMode !== 1 || !selectedGameweek) return;
+
+    const fetchGameweekData = async () => {
+      setGameweekLoading(true);
+      try {
+        const data = await getGameweekLeaderboard(selectedGameweek, topN);
+        setGameweekData(data);
+      } catch (error) {
+        console.error(`Error fetching gameweek ${selectedGameweek} data:`, error);
+      } finally {
+        setGameweekLoading(false);
+      }
+    };
+
+    fetchGameweekData();
+  }, [viewMode, selectedGameweek, topN]);
+
+  // Fetch seasonal leaderboard data
   const { data: leaderboardData, loading, error, lastUpdated } = useLeaderboard(topN, {
     enableRealtime,
     refetchInterval: 5 * 60 * 1000, // 5 minutes
@@ -61,7 +107,10 @@ const Leaderboard = ({ topN = 50, enableRealtime = false }) => {
     currentUser?.uid || null
   );
 
-  if (loading) {
+  const isLoading = viewMode === 0 ? loading : gameweekLoading;
+  const displayData = viewMode === 0 ? leaderboardData : gameweekData;
+
+  if (isLoading) {
     return (
       <Box
         sx={{
@@ -76,7 +125,7 @@ const Leaderboard = ({ topN = 50, enableRealtime = false }) => {
     );
   }
 
-  if (error) {
+  if (viewMode === 0 && error) {
     return (
       <Alert severity="error" sx={{ mt: 2 }}>
         Failed to load leaderboard: {error}
@@ -84,7 +133,7 @@ const Leaderboard = ({ topN = 50, enableRealtime = false }) => {
     );
   }
 
-  if (!leaderboardData || leaderboardData.length === 0) {
+  if (!displayData || displayData.length === 0) {
     return (
       <Alert severity="info" sx={{ mt: 2 }}>
         No leaderboard data available yet
@@ -96,7 +145,7 @@ const Leaderboard = ({ topN = 50, enableRealtime = false }) => {
     <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 } }}>
       {/* Header Section */}
       <Box sx={{ mb: 4 }}>
-        <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
+        <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 3 }}>
           <TrophyIcon sx={{ fontSize: 40, color: '#ffd700' }} />
           <Box>
             <Typography
@@ -110,17 +159,56 @@ const Leaderboard = ({ topN = 50, enableRealtime = false }) => {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              Score Prediction Leaderboard
+              Prediction Leaderboard
             </Typography>
             <Typography variant="body2" color="textSecondary">
-              Top {leaderboardData.length} Players by Total Points
+              {viewMode === 0
+                ? `Top ${displayData.length} Players by Total Points`
+                : `Gameweek ${selectedGameweek} Rankings`}
             </Typography>
           </Box>
         </Stack>
 
+        {/* View Mode Tabs */}
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+          <Tabs
+            value={viewMode}
+            onChange={(e, newValue) => setViewMode(newValue)}
+            sx={{
+              '& .MuiTab-root': {
+                fontSize: isMobile ? '0.875rem' : '1rem',
+                fontWeight: 500,
+              },
+            }}
+          >
+            <Tab label="All Time" />
+            <Tab label="By Gameweek" />
+          </Tabs>
+        </Box>
+
+        {/* Gameweek Selector (only show when viewing gameweeks) */}
+        {viewMode === 1 && gameweeks.length > 0 && (
+          <Box sx={{ mb: 3 }}>
+            <FormControl sx={{ minWidth: 150 }}>
+              <InputLabel>Select Gameweek</InputLabel>
+              <Select
+                value={selectedGameweek || ''}
+                onChange={(e) => setSelectedGameweek(e.target.value)}
+                label="Select Gameweek"
+              >
+                {gameweeks.map((gw) => (
+                  <MenuItem key={gw} value={gw}>
+                    Gameweek {gw}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        )}
+
         {/* Last Updated */}
-        {lastUpdated && (
-          <Typography variant="caption" color="textSecondary">
+        {viewMode === 0 && lastUpdated && (
+          <Typography variant="caption" color="textSecondary" sx={{ mb: 2, display: 'block' }}>
             Last updated: {lastUpdated.toLocaleTimeString()}
           </Typography>
         )}

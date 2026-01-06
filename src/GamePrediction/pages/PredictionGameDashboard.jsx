@@ -26,6 +26,7 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import PredictionPage from './PredictionPage';
 import MyPredictionsPage from './MyPredictionsPage';
 import LeaderboardPage from './LeaderboardPage';
+import GameweekStatsPage from './GameweekStatsPage';
 import { useUserLeaderboardPosition } from '../hooks/useLeaderboard.jsx';
 
 const PredictionGameDashboard = () => {
@@ -153,6 +154,11 @@ const PredictionGameDashboard = () => {
               iconPosition="start"
               label="Leaderboard" 
             />
+            <Tab 
+              icon={<TrendingUpIcon sx={{ mr: 1 }} />}
+              iconPosition="start"
+              label="My Stats" 
+            />
           </Tabs>
         </Box>
 
@@ -172,10 +178,17 @@ const PredictionGameDashboard = () => {
             </Box>
           )}
 
-          {/* Leaderboard Tab */}
+          {/* Leaderboard Tab (Combined: All Time + Gameweek) */}
           {tabValue === 2 && (
             <Box>
               <LeaderboardPage />
+            </Box>
+          )}
+
+          {/* My Gameweek Stats Tab */}
+          {tabValue === 3 && (
+            <Box>
+              <GameweekStatsPage userId={currentUser?.uid} />
             </Box>
           )}
         </Box>
