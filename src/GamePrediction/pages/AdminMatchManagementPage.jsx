@@ -31,7 +31,7 @@ import { auth } from '../../config/firebaseConfig';
 import {
   collection,
   addDoc,
-  getDocs,
+  onSnapshot,
   query,
   doc,
   updateDoc,
@@ -45,6 +45,7 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import MatchCard from '../components/MatchCard';
 
 const AdminMatchManagementPage = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -66,41 +67,38 @@ const AdminMatchManagementPage = () => {
     actualScore: { home: '', away: '' },
   });
 
-  // Check auth and fetch matches
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setCurrentUser(user);
 
+  // Check auth and subscribe to matches in realtime
+  useEffect(() => {
+    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
+      setCurrentUser(user);
       if (user) {
         const idTokenResult = await user.getIdTokenResult();
         setIsAdmin(idTokenResult.claims.admin === true);
-
         if (idTokenResult.claims.admin === true) {
-          fetchMatches();
+          setLoading(true);
+          // Subscribe to matches collection in realtime
+          const matchesRef = collection(db, 'matches');
+          const unsubscribeMatches = onSnapshot(matchesRef, (snapshot) => {
+            const matchesData = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+            setMatches(matchesData);
+            setLoading(false);
+          }, (error) => {
+            console.error('Error fetching matches:', error);
+            enqueueSnackbar('Failed to fetch matches', { variant: 'error' });
+            setLoading(false);
+          });
+          // Clean up matches listener on unmount or logout
+          return () => unsubscribeMatches();
         }
       }
     });
-
-    return () => unsubscribe();
+    // Clean up auth listener on unmount
+    return () => unsubscribeAuth();
   }, []);
-
-  // Fetch all matches
-  const fetchMatches = async () => {
-    try {
-      setLoading(true);
-      const snapshot = await getDocs(collection(db, 'matches'));
-      const matchesData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setMatches(matchesData);
-    } catch (error) {
-      console.error('Error fetching matches:', error);
-      enqueueSnackbar('Failed to fetch matches', { variant: 'error' });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Handle form input
   const handleFormChange = (e) => {

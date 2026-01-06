@@ -19,7 +19,7 @@ const LeaderboardPage = () => {
       <Toolbar />
 
       <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Leaderboard topN={50} enableRealtime={false} />
+        <Leaderboard topN={50} enableRealtime={true} />
       </Container>
     </Box>
   );

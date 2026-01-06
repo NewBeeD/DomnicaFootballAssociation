@@ -103,36 +103,6 @@ const PredictionForm = ({ match, onSubmitSuccess }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (!validateForm()) {
-  //     enqueueSnackbar('Please fix form errors', { variant: 'warning' });
-  //     return;
-  //   }
-
-  //   if (!currentUser) {
-  //     enqueueSnackbar('Please log in to make a prediction', { variant: 'error' });
-  //     return;
-  //   }
-
-  //   try {
-  //     await submit(currentUser.uid, match.id, {
-  //       predictedOutcome,
-  //       predictedScore: {
-  //         home: parseInt(homeScore, 10),
-  //         away: parseInt(awayScore, 10),
-  //       },
-  //     });
-
-  //     if (onSubmitSuccess) {
-  //       onSubmitSuccess();
-  //     }
-  //   } catch (error) {
-  //     console.error('Error submitting prediction:', error);
-  //   }
-  // };
-
 
   // In src/GamePrediction/components/PredictionForm.jsx - line ~125
   const handleSubmit = async (e) => {
@@ -401,3 +371,8 @@ const PredictionForm = ({ match, onSubmitSuccess }) => {
 };
 
 export default PredictionForm;
+
+
+
+
+

@@ -4,14 +4,10 @@
  */
 
 import { useEffect, useState, useCallback } from 'react';
-import {
-  getTopLeaderboardUsers,
-  getUserLeaderboardPosition,
-} from '../services/leaderboardService';
+import { getTopLeaderboardUsers, getUserLeaderboardPosition } from '../services/leaderboardService';
 
 export const useLeaderboard = (topN = 50, options = {}) => {
   const { refetchInterval = 5 * 60 * 1000 } = options;
-
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,11 +16,9 @@ export const useLeaderboard = (topN = 50, options = {}) => {
     try {
       setLoading(true);
       setError(null);
-
       const leaderboardData = await getTopLeaderboardUsers(topN);
       setData(leaderboardData);
     } catch (err) {
-      console.error('Error fetching leaderboard:', err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -33,9 +27,7 @@ export const useLeaderboard = (topN = 50, options = {}) => {
 
   useEffect(() => {
     fetch();
-
     const interval = setInterval(fetch, refetchInterval);
-
     return () => clearInterval(interval);
   }, [fetch, refetchInterval]);
 

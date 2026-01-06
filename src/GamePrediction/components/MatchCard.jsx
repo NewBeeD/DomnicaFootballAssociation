@@ -11,12 +11,16 @@ import {
   Avatar,
   Grid,
   CircularProgress,
+  IconButton,
+  Tooltip,
 } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { formatScore, formatTimeRemaining, hasTimePasssed } from '../utils/pointsCalculator';
 import SoccerIcon from '@mui/icons-material/SportsFootball';
 import TimerIcon from '@mui/icons-material/Timer';
 
-const MatchCard = ({ match, prediction }) => {
+const MatchCard = ({ match, prediction, onEdit, onDelete }) => {
   const [timeRemaining, setTimeRemaining] = useState('');
   const [isKickoff, setIsKickoff] = useState(false);
 
@@ -51,6 +55,25 @@ const MatchCard = ({ match, prediction }) => {
             <Typography variant="h6">
               {match.homeTeamName} vs {match.awayTeamName}
             </Typography>
+            {/* Admin Edit/Delete Buttons */}
+            {(onEdit || onDelete) && (
+              <Box sx={{ marginLeft: 'auto', display: 'flex', gap: 1 }}>
+                {onEdit && (
+                  <Tooltip title="Edit Match">
+                    <IconButton size="small" onClick={() => onEdit(match)}>
+                      <EditIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+                {onDelete && (
+                  <Tooltip title="Delete Match">
+                    <IconButton size="small" onClick={() => onDelete(match.id)}>
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </Box>
+            )}
           </Box>
         }
         subheader={

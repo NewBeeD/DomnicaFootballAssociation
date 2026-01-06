@@ -21,6 +21,8 @@ import { auth } from '../../config/firebaseConfig';
 import SoccerIcon from '@mui/icons-material/SportsFootball';
 import { useState, useEffect } from 'react';
 
+import NavBar from '../../components/homePage/NavBar';
+
 const PredictionPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -58,18 +60,20 @@ const PredictionPage = () => {
 
   return (
     <>
-      <AppBar sx={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+
+      <NavBar />
+      {/* <AppBar sx={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', marginTop: {xs: '74px'} }} position="fixed"  >
         <Toolbar>
           <SoccerIcon sx={{ mr: 2 }} />
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Score Prediction Game
           </Typography>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
 
       <Toolbar /> {/* Spacing for fixed AppBar */}
 
-      <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Container maxWidth="lg" sx={{ py: 0 }}>
         <Box sx={{ mb: 4 }}>
           <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 1 }}>
             ⚽ Upcoming Matches
