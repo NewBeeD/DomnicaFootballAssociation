@@ -14,6 +14,7 @@ import {
   Tabs,
   Tab,
 } from '@mui/material';
+
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../config/firebaseConfig';
 import { usePredictions } from '../hooks/usePrediction';
