@@ -205,7 +205,6 @@ const AdminMatchManagementPage = () => {
         enqueueSnackbar('Match created successfully!', { variant: 'success' });
       }
 
-      fetchMatches();
       handleCloseDialog();
     } catch (error) {
       console.error('Error saving match:', error);
@@ -219,7 +218,6 @@ const AdminMatchManagementPage = () => {
       try {
         await deleteDoc(doc(db, 'matches', matchId));
         enqueueSnackbar('Match deleted successfully!', { variant: 'success' });
-        fetchMatches();
       } catch (error) {
         console.error('Error deleting match:', error);
         enqueueSnackbar('Failed to delete match', { variant: 'error' });
