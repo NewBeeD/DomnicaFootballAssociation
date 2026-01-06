@@ -6,6 +6,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { getTopLeaderboardUsers, getUserLeaderboardPosition } from '../services/leaderboardService';
 
+export const useLeaderboard = (topN = 50, options = {}) => {
   const { refetchInterval = 5 * 60 * 1000 } = options;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);

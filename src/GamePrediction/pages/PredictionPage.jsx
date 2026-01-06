@@ -15,7 +15,7 @@ import {
 import PredictionForm from '../components/PredictionForm';
 import MatchCard from '../components/MatchCard';
 import { useMatches } from '../hooks/useMatches';
-import { usePredictions } from '../hooks/usePrediction.js';
+import { usePredictions } from "../hooks/usePrediction.jsx";
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../config/firebaseConfig';
 import SoccerIcon from '@mui/icons-material/SportsFootball';

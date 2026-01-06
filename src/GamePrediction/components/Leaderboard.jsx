@@ -25,7 +25,7 @@ import {
   EmojiEvents as TrophyIcon,
   TrendingUp as TrendingIcon,
 } from '@mui/icons-material';
-import { useLeaderboard, useUserLeaderboardPosition } from '../hooks/useLeaderboard.js';
+import { useLeaderboard, useUserLeaderboardPosition } from '../hooks/useLeaderboard.jsx';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../config/firebaseConfig';
 
