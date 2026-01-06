@@ -8,6 +8,9 @@
 // This function identifies the entries in the array/oject that will be used for display in the cards on the Homepage
 export default function SingleStructuredDisplay(data){
 
+  console.log(data);
+  
+
   let required_data_fields = {}
   
 

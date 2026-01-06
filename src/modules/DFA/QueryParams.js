@@ -82,6 +82,10 @@ export const queryParams_prem_players = {
   }   
 }
 
+
+
+
+
 // Basketball players
 export const queryParams_daba_players = {
   
@@ -228,6 +232,29 @@ export const queryParams_headlinefeature = {
     }
   }   
 }
+
+
+
+
+// Football players
+export const queryParams_prem_players_season_stats = {
+  
+  // populate: {
+  //   dfa_player: {
+  //     populate: true
+  //   },
+
+  // } 
+  
+
+  populate: {
+    dfa_player: {
+      populate: true
+    }
+  },
+  sort: 'Season:desc'
+};
+
 
 
 

@@ -33,6 +33,9 @@ export default function PointsTableStructuredDisplay(data){
 
 
   premierTable = sortTablePoints(premierTable)
+
+  
+  
   return premierTable
 }
 

@@ -1,5 +1,12 @@
-import {  Box, Typography, Stack, Button, Paper, Menu, MenuItem } from '@mui/material'
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
+
+import Stack from '@mui/material/Stack';     
+import Paper from '@mui/material/Paper';      
+import Menu from '@mui/material/Menu';       
+import MenuItem from '@mui/material/MenuItem'; 
 import { useState } from 'react'
 
 import '../../css/DfaMainPage.css'

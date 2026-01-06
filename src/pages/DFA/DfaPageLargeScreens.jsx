@@ -68,21 +68,7 @@ const DfaPageLargeScreens = () => {
       margin='auto' 
       >
 
-        {/* <Box sx={{display: 'flex', flexDirection: 'column', justify: 'center', alignItems: 'center'}}>
-          
-          <Typography style={{ color: `var(--color-color2, ${theme.colors.color2})`}} marginTop={{xs: 2}} marginBottom={{xs: 2}} variant="h5" sx={{ textAlign: 'center', fontWeight: 900}}>Dominica Football Association</Typography>
-
-          <Box width={{xs: 100}} height={{xs: 100}}>
-
-            <img src="https://res.cloudinary.com/djrkottjd/image/upload/v1711418501/Dominica_national_football_team_600e878744.png" width='100%' />
-
-          </Box>
-
-
-        </Box> */}
-
-        {/* <MainNews /> */}
-
+        
 
         {/* Creating the side bar */}
 
@@ -100,7 +86,7 @@ const DfaPageLargeScreens = () => {
             <Stack 
               width={{ sm:'350px'}} 
               display={{xs:'none', sm:'inherit'}} 
-              height={1000}     
+              height='auto'    
             >
 
               <Points_Table page='DfaHomepage'/>
@@ -111,22 +97,26 @@ const DfaPageLargeScreens = () => {
 
               <Box marginY={2}/>
 
-              <FeaturedPlayer players={players} />
+              <Typography fontWeight={900} textAlign='left' paddingY={2} paddingLeft={3}>
+                Featured Players
+              </Typography>
+
+              <FeaturedPlayer />
 
               <Box marginY={2}/>
 
-              <FeaturedPlayer players={players} />
+              <FeaturedPlayer  />
 
               <Box  marginY={2} display={{ sm: 'none', lg: 'inherit'}}>
-                <FeaturedPlayer players={players} />
+                <FeaturedPlayer />
               </Box>
 
               <Box  marginY={2} display={{ sm: 'none', lg: 'inherit'}}>
-                <FeaturedPlayer players={players} />
+                <FeaturedPlayer />
               </Box>
 
               <Box  marginY={2} display={{ sm: 'none', lg: 'inherit'}}>
-                <FeaturedPlayer players={players} />
+                <FeaturedPlayer />
               </Box>
 
               
@@ -144,12 +134,15 @@ const DfaPageLargeScreens = () => {
            >
 
             <HeadlineFeature />
+
+
+            <Box border='2px solid blue' marginY={2} sx={{ width: '100%', height: '1px', borderRadius: '20px'}} />
             
             <DfaArticles level='first' />
-            <DfaArticles level='second' />
-            <DfaArticles level='third' />
-            <DfaArticles level='fourth' />
-            <DfaArticles level='fifth' />
+            {/* <DfaArticles level='second' /> */}
+            {/* <DfaArticles level='third' /> */}
+            {/* <DfaArticles level='fourth' /> */}
+            {/* <DfaArticles level='fifth' /> */}
 
           </Stack>
 

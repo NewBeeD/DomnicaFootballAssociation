@@ -78,7 +78,9 @@ const isAboveSM = useMediaQuery(theme.breakpoints.up('sm'));
         
        
 
-        {/* End of Tables and Fixtures */}
+        {/* Prediction Game Routes */}
+        <Route path='/PredictionGame' element={<PredictionGameDashboard />} />
+        <Route path='/Admin/Matches' element={<AdminMatchManagementPage />} />
 
 
 

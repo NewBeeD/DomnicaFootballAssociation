@@ -1,4 +1,15 @@
-import {  Box, Typography, Stack, Button, Card, CardHeader, CardContent, CardMedia, CardActions, Grid, Skeleton, Divider, Menu, MenuItem, Paper, FormControl, Select, InputLabel } from '@mui/material'
+// Core imports (keep these - relatively small)
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+
+
+// Heavy imports to replace:
+import Stack from '@mui/material/Stack';          // ~35KB
+
+import Skeleton from '@mui/material/Skeleton';     // ~40KB
+
 
 import qs from 'qs'
 import axios from 'axios'

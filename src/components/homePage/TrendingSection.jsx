@@ -1,4 +1,16 @@
-import {  Box, Typography, Stack, Button, Card, CardHeader, CardContent, CardMedia, CardActions, Grid, Skeleton } from '@mui/material'
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+
+// Consider lightweight alternatives:
+import Stack from '@mui/material/Stack';          
+import CardHeader from '@mui/material/CardHeader'; 
+import CardContent from '@mui/material/CardContent'; 
+import CardMedia from '@mui/material/CardMedia';   
+import CardActions from '@mui/material/CardActions'; 
+import Skeleton from '@mui/material/Skeleton';     
 
 import { Link } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
