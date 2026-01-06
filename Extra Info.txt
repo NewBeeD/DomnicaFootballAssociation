@@ -1,20 +1,181 @@
-// theme.js
-export const theme = {
-  palette: {
-    primary: {
-      main: '#222629',
-    },
-    secondary: {
-      main: '#FF6B00',
-    },
-    accent: {
-      main: '#FFD700',
-    }
-  },
-  colors: {
-    color1: '#222629',
-    color2: '#FF6B00',
-    color3: '#FFD700',
-    color4: '#86C232',
-  }
-}
+        <Stack 
+        direction={{xs:'column', sm:'row'}} 
+        spacing={2}
+        justifyContent={{xs: 'center'}}
+        alignItems={{xs: 'center'}}
+        >
+
+          <Box 
+          maxWidth={{xs: '100%',sm:'70%'}}
+          margin='auto'
+          >
+
+            {articles && articles.filter(articleType => articleType.Mainheadline === 'Yes').map((item, idx) => (
+
+              <Box key={idx}>
+                  <Box marginBottom={2}>
+
+                    <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
+
+                    { 
+
+                      <Box
+                        display={{xs: 'none', sm: 'inherit'}} 
+                        sx={{ width: {sm: 480},  marginY: 1, backgroundColor: '#222629', padding: {xs: 1}}}
+                        >
+
+                          <img  
+                            loading='lazy'
+                            height={350} 
+                            width='100%'
+                            src={articles[0].image} 
+                            alt='News Image'
+                            style={{ borderRadius: '5px', objectFit: 'cover', objectPosition: "50% 50%"}}
+                          />
+
+                          <Box paddingLeft={1}>
+
+                            <Stack direction={{ xs: 'column'}}>
+
+                              <Typography variant='caption' color='grey' fontWeight={900}>{articles[0].type}</Typography>
+
+                              <Typography variant='h6' color='white' fontWeight={900}>{articles[0].title}</Typography>
+
+                            </Stack>
+
+                          </Box>
+
+                      </Box>
+                    }
+
+
+                    </Link>
+
+                    <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
+
+                      <Box
+                        display={{sm: 'none'}} 
+                        sx={{ 
+                          position: 'relative', 
+                          width: '100%', 
+                          height: { xs: 330, sm: 430 }, 
+                          marginY: 1, 
+                          backgroundColor: '#222629', 
+                          padding: { xs: 1 },
+                          borderRadius: '5px', 
+                          overflow: 'hidden'
+                        }}
+                      >
+                        
+                        {/* Image */}
+                        <img  
+                          loading='lazy'
+                          style={{ 
+                            width: '100%', 
+                            height: '100%', 
+                            objectFit: 'cover', 
+                            objectPosition: '50% 50%', 
+                            borderRadius: '5px' 
+                          }}
+                          src={articles[0].image} 
+                          alt='News Image'
+                        />
+
+                        {/* Overlay */}
+                        <Box 
+                          sx={{ 
+                            position: 'absolute', 
+                            top: 0, 
+                            left: 0, 
+                            width: '100%', 
+                            height: '100%', 
+                            backgroundColor: 'rgba(0, 0, 0, 0.4)', // Adjust opacity here
+                            borderRadius: '5px'
+                          }} 
+                        />
+
+                        {/* Text Content */}
+                        <Box sx={{ position: 'absolute', bottom: 10, left: 15 }}>
+                          <Stack direction="column">
+                            <Typography variant='caption' color='grey' fontWeight={900}>
+                              {articles[0].type}
+                            </Typography>
+                            <Typography variant='h6' color='white' fontWeight={900}>
+                              {articles[0].title}
+                            </Typography>
+                          </Stack>
+                        </Box>
+                      </Box>
+
+                    </Link>
+                  </Box>
+              </Box>
+            ))}
+
+          </Box>
+
+
+
+          <Box 
+          width='100%'
+          >
+
+            {/* Minor headlines */}
+            <Stack 
+            direction={{xs:'row', sm: 'column'}} 
+            spacing={2}
+            justifyContent={{xs: 'center'}}
+            >
+
+              {articles && articles.filter(articleType => articleType.headline === 'Yes').map((item, idx) => {
+
+
+                  return(
+
+
+                    <Box key={idx}>
+
+                      <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
+                      
+                        <Box 
+                        key={idx}
+                        sx={{width: {sm: 240},marginY: 1, backgroundColor: '#222629'}}>
+
+                          <img 
+                            loading='lazy'
+                            height={120} 
+                            width='100%'
+                            src={item.image} 
+                            alt='News Image'
+                            style={{ objectFit: 'cover', objectPosition: "50% 50%"}}
+                            />
+
+                          <Box paddingLeft={1}>
+
+                            <Stack direction={{ xs: 'column'}}>
+
+                              <Typography variant='caption' color='grey' fontWeight={900}>{item.type}</Typography>
+
+                              <Typography color='white' fontWeight={900} sx={{ fontSize: '11px'}}>{item.title}</Typography>
+
+                            </Stack>
+
+                          </Box>
+
+                        </Box>
+
+
+                      </Link>
+
+                    </Box>
+
+                  )
+
+                
+              })}
+
+            </Stack>
+
+          </Box>
+          
+        </Stack>

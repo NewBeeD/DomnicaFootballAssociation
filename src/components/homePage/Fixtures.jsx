@@ -1,40 +1,184 @@
 
 
-import { 
-  Box, 
-  Stack, 
-  Typography, 
-  Card, 
-  Skeleton,
-  Chip,
-  Button,
-  Avatar,
-  Grid,
-  useTheme,
-  useMediaQuery
-} from "@mui/material"
-import { useSelector } from 'react-redux'
-import { Link } from "react-router-dom"
-import {
-  SportsSoccer,
-  LocationOn,
-  AccessTime,
-  CalendarToday,
-  EmojiEvents,
-  ArrowForward
-} from '@mui/icons-material'
+import GetFixtures from "../../modules/Homepage/Fixtures/FixturesDataFetch";
 
-// Import the fixtures data fetch
-import GetFixtures from "../../modules/Homepage/Fixtures/FixturesDataFetch"
+import { useSelector } from 'react-redux';
+import { Link } from "react-router-dom";
 
-// Helper function to generate team logo from name
-const generateTeamLogo = (teamName, isHome = true) => {
-  if (!teamName) return ''
-  const encodedName = encodeURIComponent(teamName.substring(0, 2))
-  const background = isHome ? 'FF6B00' : '222629'
-  const color = isHome ? 'fff' : 'FFD700'
-  return `https://ui-avatars.com/api/?name=${encodedName}&background=${background}&color=${color}&bold=true`
-}
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
+
+
+
+
+const FixturesData = ({ page, type, league}) => {
+
+  GetFixtures()
+
+  let fixtures_raw = useSelector((state) => state.fixtures)
+  
+  let fixtures_all = fixtures_raw && fixtures_raw[0]? fixtures_raw[0]: []
+  let fixtures_dfa = fixtures_raw && fixtures_raw[0]? fixtures_raw[0].filter(item => item.League === league): [];
+
+
+
+  if( page === 'home'){
+
+    return(
+
+      <Box marginTop={0} width={{ xs: '90%', sm:'600px'}} margin='auto' sx={{ backgroundColor: {xs: '#F9F9F9', sm: 'white'}, border: '1px solid #D3E1FF', borderRadius: {xs: '4px'}}} >
+  
+        <Typography variant="h6" sx={{ textAlign: 'center', color: 'blue'}}>Game Fixtures</Typography>
+  
+        {fixtures_raw ? (fixtures_all.filter(item => item.Complete != 'Yes' ).slice(0,5).map((item, idx) => {
+  
+          return(
+            
+            <Box key={idx} width={{xs: '100%'}} margin={{xs:'auto'}}>
+  
+              <Card sx={{ marginY: {xs: 0}, height: 'auto', boxShadow: 'none', borderBottom: {xs: '1px solid #D3E1FF'}, borderRadius: {xs: '4px'}}}>
+
+                <Box >
+
+    
+                    <Typography style={{ fontSize: 12 }} sx={{ textAlign: 'center', color: 'blue'}}>{item.LeagueName}</Typography>
+
+                </Box>
+  
+                <Stack direction={{xs: 'row'}} justifyContent='space-between' marginX={2} paddingTop={1}>
+  
+                  <Stack direction='column' spacing={0.5}>
+  
+                    <Typography style={{ fontSize: 12, fontWeight: 'bold' }}>{item.Home}</Typography>
+                    <Typography style={{ fontSize: 12, fontWeight: 'bold' }}>{item.Away}</Typography>
+  
+                  </Stack>
+  
+                  <Stack direction='column' spacing={0.5}>
+
+                    {item.HomeScore ? 
+                    
+                    (<Typography style={{ fontSize: 13, fontWeight:900, color: 'blue' }}>{item.HomeScore}</Typography>): 
+                    
+                    item.HomeScore === 0 && item.AwayScore != 0? 
+                    
+                    (<Typography style={{ fontSize: 13, fontWeight: 900, color: 'blue' }}>0</Typography>):
+                    
+                    (<Typography style={{ fontSize: 12}}>{item.Date}</Typography>)
+                    }
+  
+                    {item.AwayScore? 
+                    
+                    (<Typography style={{ fontSize: 13, fontWeight: 900, color: 'blue' }}>{item.AwayScore}</Typography>):
+                    
+                    item.AwayScore === 0 && item.HomeScore != 0? 
+                    
+                    (<Typography style={{ fontSize: 13, fontWeight: 900, color: 'blue' }}>0</Typography>):
+                    
+                    (<Typography  fontStyle={{ fontSize: 12.5}}>{item.Time}</Typography>)
+                    
+                    }
+
+
+                  </Stack>
+  
+                </Stack>
+
+
+
+                <Stack marginLeft={2}>
+
+                    
+                  {item.Game_Info != undefined ? (<Stack>
+
+                    <Box marginTop={2}>
+                      <Typography>Goals</Typography>
+
+                    </Box>
+
+                    <Stack direction='row' justifyContent='space-between' marginRight={2} paddingTop={1}>
+                      <Box>Home</Box>
+                      <Box>Away</Box>
+                    </Stack>
+
+                    <Stack direction='row' justifyContent='space-between' marginRight={2} paddingTop={1}>
+
+                      <Box paddingTop={1}>
+                      {item.Game_Info.Goal_Scorers_Home.map((data_point, key_value) => {
+
+                        return(
+                          <Stack key={key_value} direction='row' alignItems='center' spacing={0.5}>
+
+
+                            <Box>
+                              <SportsSoccerIcon fontSize='2px'/>
+                            </Box>
+
+                            <Box>
+                              <Typography variant='caption'>{data_point}</Typography>
+                            </Box>
+
+
+                          </Stack>
+                        )
+                      })}  
+                      </Box>
+
+                      <Box paddingTop={1}>
+                      {item.Game_Info.Goal_Scorers_Away.map((data_point, key_value) => {
+
+                        return(
+                          <Stack key={key_value} direction='row' alignItems='center' spacing={0.5}>
+
+
+                            <Box>
+                              <SportsSoccerIcon fontSize='2px'/>
+                            </Box>
+
+                            <Box>
+                              <Typography variant='caption'>{data_point}</Typography>
+                            </Box>
+
+
+                          </Stack>
+                        )
+                      })}  
+                      </Box>
+
+
+                    </Stack>
+
+
+                                    
+
+                  </Stack>): ''}
+                </Stack>
+  
+                <Box marginTop={1}>
+  
+                  <Typography style={{ fontSize: 12 }} sx={{ textAlign: 'center', color: 'blue'}}>{item.League_fullName} | {item.Venue}</Typography>
+  
+                </Box>
+  
+                
+  
+              </Card>
+
+                          
+            </Box>
+
+            
+  
+          )})): <Skeleton variant="rectangular" width={310} height={60} />}
+
+          <Box sx={{ textAlign: 'center', marginY: 1}}>
+
+            <Link to='/DFA/Fixtures' style={{ textDecoration: 'none'}}>
+              <Typography >View all fixtures</Typography>
+            
+            </Link>
+
+
+          </Box>
 
 // Helper function to determine fixture status
 const getFixtureStatus = (fixture) => {
@@ -405,16 +549,78 @@ const FixtureCard = ({ fixture, showLeague = false, showVenue = true, showGoals 
               Goal Scorers
             </Typography>
             
-            <Grid container spacing={2}>
-              {/* Home scorers */}
-              <Grid item xs={6}>
-                <Stack spacing={0.5}>
-                  {fixture.Game_Info.Goal_Scorers_Home?.map((scorer, index) => (
-                    <Stack key={index} direction="row" alignItems="center" spacing={1}>
-                      <SportsSoccer sx={{ color: '#4CAF50', fontSize: 16 }} />
-                      <Typography variant="caption" sx={{ color: 'white' }}>
-                        {scorer}
-                      </Typography>
+            <Box key={idx} width={{xs: '100%'}} margin={{xs:'auto'}}>
+  
+              <Card sx={{ marginY: {xs: 0}, height: 'auto', boxShadow: 'none', borderBottom: {xs: '1px solid #D3E1FF'}, borderRadius: {xs: '4px'}}}>
+
+
+  
+                <Stack direction={{xs: 'row'}} justifyContent='space-between' marginX={2} paddingTop={1}>
+  
+                  <Stack direction='column' spacing={1}>
+
+
+                    <Link to={`/DFA/Home/Team/${item.Home_Id}`} style={{ textDecoration: 'none', color: 'blue'}}>
+                      <Typography style={{ fontSize: 12, fontWeight: 'bold' }}>{item.Home}</Typography>
+                    
+                    </Link>
+
+
+                    <Link to={`/DFA/Home/Team/${item.Away_Id}`} style={{ textDecoration: 'none', color: 'blue'}}>
+                      <Typography style={{ fontSize: 12, fontWeight: 'bold' }}>{item.Away}</Typography>
+                    
+                    </Link>
+  
+
+
+  
+                  </Stack>
+  
+                  <Stack direction='column' spacing={1}>
+
+                    {item.HomeScore ? 
+                    
+                    (<Typography style={{ fontSize: 13, fontWeight:900, color: 'blue' }}>{item.HomeScore}</Typography>): 
+                    
+                    item.HomeScore === 0 && item.AwayScore != 0? 
+                    
+                    (<Typography style={{ fontSize: 13, fontWeight: 900, color: 'blue' }}>0</Typography>):
+                    
+                    (<Typography style={{ fontSize: 12}}>{item.Date}</Typography>)
+                    }
+  
+                    {item.AwayScore? 
+                    
+                    (<Typography style={{ fontSize: 13, fontWeight: 900, color: 'blue' }}>{item.AwayScore}</Typography>):
+                    
+                    item.AwayScore === 0 && item.HomeScore != 0? 
+                    
+                    (<Typography style={{ fontSize: 13, fontWeight: 900, color: 'blue' }}>0</Typography>):
+                    
+                    (<Typography  fontStyle={{ fontSize: 12.5}}>{item.Time}</Typography>)
+                    
+                    }
+
+
+                  </Stack>
+  
+                </Stack>
+
+
+
+                <Stack marginLeft={2}>
+
+                    
+                  {item.Game_Info != undefined ? (<Stack>
+
+                    <Box marginTop={2}>
+                      <Typography>Goals</Typography>
+
+                    </Box>
+
+                    <Stack direction='row' justifyContent='space-between' marginRight={2} paddingTop={1}>
+                      <Box>Home</Box>
+                      <Box>Away</Box>
                     </Stack>
                   ))}
                   {(!fixture.Game_Info.Goal_Scorers_Home || fixture.Game_Info.Goal_Scorers_Home.length === 0) && (

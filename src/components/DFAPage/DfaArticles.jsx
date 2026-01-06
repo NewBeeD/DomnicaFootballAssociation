@@ -54,9 +54,105 @@ const DfaArticles = ({ level, size }) => {
   const slicedArticles = getSlicedArticles();
 
   return (
-    <Box sx={{ py: 2 }}>
-      {articles_length > 0 && slicedArticles ? (
-        <Grid container spacing={{ xs: 2, sm: 2, md: 3 }}>
+    
+    <Box >
+
+      <Box paddingY={2} />
+
+      {articles_length > 0 ? 
+      
+      <Box
+      direction={{ xs: 'column', sm: 'row' }} 
+      sx={{ display: { sm: 'flex' }, flexDirection: 'row'}}
+      >
+
+              {/* Phones */}
+        <Stack 
+        display={{ sm:'none'}} 
+        direction='column' 
+        spacing={2} 
+        width={{xs: '90%'}} 
+        margin={{xs:'auto'}} 
+        divider={<Divider orientation='horizontal' flexItem />} >
+
+      
+
+          {articles ? articles.map((item, idx) => {
+
+          return (
+            <Box key={idx} >
+
+              
+              <Card sx={{ boxShadow: 'none', backgroundColor: 'white', border: '1px solid #86C232'}}>
+
+                <CardActions>
+
+                  <Stack>
+
+                    {/* TODO: Link this page to the premiere league home page */}
+
+                    <Link to='/DFA/Home'>
+                    <Typography style={{ color: `var(--color-color5, ${theme.colors.color5})`}} sx={{ fontSize: {xs: 13}, textDecoration: 'underline', fontWeight: 900}}>{item.type}</Typography>
+                    </Link>
+
+
+                    <Stack direction='row' spacing={0.5}>
+                      <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} sx={{ fontSize: {xs: 9}}}>{item.author}</Typography>
+                      <Divider orientation='vertical' flexItem />
+                      <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} sx={{ fontSize: {xs: 9}}}>{item.time}</Typography>
+                    </Stack>
+
+
+                  </Stack>
+
+                </CardActions>
+
+                <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
+                  <CardHeader titleTypographyProps={{variant:'body2', fontWeight: 900 }} title={item.title} style={{ color: `var(--color-color3, ${theme.colors.color3})`}}/>
+                </Link>
+
+
+                <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
+
+                  <CardMedia 
+                  component='img' 
+                  height={200} 
+                  src={item.url[0]} 
+                  alt={item.alt}
+                  sx={{ objectFit: 'cover', objectPosition: "50% 50%"}}/>
+                
+                </Link>
+
+                <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
+                  <CardContent>
+                    <Typography sx={{ color: 'black', fontSize: {xs: 13}}}>
+                      {item.body_content.length < 25? item.body_content: (item.body_content.substr(0, 40) + "...")}
+                    </Typography>
+                  </CardContent>
+                </Link>
+
+
+
+                
+              </Card>
+
+            </Box>)
+
+        }): <Skeleton variant="rectangular" width='100%' height={60} />}
+                  
+
+        </Stack>
+
+        {/* Large Screens */}
+        <Grid 
+        display={{ xs:'none', sm: 'inherit'}}  
+        container 
+        spacing={1.5} 
+        direction={{ sm: 'row' }} 
+        justifyContent="left"  
+        width='100%'
+        >
+
           
           {/* Mobile View */}
           <Grid item xs={12} sx={{ display: { xs: 'block', sm: 'none' } }}>
@@ -65,33 +161,138 @@ const DfaArticles = ({ level, size }) => {
               divider={<Divider orientation="horizontal" flexItem />}
               sx={{ width: '90%', mx: 'auto' }}
             >
-              {slicedArticles.map((item) => (
-                <ArticleCardMobile key={item.id} item={item} theme={theme} />
-              ))}
-            </Stack>
-          </Grid>
 
-          {/* Tablet View */}
-          <Grid item xs={12} sx={{ display: { xs: 'none', sm: 'block', md: 'none' } }}>
-            <Grid container spacing={2}>
-              {slicedArticles.map((item) => (
-                <Grid item xs={12} sm={6} key={item.id}>
-                  <ArticleCardTablet item={item} theme={theme} />
-                </Grid>
-              ))}
-            </Grid>
-          </Grid>
+            
 
-          {/* Desktop View */}
-          <Grid item xs={12} sx={{ display: { xs: 'none', md: 'block' } }}>
-            <Grid container spacing={3}>
-              {articles.map((item) => (
-                <Grid item xs={12} md={4} lg={4} key={item.id}>
-                  <ArticleCardDesktop item={item} theme={theme} />
-                </Grid>
-              ))}
-            </Grid>
-          </Grid>
+              <Box
+              display={{sm: 'none', md: 'inherit'}}
+              >       
+                                  
+                <Card 
+                sx={{ boxShadow: 'none', backgroundColor: 'white', border: '1px solid #86C232', height: {sm: '380px'}, maxWidth: 260, margin: 1}}
+                >
+
+                  <CardActions >
+
+                    <Stack>
+
+                      {/* TODO: Change the league name to the article Category */}
+
+                      <Link to='/'>
+
+                        <Typography style={{ color: `var(--color-color5, ${theme.colors.color5})`}} sx={{ fontSize: {xs: 13}, textDecoration: 'underline', fontWeight: 900}}>{item.type}</Typography>
+
+                      </Link>
+
+
+                    </Stack>
+
+                  </CardActions >
+
+                  <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
+                    
+                    <CardHeader 
+                    titleTypographyProps={{variant:'body2', fontWeight: 900 }} title={item.title} 
+                    style={{ color: `var(--color-color3, ${theme.colors.color3})`}}
+                    sx={{ marginTop: 0, paddingTop: 0 }}
+                    />
+
+                  </Link>
+
+
+                  <CardMedia 
+                  component='img' 
+                  height={200} 
+                  src={item.url[0]} 
+                  alt={item.alt}
+                  sx={{ objectFit: 'cover', objectPosition: "50% 50%"}}
+                  />
+
+                  <CardContent sx={{ marginTop: 0, paddingTop: 2 }}>
+                    <Typography sx={{ color: 'black', fontSize: {xs: 11}}}>
+                      {item.body_content.length < 25? item.body_content: (item.body_content.substr(0, 80) + "...")}
+                    </Typography>
+                  </CardContent>
+
+                </Card>
+
+              </Box>
+
+              {/* Set up the media horizontallly */}
+
+              <Box
+              key={idx}
+              display={{sm: 'inherit', md: 'none'}}>       
+                                    
+                <Card 
+                sx={{ boxShadow: 'none', backgroundColor: 'white', border: '1px solid #86C232', height: {sm: 'auto'}, maxWidth: 220, margin: 1}}
+                >
+
+                  <Stack direction='column-reverse'>
+
+
+                    <Link to={`/${item.id}`} style={{ textDecoration: 'none'}}>
+                      
+                      <CardHeader 
+                      titleTypographyProps={{variant:'body2', fontWeight: 900 }} title={item.title} 
+                      style={{ color: `var(--color-color3, ${theme.colors.color3})`}}
+                      sx={{ marginTop: 0, paddingTop: 0, paddingLeft: 1 }}
+                      />
+
+                    </Link>
+
+                    <CardActions >
+
+                      <Stack>
+
+                        {/* TODO: Change the league name to the article Category */}
+
+                        <Link to='/'>
+
+                          <Typography style={{ color: `var(--color-color5, ${theme.colors.color5})`}} sx={{ fontSize: {xs: 13}, textDecoration: 'underline', fontWeight: 900}}>{item.league}</Typography>
+
+                        </Link>
+
+
+                        {/* <Stack direction='row' spacing={0.5}>
+                          <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} sx={{ fontSize: {xs: 8}}}>{item.author}</Typography>
+                          <Divider orientation='vertical' flexItem />
+                          <Typography style={{ color: `var(--color-color3, ${theme.colors.color3})`}} sx={{ fontSize: {xs: 8}}}>{item.time}</Typography>
+                        </Stack> */}
+
+
+                      </Stack>
+
+                    </CardActions >
+
+
+                    <CardMedia 
+                    component='img' 
+                    height={200} 
+                    src={item.url[0]} 
+                    alt={item.alt}
+                    sx={{ objectFit: 'cover', objectPosition: "50% 50%"}}
+                    />
+
+
+                </Stack>
+
+                  {/* <CardContent sx={{ marginTop: 0, paddingTop: 2 }}>
+                    <Typography sx={{ color: 'black', fontSize: {xs: 13}}}>
+                      {item.body_content.length < 25? item.body_content: (item.body_content.substr(0, 80) + "...")}
+                    </Typography>
+                  </CardContent> */}
+
+                </Card>
+
+              </Box>
+
+            </Box>
+
+
+
+          )) : <Skeleton variant="rectangular" width={{xs: '60px', sm: '100px'}} height={60} />}
+
         </Grid>
       ) : (
         <LoadingSkeleton />

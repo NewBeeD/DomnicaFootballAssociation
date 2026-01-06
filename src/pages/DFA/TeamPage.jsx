@@ -206,12 +206,15 @@ if (error) {
   )
 }
 
-  const positionGroups = {
-    goalkeepers: ['GK'],
-    defenders: ['CB', 'LB', 'RB', 'LWB', 'RWB'],
-    midfielders: ['CM', 'CDM', 'CAM', 'LM', 'RM'],
-    forwards: ['ST', 'CF', 'LW', 'RW']
-  }
+      {data ?
+
+        <Stack 
+        margin='auto' 
+        alignItems='center' 
+        width={{xs:'98%'}}
+        paddingTop={1}
+        
+        >
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
@@ -232,42 +235,98 @@ if (error) {
               <Typography>Teams</Typography>
             </Stack>
 
-          <Typography color="text.primary" fontWeight={600}>
-            {loading ? 'Loading...' : data?.Team}
-          </Typography>
-        </Breadcrumbs>
-
-        {/* Team Header */}
-        {loading ? (
-          <TeamHeaderSkeleton />
-        ) : data && (
-          <Paper
-            elevation={2}
-            sx={{
-              p: { xs: 2, md: 4 },
-              mb: 4,
-              borderRadius: 2,
-              bgcolor: 'background.paper'
-            }}
+          <Stack
+          maxWidth={{ xs: '98%', sm: 1200}}
+          minHeight={500}
+          paddingBottom={1}
+          sx={{ border: '1px solid black', borderRadius: '8px', boxShadow: 5}}
+          justifyContent={{xs: 'center', sm:'space-between'}}
+          paddingX={2}
+          alignItems='center'
+          direction={{xs: 'column-reverse', sm:'column-reverse', md: 'row'}}
+          spacing={4}
+          
           >
-            <Stack direction={{ xs: 'column', md: 'row' }} spacing={4} alignItems="center">
-              <Box sx={{ textAlign: 'center' }}>
-                <Avatar
-                  src={data.team_crest}
-                  alt={data.Team}
-                  sx={{
-                    width: { xs: 100, md: 140 },
-                    height: { xs: 100, md: 140 },
-                    border: '2px solid',
-                    borderColor: 'primary.main'
-                  }}
+
+            <Stack 
+            direction='row'
+            spacing={2}
+            width='100%'
+            justifyContent='center'
+            >
+
+
+              <Box
+              height='100%'
+              width={{xs: 100 ,sm:150}}
+              textAlign='center'
+              >
+
+                <img 
+                src={data.team_crest}
+                width='100%'
+                loading="lazy"
+                style={{ padding: 0, margin: 0}}                 
                 />
               </Box>
-              
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="h4" fontWeight={800} gutterBottom>
+
+              <Stack 
+              direction='column' 
+              spacing={2} 
+              width='50%' 
+              justifyContent='center'
+              >
+                
+                <Typography 
+                variant="h5"  
+                sx={{ paddingTop: 1}} 
+                fontWeight={900}
+                width='200px'
+                >
                   {data.Team}
                 </Typography>
+
+                <Stack 
+                direction='row'
+                spacing={2}
+                >
+
+                  <Typography sx={{ paddingTop: 1}} paddingTop={0}>{data.Community}</Typography>
+
+                  <Typography sx={{ paddingTop: 1}} paddingTop={0}>EST: {data.est}</Typography>
+                </Stack>
+
+              </Stack>
+
+
+            </Stack>
+
+
+            <Stack
+            height='100%'
+            width={{xs: '100%' , sm:600}}
+            justifyContent='center'
+              >
+
+                <img 
+                src={data.Team_Photo}
+                width='100%'
+                loading="lazy"
+                style={{ padding: 0, margin: 0}}                 
+                />
+
+            </Stack>
+
+
+          </Stack>
+
+
+
+          <Box marginTop={5}>
+
+            <TabContext value={value}>
+
+              <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
                 
                 <Stack direction={{xs:"column", sm: "row"}} spacing={2} flexWrap="wrap" sx={{ mb: 2 }}>
                   <Chip

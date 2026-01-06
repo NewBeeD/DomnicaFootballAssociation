@@ -4,7 +4,7 @@
 
   
 
-//   if(data != null){   
+  if(data != null){   
     
 
 //     let structured_data = data.map(item => {
@@ -26,13 +26,13 @@
   
 //       stat['Foot'] = item.attributes['dfa_player'].data.attributes['Foot']
   
-//       // stat['url'] = item.attributes['Profile_Pic'].data.attributes['formats']['medium']['url']
+      // stat['url'] = item.attributes['Profile_Pic'].data.attributes['formats']['medium']['url']
 
-//       stat['url'] = item.attributes['dfa_player'].data.attributes['Profile_Pic'].data.attributes['formats']['medium']['url']
+      stat['url'] = item.attributes['dfa_player'].data.attributes['Profile_Pic'].data.attributes['formats']['medium']['url']
   
-//       stat['league'] = item.attributes['dfa_player'].data.attributes['all_league'].data.attributes['name']
+      stat['league'] = item.attributes['dfa_player'].data.attributes['all_league'].data.attributes['name']
       
-//       stat['team'] =  item.attributes['dfa_player'].data.attributes['dfa_team'].data.attributes['Name']
+      stat['team'] =  item.attributes['dfa_player'].data.attributes['dfa_team'].data.attributes['Name']
   
 //       return stat
 //     })

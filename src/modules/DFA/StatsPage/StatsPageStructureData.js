@@ -11,24 +11,28 @@
   
 //       let stat = {};
   
-//       stat['Player_ID'] = item.attributes['dfa_player'].data.id
-//       stat['First_Name'] = item.attributes['dfa_player'].data.attributes['First_Name']
+      stat['Player_ID'] = item.attributes['dfa_player'].data.id
+      stat['First_Name'] = item.attributes['dfa_player'].data.attributes['First_Name']
      
-//       stat['Last_Name'] = item.attributes['dfa_player'].data.attributes['Last_Name']
+      stat['Last_Name'] = item.attributes['dfa_player'].data.attributes['Last_Name']
   
-//       stat['Season'] = item.attributes['Season']
+      stat['Season'] = item.attributes['Season']
 
-//       stat['Assists'] = item.attributes['Assists']
+      stat['Assists'] = item.attributes['Assists']
       
-//       stat['Goals'] = Number(item.attributes['Goals'])
+      stat['Goals'] = Number(item.attributes['Goals'])
           
-//       stat['Clean_Sheets'] = item.attributes['Clean_Sheets']
+      stat['Clean_Sheets'] = item.attributes['Clean_Sheets']
   
-//       stat['Foot'] = item.attributes['dfa_player'].data.attributes['Foot']
+      stat['Foot'] = item.attributes['dfa_player'].data.attributes['Foot']
   
-//       // stat['url'] = item.attributes['Profile_Pic'].data.attributes['formats']['medium']['url']
+      // stat['url'] = item.attributes['Profile_Pic'].data.attributes['formats']['medium']['url']
 
-//       stat['url'] = item.attributes['dfa_player'].data.attributes['Profile_Pic'].data.attributes['formats']['medium']['url']
+      stat['url'] = item.attributes['dfa_player'].data.attributes['Profile_Pic'].data.attributes['formats']['medium']['url']
+  
+      stat['league'] = item.attributes['dfa_player'].data.attributes['all_league'].data.attributes['name']
+      
+      stat['team'] =  item.attributes['dfa_player'].data.attributes['dfa_team'].data.attributes['Name']
   
 //       stat['league'] = item.attributes['dfa_player'].data.attributes['all_league'].data.attributes['name']
       

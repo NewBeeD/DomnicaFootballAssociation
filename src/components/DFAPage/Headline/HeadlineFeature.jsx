@@ -11,11 +11,11 @@ import IconButton from '@mui/material/IconButton'
 import { useState, useEffect, useCallback } from 'react'
 import qs from 'qs'
 import axios from "axios"
+import { queryParams_articles } from '../../../modules/DFA/QueryParams'
+import headlineFeatureModule from './headlineFeatureStructure'
 import { Link } from 'react-router-dom'
 
-// Embla Carousel imports
-import useEmblaCarousel from 'embla-carousel-react'
-import Autoplay from 'embla-carousel-autoplay'
+
 
 // Icons
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
@@ -150,10 +150,15 @@ const HeadlineFeature = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        
-        // Updated API URL to include population of image
-        const apiUrl = `https://strapi-dominica-sport.onrender.com/api/headline-features?populate=*`;
-        
+
+        const queryString = qs.stringify(queryParams_articles);
+
+        // Your API endpoint URL
+        const apiUrl = `https://strapi-dominica-sport.onrender.com/api/articles?${queryString}`;
+        // const apiUrl = `https://strapi-dominica-sport.onrender.com/api/articles?populate=*`;
+  
+
+        // Make the fetch request
         const response = await axios.get(apiUrl);
         
         if (response.status !== 200) {
@@ -225,387 +230,19 @@ const HeadlineFeature = () => {
     );
   }
 
-  return (
-    <Box 
-      sx={{ 
-        width: '100%',
-        backgroundColor: '#222629',
-        paddingTop: 0,
-        borderRadius: { xs: 0, sm: 2 },
-        overflow: 'hidden',
-        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
-        position: 'relative',
-        
-      }}
-    >
       <Stack 
-        width="100%" 
-        margin="auto" 
-        height={{ xs: 'auto', sm: 550, md: 600 }}
-        padding={0}
-        position="relative"
+        width={{xs: '99%', sm: '100%'}} 
+        margin={{xs:'auto'}} 
+        height={{ xs: 570, sm: 450}}
+        borderRadius={1}
       >
-        <Typography 
-          variant="h2" 
-          sx={{ 
-            color: 'white', 
-            padding: { xs: 2, sm: 3 },
-            paddingBottom: 1,
-            fontSize: { xs: '1.8rem', sm: '2.5rem' },
-            fontWeight: 700,
-            background: 'linear-gradient(90deg, #FFD700 0%, #FFA500 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            textAlign: { xs: 'center', sm: 'left' }
-          }}
-        >
-          <SportsSoccerIcon sx={{ mr: 2, verticalAlign: 'middle' }} />
-          League Headlines
-        </Typography>
-        
-        <Box sx={{ 
-          width: '100%', 
-          height: '100%',
-          position: 'relative',
-          overflow: 'hidden'
-        }}>
-          {articles && articles.length > 0 ? (
-            <>
-              {/* Embla Carousel Container */}
-              <Box 
-                className="embla" 
-                ref={emblaRef}
-                sx={{ 
-                  overflow: 'hidden',
-                  height: '100%'
-                }}
-              >
-                <Box className="embla__container" sx={{ display: 'flex', height: '100%' }}>
-                  {articles.map((article) => (
-                    
-                    <Box 
-                      key={article.id} 
-                      className="embla__slide"
-                      sx={{ 
-                        flex: '0 0 100%',
-                        minWidth: 0,
-                        padding: { xs: 0, sm: 2 }
-                      }}
-                    >
 
 
-                      <Card 
-                        sx={{ 
-                          display: 'flex',
-                          flexDirection: { xs: 'column', sm: 'row' },
-                          backgroundColor: 'transparent',
-                          boxShadow: 'none',
-                          height: { xs: 'auto', sm: 450, md: 500 },
-                          borderRadius: { xs: 0, sm: 2 },
-                          overflow: 'hidden',
-                          transition: 'transform 0.3s ease',
-                          '&:hover': {
-                            transform: 'translateY(-2px)'
-                          }
-                        }}
-                      >
-                        {/* Featured Image */}
-                        <Box 
-                          sx={{ 
-                            width: { xs: '100%', sm: '60%' },
-                            height: { xs: 300, sm: '100%' },
-                            position: 'relative',
-                            overflow: 'hidden'
-                          }}
-                        >
-                          <Box
-                            component="img"
-                            src={article.imageUrl}
-                            alt={article.title}
-                            sx={{
-                              width: '100%',
-                              height: '100%',
-                              objectFit: 'cover',
-                              transition: 'transform 0.5s ease',
-                              '&:hover': {
-                                transform: 'scale(1.05)'
-                              }
-                            }}
-                          />
-                          <Box
-                            sx={{
-                              position: 'absolute',
-                              top: 20,
-                              left: 20,
-                              backgroundColor: '#FF6B00',
-                              color: 'white',
-                              padding: '6px 16px',
-                              borderRadius: '20px',
-                              fontSize: '0.875rem',
-                              fontWeight: 600,
-                              boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
-                            }}
-                          >
-                            {article.category}
-                          </Box>
-                        </Box>
 
-                        {/* Content */}
-                        <Box 
-                          sx={{ 
-                            width: { xs: '100%', sm: '40%' },
-                            padding: { xs: 3, sm: 4 },
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            backgroundColor: 'rgba(34, 38, 41, 0.95)'
-                          }}
-                        >
-                          <Typography 
-                            variant="h3"
-                            sx={{
-                              color: 'white',
-                              fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
-                              fontWeight: 700,
-                              lineHeight: 1.2,
-                              marginBottom: 2
-                            }}
-                          >
-                            {article.title}
-                          </Typography>
-                          
-                          <Typography 
-                            variant="body1"
-                            sx={{
-                              color: '#B0B0B0',
-                              fontSize: { xs: '0.9rem', sm: '1rem' },
-                              lineHeight: 1.6,
-                              marginBottom: 3,
-                              flexGrow: 1
-                            }}
-                          >
-                            {article.summary}
-                          </Typography>
-
-                          <Grid container spacing={2} sx={{ marginBottom: 3 }}>
-                            <Grid item>
-                              <Typography 
-                                variant="caption"
-                                sx={{
-                                  color: '#FFD700',
-                                  fontSize: '0.8rem',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  gap: 0.5
-                                }}
-                              >
-                                <CalendarTodayIcon fontSize="small" />
-                                {article.date}
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <Typography 
-                                variant="caption"
-                                sx={{
-                                  color: '#4FC3F7',
-                                  fontSize: '0.8rem',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  gap: 0.5
-                                }}
-                              >
-                                <ScheduleIcon fontSize="small" />
-                                {article.readTime}
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <Typography 
-                                variant="caption"
-                                sx={{
-                                  color: '#90EE90',
-                                  fontSize: '0.8rem',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  gap: 0.5
-                                }}
-                              >
-                                <PersonIcon fontSize="small" />
-                                {article.author}
-                              </Typography>
-                            </Grid>
-                          </Grid>
-
-                          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', marginBottom: {xs: 2.5} }}>
-                            <Button
-                              variant="contained"
-                              component={Link}
-                              to={`/headline/${article.id}`}
-                              sx={{
-                                backgroundColor: '#FF6B00',
-                                color: 'white',
-                                padding: '10px 24px',
-                                borderRadius: '25px',
-                                fontWeight: 600,
-                                '&:hover': {
-                                  backgroundColor: '#FF8B33',
-                                  transform: 'translateY(-2px)',
-                                  boxShadow: '0 6px 20px rgba(255, 107, 0, 0.3)'
-                                },
-                                transition: 'all 0.3s ease'
-                              }}
-                            >
-                              Read Full Story
-                            </Button>
-                            
-                            <Button
-                              variant="outlined"
-                              component={Link}
-                              to="/articles"
-                              sx={{
-                                borderColor: '#FFD700',
-                                color: '#FFD700',
-                                padding: '10px 24px',
-                                borderRadius: '25px',
-                                fontWeight: 600,
-                                '&:hover': {
-                                  borderColor: '#FFED4E',
-                                  color: '#FFED4E',
-                                  backgroundColor: 'rgba(255, 215, 0, 0.1)'
-                                }
-                              }}
-                            >
-                              All News
-                            </Button>
-                          </Box>
-                        </Box>
-                      </Card>
-                    </Box>
-                  ))}
-                </Box>
-              </Box>
-
-              {/* Navigation Buttons */}
-              <Box sx={{ 
-                position: 'absolute',
-                top: '50%',
-                left: { xs: 0, sm: 10 },
-                right: { xs: 0, sm: 10 },
-                transform: 'translateY(-50%)',
-                display: 'flex',
-                justifyContent: 'space-between',
-                zIndex: 10,
-                pointerEvents: 'none'
-              }}>
-                <IconButton
-                  onClick={scrollPrev}
-                  sx={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    color: '#FFD700',
-                    pointerEvents: 'auto',
-                    '&:hover': {
-                      backgroundColor: 'rgba(255, 107, 0, 0.8)',
-                      transform: 'scale(1.1)'
-                    },
-                    transition: 'all 0.3s ease',
-                    display: { xs: 'none', sm: 'flex' }
-                  }}
-                >
-                  <ArrowBackIosNewIcon />
-                </IconButton>
-                
-                <IconButton
-                  onClick={scrollNext}
-                  sx={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    color: '#FFD700',
-                    pointerEvents: 'auto',
-                    '&:hover': {
-                      backgroundColor: 'rgba(255, 107, 0, 0.8)',
-                      transform: 'scale(1.1)'
-                    },
-                    transition: 'all 0.3s ease',
-                    display: { xs: 'none', sm: 'flex' }
-                  }}
-                >
-                  <ArrowForwardIosIcon />
-                </IconButton>
-              </Box>
-
-              {/* Dots Navigation */}
-              <Box sx={{ 
-                position: 'absolute',
-                bottom: 20,
-                left: 0,
-                right: 0,
-                display: 'flex',
-                justifyContent: 'center',
-                gap: 1,
-                zIndex: 10
-              }}>
-                {scrollSnaps.map((_, index) => (
-                  <Box
-                    key={index}
-                    onClick={() => scrollTo(index)}
-                    sx={{
-                      width: selectedIndex === index ? 40 : 12,
-                      height: 6,
-                      backgroundColor: selectedIndex === index ? '#FF6B00' : 'rgba(255, 255, 255, 0.5)',
-                      borderRadius: '3px',
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                      '&:hover': {
-                        backgroundColor: selectedIndex === index ? '#FF8B33' : 'rgba(255, 255, 255, 0.7)'
-                      }
-                    }}
-                  />
-                ))}
-              </Box>
-            </>
-          ) : (
-            <Box sx={{ 
-              padding: 4, 
-              textAlign: 'center',
-              color: 'white'
-            }}>
-              <SportsSoccerIcon sx={{ fontSize: 60, color: '#FF6B00', mb: 2 }} />
-              <Typography variant="h6" sx={{ mb: 1 }}>
-                No Featured Articles Available
-              </Typography>
-              <Typography variant="body2" sx={{ color: '#B0B0B0' }}>
-                Check back soon for the latest league headlines and updates.
-              </Typography>
-            </Box>
-          )}
-        </Box>
-        
-        {/* Error message display */}
-        {error && (
-          <Box sx={{ 
-            position: 'absolute', 
-            bottom: 10, 
-            right: 10, 
-            backgroundColor: 'rgba(255, 0, 0, 0.1)',
-            padding: 1,
-            borderRadius: 1
-          }}>
-            <Typography variant="caption" sx={{ color: '#FF6B6B' }}>
-              Using fallback data
-            </Typography>
-          </Box>
-        )}
-        
-        {/* Decorative elements */}
-        <Box 
-          sx={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: '4px',
-            background: 'linear-gradient(90deg, #FFD700 0%, #FF6B00 50%, #FFD700 100%)'
-          }}
-        />
       </Stack>
+
+
+    
     </Box>
   );
 };

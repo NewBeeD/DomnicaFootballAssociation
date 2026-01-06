@@ -2386,7 +2386,7 @@ const TournamentBrackets = () => {
 
           <SingleEliminationBracket
           theme={GlootTheme}
-          matches={simpleBracket}
+          matches={simpleSmallBracket}
           matchComponent={Match}
           svgWrapper={({ children, ...props }) => (
 

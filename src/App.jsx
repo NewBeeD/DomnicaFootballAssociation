@@ -28,12 +28,6 @@ import FixturesPage from './pages/DFA/FixturesPage'
 import DfaPageLargeScreens from './pages/DFA/DfaPageLargeScreens'
 import AllTeamsFixtures from './pages/DFA/AllTeamsFixtures';
 import TournamentBrackets from './components/TournamentBrackets/TournamentBrackets';
-import HeadlineArticle from './pages/HeadLine/HeadlineArticles';
-
-
-// Prediction Game Imports
-import PredictionGameDashboard from '../src/GamePrediction/pages/PredictionGameDashboard';
-import AdminMatchManagementPage from '../src/GamePrediction/pages/AdminMatchManagementPage';
 
 
 
@@ -54,7 +48,6 @@ const isAboveSM = useMediaQuery(theme.breakpoints.up('sm'));
         {/* <Route path='/' element={<HomePage />} /> */}
         <Route path="/" element={isAboveSM ? <DfaPageLargeScreens />: <DFA />} />
         <Route path='/:id' element={<Article />} />
-        <Route path='headline/:id' element={<HeadlineArticle />} />
 
         
            

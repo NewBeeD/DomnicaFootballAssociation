@@ -72,7 +72,7 @@ import HeadlineFeature from "../../components/DFAPage/Headline/HeadlineFeature";
 
 const DFA = () => {
 
-  GetDFA()
+  // GetDFA()
 
   let players = useSelector((state) => state.DfaPlayers)
   let player_stats = useSelector((state) => state.DfaPlayerStats)
@@ -405,7 +405,7 @@ const DFA = () => {
 
       
 
-      <HeadlineFeature />
+      {/* <HeadlineFeature /> */}
       
       <Box marginTop={{ sm: 7}} height='100%' >
 
