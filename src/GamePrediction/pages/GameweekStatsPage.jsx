@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import { getUserAllGameweekStats } from '../services/gameweekService';
+import GameweekTopPlayer from '../components/GameweekTopPlayer';
 
 const GameweekStatsPage = ({ userId }) => {
   const [stats, setStats] = useState([]);
@@ -75,6 +76,16 @@ const GameweekStatsPage = ({ userId }) => {
 
   return (
     <Box sx={{ width: '100%' }}>
+      {/* Get the latest gameweek from stats */}
+      {stats.length > 0 && (
+        <Box sx={{ mb: 4 }}>
+          <GameweekTopPlayer 
+            gameweek={stats[stats.length - 1]?.gameweek} 
+            showTopThree={true}
+          />
+        </Box>
+      )}
+
       {/* Summary Cards */}
       <Grid container spacing={2} sx={{ mb: 4 }}>
         <Grid item xs={12} sm={6} md={3}>
