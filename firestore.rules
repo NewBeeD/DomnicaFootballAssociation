@@ -10,7 +10,7 @@ service cloud.firestore {
 
     match /predictions/{predictionId} {
       allow create: if isAuthenticated() && isUser(request.resource.data.userId);
-      allow read: if isAuthenticated() && (isUser(resource.data.userId) || request.auth.token.admin == true);
+      allow read: if isAuthenticated();
       allow update: if isAuthenticated() && isUser(resource.data.userId) && request.resource.data.userId == resource.data.userId && request.resource.data.matchId == resource.data.matchId;
       allow delete: if isAuthenticated() && isUser(resource.data.userId);
     }

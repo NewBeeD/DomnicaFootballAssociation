@@ -25,6 +25,8 @@ import {
   FormControl,
   InputLabel,
   Stack,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../config/firebaseConfig';
@@ -56,6 +58,9 @@ const AdminMatchManagementPage = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [editingMatch, setEditingMatch] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // Form state
   const [formData, setFormData] = useState({
@@ -266,15 +271,22 @@ const AdminMatchManagementPage = () => {
 
       <Toolbar />
 
-      <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Container 
+        maxWidth="lg" 
+        sx={{ 
+          py: { xs: 2, sm: 3, md: 4 },
+          px: { xs: '1px', sm: 2 },
+          width: { xs: '99vw', sm: '100%' },
+        }}
+      >
         {/* Header with Add Button */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'center' }, mb: { xs: 2, sm: 4 }, flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: 1, sm: 0 } }}>
           <Box>
-            <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+            <Typography variant={{ xs: 'h6', sm: 'h5' }} sx={{ fontWeight: 'bold' }}>
               📋 Match Management
             </Typography>
-            <Typography variant="body2" color="textSecondary">
-              Create, edit, and manage match fixtures and results
+            <Typography variant="body2" color="textSecondary" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+              Create, edit, and manage fixtures
             </Typography>
           </Box>
           <Button
@@ -282,9 +294,9 @@ const AdminMatchManagementPage = () => {
             color="primary"
             startIcon={<AddIcon />}
             onClick={() => handleOpenDialog()}
-            size="large"
+            size={isMobile ? 'small' : 'large'}
           >
-            Add New Match
+            {isMobile ? 'Add' : 'Add Match'}
           </Button>
         </Box>
 
@@ -299,17 +311,25 @@ const AdminMatchManagementPage = () => {
               <Tabs
                 value={tabValue}
                 onChange={(e, newValue) => setTabValue(newValue)}
+                variant={isMobile ? "scrollable" : "fullWidth"}
+                scrollButtons={isMobile ? "auto" : false}
+                sx={{
+                  '& .MuiTab-root': {
+                    fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                    padding: { xs: '8px 12px', sm: '12px 16px' },
+                  }
+                }}
               >
                 <Tab
-                  label={`⏳ Upcoming Matches (${upcomingMatches.length})`}
+                  label={isMobile ? `⏳ Upcoming (${upcomingMatches.length})` : `⏳ Upcoming Matches (${upcomingMatches.length})`}
                   value={0}
                 />
                 <Tab
-                  label={`🔴 Live Matches (${liveMatches.length})`}
+                  label={isMobile ? `🔴 Live (${liveMatches.length})` : `🔴 Live Matches (${liveMatches.length})`}
                   value={1}
                 />
                 <Tab
-                  label={`✅ Finished Matches (${finishedMatches.length})`}
+                  label={isMobile ? `✅ Finished (${finishedMatches.length})` : `✅ Finished Matches (${finishedMatches.length})`}
                   value={2}
                 />
               </Tabs>
@@ -503,3 +523,5 @@ const AdminMatchManagementPage = () => {
 };
 
 export default AdminMatchManagementPage;
+
+

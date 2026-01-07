@@ -21,8 +21,6 @@ import { auth } from '../../config/firebaseConfig';
 import SoccerIcon from '@mui/icons-material/SportsFootball';
 import { useState, useEffect } from 'react';
 
-import NavBar from '../../components/homePage/NavBar';
-
 const PredictionPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -44,7 +42,7 @@ const PredictionPage = () => {
 
   if (matchesLoading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: { xs: 4, md: 8 } }}>
         <CircularProgress />
       </Box>
     );
@@ -52,42 +50,45 @@ const PredictionPage = () => {
 
   if (!matches || matches.length === 0) {
     return (
-      <Container sx={{ py: 4 }}>
+      <Container
+        sx={{
+          py: { xs: 2, md: 4 },
+          px: { xs: '1px', sm: 2 },
+          width: { xs: '99vw', sm: '100%' },
+        }}
+      >
         <Alert severity="info">No upcoming matches available for predictions.</Alert>
       </Container>
     );
   }
 
   return (
-    <>
-
-      <NavBar />
-      {/* <AppBar sx={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', marginTop: {xs: '74px'} }} position="fixed"  >
-        <Toolbar>
-          <SoccerIcon sx={{ mr: 2 }} />
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Score Prediction Game
-          </Typography>
-        </Toolbar>
-      </AppBar> */}
-
+    <Box>
       <Toolbar /> {/* Spacing for fixed AppBar */}
 
-      <Container maxWidth="lg" sx={{ py: 0 }}>
-        <Box sx={{ mb: 4 }}>
-          <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 1 }}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          py: { xs: 1, sm: 2, md: 3 },
+          px: { xs: '1px', sm: 2 },
+          width: { xs: '99vw', sm: '100%' },
+        }}
+      >
+        <Box sx={{ mb: { xs: 2, sm: 3, md: 4 } }}>
+          <Typography variant={isMobile ? 'h6' : 'h5'} sx={{ fontWeight: 'bold', mb: 1 }}>
             ⚽ Upcoming Matches
           </Typography>
-          <Typography variant="body2" color="textSecondary">
+          <Typography variant="body2" color="textSecondary" sx={{ fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
             Predict match results and earn points! Correct outcome: +3 pts, Exact score: +5 pts
           </Typography>
         </Box>
 
-        <Grid container spacing={3}>
+        <Grid container spacing={{ xs: 6, sm: 0, md: 0 }}>
           {matches.map((match) => (
-            <Grid item xs={12} md={6} lg={4} key={match.id}>
+            <Grid item xs={12} sm={12} md={6} lg={4} key={match.id}>
               <PredictionForm
                 match={match}
+                existingPrediction={predictionsByMatch[match.id]}
                 onSubmitSuccess={() => {
                   // Optionally refresh predictions
                 }}
@@ -96,7 +97,7 @@ const PredictionPage = () => {
           ))}
         </Grid>
       </Container>
-    </>
+    </Box>
   );
 };
 

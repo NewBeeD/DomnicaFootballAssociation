@@ -15,9 +15,11 @@ import {
   AccordionDetails,
   useTheme,
   useMediaQuery,
+  IconButton,
 } from '@mui/material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import { getMatchCommunityStats, getPredictionAccuracyRate } from '../services/communityStatsService';
 
@@ -28,6 +30,9 @@ const CommunityPredictions = ({ matchId, match }) => {
   const [accuracyRate, setAccuracyRate] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showPredictions, setShowPredictions] = useState(false);
+  const [showAnalytics, setShowAnalytics] = useState(false);
+  const [showScorelines, setShowScorelines] = useState(false);
 
   useEffect(() => {
     if (!matchId) {
@@ -107,23 +112,66 @@ const CommunityPredictions = ({ matchId, match }) => {
     return 'No Bias 🤝';
   };
 
-  return (
-    <Card sx={{ mt: 2, backgroundColor: '#f9f9f9', borderLeft: '4px solid #667eea' }}>
-      <CardContent>
-        <Stack direction={isMobile ? 'column' : 'row'} spacing={2} sx={{ mb: 3, alignItems: 'center' }}>
-          <EmojiEventsIcon sx={{ color: '#667eea' }} />
-          <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
-            🌍 Community Predictions & Analytics ({stats.totalPredictions} {stats.totalPredictions === 1 ? 'vote' : 'votes'})
-          </Typography>
-        </Stack>
+  // Helper component for collapsible section header
+  const CollapsibleHeader = ({ title, icon, isOpen, onClick }) => (
+    <Box 
+      onClick={onClick}
+      sx={{ 
+        cursor: 'pointer',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        mb: isOpen ? 1.5 : 0,
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          opacity: 0.8,
+        }
+      }}
+    >
+      <Stack direction={isMobile ? 'column' : 'row'} spacing={1} sx={{ alignItems: 'flex-start', flex: 1 }}>
+        <Box sx={{ fontSize: { xs: 20, sm: 24 } }}>{icon}</Box>
+        <Typography variant={isMobile ? 'body2' : 'subtitle2'} sx={{ fontWeight: 'bold', fontSize: { xs: '0.8rem', sm: '0.95rem' } }}>
+          {title}
+        </Typography>
+      </Stack>
+      <IconButton 
+        size="small" 
+        sx={{ 
+          transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', 
+          transition: 'transform 0.3s ease',
+          ml: 1,
+        }}
+      >
+        {isOpen ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+      </IconButton>
+    </Box>
+  );
 
-        {/* MAIN PREDICTION OUTCOMES */}
-        <Grid container spacing={2} sx={{ mb: 4 }}>
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 0.8, sm: 1 } }}>
+      {/* COMMUNITY PREDICTIONS SECTION */}
+      <Card sx={{ 
+        backgroundColor: '#f9f9f9', 
+        borderLeft: { xs: '3px', sm: '4px' },
+        borderLeftColor: '#667eea',
+        borderRadius: 2,
+      }}>
+        <CardContent sx={{ p: { xs: 1.5, sm: 2, md: 3 } }}>
+          <CollapsibleHeader 
+            title={`🌍 Community Predictions (${stats.totalPredictions} ${stats.totalPredictions === 1 ? 'vote' : 'votes'})`}
+            isOpen={showPredictions}
+            onClick={() => setShowPredictions(!showPredictions)}
+          />
+
+          {showPredictions && (
+            <>
+              {/* MAIN PREDICTION OUTCOMES */}
+              <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ mb: { xs: 2, sm: 3, md: 4 } }}>
           {outcomesData.map((outcome) => (
             <Grid item xs={12} sm={4} key={outcome.key}>
               <Box
                 sx={{
-                  p: 2,
+                  p: { xs: 1.5, sm: 2 },
                   backgroundColor: outcome.key === mostPredicted.key ? '#e3f2fd' : '#fff',
                   border: outcome.key === mostPredicted.key ? '2px solid #1976d2' : '1px solid #e0e0e0',
                   borderRadius: 1,
@@ -135,10 +183,10 @@ const CommunityPredictions = ({ matchId, match }) => {
                   },
                 }}
               >
-                <Typography variant="h6" sx={{ mb: 1 }}>
+                {/* <Typography variant={isMobile ? 'h6' : 'h5'} sx={{ mb: 0.5 }}>
                   {outcome.emoji}
-                </Typography>
-                <Typography variant="body2" sx={{ fontWeight: 'bold', mb: 1 }}>
+                </Typography> */}
+                <Typography variant="caption" sx={{ fontWeight: 'bold', mb: 1, fontSize: { xs: '0.7rem', sm: '0.875rem' }, display: 'block' }}>
                   {outcome.label}
                 </Typography>
 
@@ -148,7 +196,7 @@ const CommunityPredictions = ({ matchId, match }) => {
                     variant="determinate"
                     value={parseFloat(outcome.percentage)}
                     sx={{
-                      height: 8,
+                      height: { xs: 6, sm: 8 },
                       borderRadius: 4,
                       backgroundColor: '#e0e0e0',
                       '& .MuiLinearProgress-bar': {
@@ -164,11 +212,11 @@ const CommunityPredictions = ({ matchId, match }) => {
                 </Box>
 
                 {/* Percentage and Count */}
-                <Stack direction="row" spacing={1} sx={{ justifyContent: 'center', alignItems: 'center' }}>
-                  <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333' }}>
+                <Stack direction="row" spacing={0.5} sx={{ justifyContent: 'center', alignItems: 'center' }}>
+                  <Typography variant={isMobile ? 'body2' : 'h6'} sx={{ fontWeight: 'bold', color: '#333', fontSize: { xs: '1rem', sm: '1.25rem' } }}>
                     {outcome.percentage}%
                   </Typography>
-                  <Typography variant="caption" color="textSecondary">
+                  <Typography variant="caption" color="textSecondary" sx={{ fontSize: { xs: '0.65rem', sm: '0.75rem' } }}>
                     ({outcome.count})
                   </Typography>
                 </Stack>
@@ -180,32 +228,47 @@ const CommunityPredictions = ({ matchId, match }) => {
                     size="small"
                     color="primary"
                     variant="outlined"
-                    sx={{ mt: 1 }}
+                    sx={{ mt: 1, fontSize: { xs: '0.65rem', sm: '0.75rem' } }}
                   />
                 )}
               </Box>
             </Grid>
           ))}
-        </Grid>
+              </Grid>
+            </>
+          )}
+        </CardContent>
+      </Card>
 
-        {/* ANALYTICS SECTION */}
-        <Box sx={{ mb: 3, p: 2, backgroundColor: '#f0f7ff', borderRadius: 1, border: '1px solid #e3f2fd' }}>
-          <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-            <TrendingUpIcon fontSize="small" /> Key Analytics
-          </Typography>
+      {/* KEY ANALYTICS SECTION */}
+      <Card sx={{ 
+        backgroundColor: '#f0f7ff', 
+        borderLeft: { xs: '3px', sm: '4px' },
+        borderLeftColor: '#2196f3',
+        borderRadius: 2,
+      }}>
+        <CardContent sx={{ p: { xs: 1.5, sm: 2, md: 3 } }}>
+          <CollapsibleHeader 
+            title="📊 Key Analytics"
 
-          <Grid container spacing={2}>
+            isOpen={showAnalytics}
+            onClick={() => setShowAnalytics(!showAnalytics)}
+          />
+
+          {showAnalytics && (
+            <Box sx={{ mt: 1.5 }}>
+              <Grid container spacing={{ xs: 1, sm: 2 }}>
             {/* 1. Confidence Score */}
             <Grid item xs={12} sm={6} md={3}>
               <Box sx={{ textAlign: 'center' }}>
-                <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 'bold', display: 'block' }}>
+                <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 'bold', display: 'block', fontSize: { xs: '0.65rem', sm: '0.75rem' } }}>
                   Community Unity
                 </Typography>
-                <Box sx={{ mt: 1, mb: 1 }}>
+                <Box sx={{ mt: 1, mb: 0.5 }}>
                   <Box
                     sx={{
-                      width: 60,
-                      height: 60,
+                      width: { xs: 50, sm: 60 },
+                      height: { xs: 50, sm: 60 },
                       borderRadius: '50%',
                       background: `conic-gradient(${getConfidenceColor(stats.confidenceScore)} 0deg ${stats.confidenceScore * 3.6}deg, #e0e0e0 ${stats.confidenceScore * 3.6}deg)`,
                       margin: '0 auto',
@@ -214,107 +277,101 @@ const CommunityPredictions = ({ matchId, match }) => {
                       justifyContent: 'center',
                     }}
                   >
-                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#333', fontSize: { xs: '0.7rem', sm: '0.8rem' } }}>
                       {stats.confidenceScore}%
                     </Typography>
                   </Box>
                 </Box>
-                <Typography variant="caption" color="textSecondary">
-                  {stats.confidenceScore >= 70 ? '🟢 High Unity' : stats.confidenceScore >= 50 ? '🟡 Moderate' : '🔴 Divided'}
+                <Typography variant="caption" color="textSecondary" sx={{ display: 'block', fontSize: { xs: '0.6rem', sm: '0.7rem' } }}>
+                  agree on outcome
                 </Typography>
               </Box>
             </Grid>
 
-            {/* 2. Home/Away Bias */}
+            {/* 2. Prediction Accuracy Rate */}
             <Grid item xs={12} sm={6} md={3}>
               <Box sx={{ textAlign: 'center' }}>
-                <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 'bold', display: 'block' }}>
-                  Prediction Bias
+                <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 'bold', display: 'block', fontSize: { xs: '0.65rem', sm: '0.75rem' } }}>
+                  Community Accuracy
                 </Typography>
-                <Box sx={{ mt: 1, p: 1.5, backgroundColor: '#fff', borderRadius: 1 }}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: stats.homeAwayBias > 0 ? '#1976d2' : stats.homeAwayBias < 0 ? '#f44336' : '#ff9800' }}>
-                    {getBiasLabel(stats.homeAwayBias)}
+                <Box sx={{ mt: 1, p: 1, backgroundColor: '#fff', borderRadius: 1 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#4caf50', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                    {accuracyRate?.communityAccuracy?.toFixed(1)}%
+                  </Typography>
+                  <Typography variant="caption" color="textSecondary" sx={{ display: 'block', mt: 0.25, fontSize: { xs: '0.6rem', sm: '0.7rem' } }}>
+                    past accuracy
                   </Typography>
                 </Box>
-                <Typography variant="caption" color="textSecondary" sx={{ display: 'block', mt: 0.5 }}>
-                  vs neutral
-                </Typography>
               </Box>
             </Grid>
 
-            {/* 3. Historical Accuracy */}
+            {/* 3. Community Bias Analysis */}
             <Grid item xs={12} sm={6} md={3}>
               <Box sx={{ textAlign: 'center' }}>
-                <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 'bold', display: 'block' }}>
-                  Historical Accuracy
+                <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 'bold', display: 'block', fontSize: { xs: '0.65rem', sm: '0.75rem' } }}>
+                  Bias Analysis
                 </Typography>
-                <Box sx={{ mt: 1, mb: 1 }}>
-                  <Box
-                    sx={{
-                      width: 60,
-                      height: 60,
-                      borderRadius: '50%',
-                      background: `conic-gradient(#4caf50 0deg ${(accuracyRate?.accuracy || 0) * 3.6}deg, #e0e0e0 ${(accuracyRate?.accuracy || 0) * 3.6}deg)`,
-                      margin: '0 auto',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                      {accuracyRate?.accuracy || 0}%
-                    </Typography>
-                  </Box>
+                <Box sx={{ mt: 1, p: 1, backgroundColor: '#fff', borderRadius: 1 }}>
+                  <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#ff9800', fontSize: { xs: '0.65rem', sm: '0.75rem' } }}>
+                    {getBiasLabel(stats.biasPercentage)}
+                  </Typography>
                 </Box>
-                <Typography variant="caption" color="textSecondary">
-                  {accuracyRate?.sampleSize || 0} past matches
-                </Typography>
               </Box>
             </Grid>
 
             {/* 4. Consensus Strength */}
             <Grid item xs={12} sm={6} md={3}>
               <Box sx={{ textAlign: 'center' }}>
-                <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 'bold', display: 'block' }}>
-                  Consensus Strength
+                <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 'bold', display: 'block', fontSize: { xs: '0.65rem', sm: '0.75rem' } }}>
+                  Consensus
                 </Typography>
-                <Box sx={{ mt: 1, p: 1.5, backgroundColor: '#fff', borderRadius: 1 }}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#667eea' }}>
+                <Box sx={{ mt: 1, p: 1, backgroundColor: '#fff', borderRadius: 1 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#667eea', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
                     {mostPredicted.percentage}%
                   </Typography>
-                  <Typography variant="caption" color="textSecondary" sx={{ display: 'block', mt: 0.5 }}>
-                    community agrees
+                  <Typography variant="caption" color="textSecondary" sx={{ display: 'block', mt: 0.25, fontSize: { xs: '0.6rem', sm: '0.7rem' } }}>
+                    agree
                   </Typography>
                 </Box>
               </Box>
             </Grid>
-          </Grid>
-        </Box>
+              </Grid>
+            </Box>
+          )}
+        </CardContent>
+      </Card>
 
-        {/* ADDITIONAL INSIGHTS */}
-        {stats.scoreDistribution && stats.scoreDistribution.length > 0 && (
-          <Accordion sx={{ mb: 2 }}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
-                📊 Top Predicted Scorelines
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Box sx={{ width: '100%' }}>
+      {/* TOP SCORELINES SECTION */}
+      {stats.scoreDistribution && stats.scoreDistribution.length > 0 && (
+        <Card sx={{ 
+          backgroundColor: '#fff9e6', 
+          borderLeft: { xs: '3px', sm: '4px' },
+          borderLeftColor: '#fbc02d',
+          borderRadius: 2,
+        }}>
+          <CardContent sx={{ p: { xs: 1.5, sm: 2, md: 3 } }}>
+            <CollapsibleHeader 
+              title="📊 Top Scorelines"
+              isOpen={showScorelines}
+              onClick={() => setShowScorelines(!showScorelines)}
+            />
+
+            {showScorelines && (
+              <Box sx={{ width: '100%', mt: 1.5 }}>
                 {stats.scoreDistribution.map((scoreline, idx) => (
                   <Stack
                     key={idx}
                     direction="row"
-                    spacing={2}
+                    spacing={1}
                     sx={{
                       alignItems: 'center',
-                      mb: 2,
-                      p: 1.5,
+                      mb: 1,
+                      p: { xs: 1, sm: 1.5 },
                       backgroundColor: '#f5f5f5',
                       borderRadius: 1,
                     }}
                   >
-                    <Typography variant="h6" sx={{ fontWeight: 'bold', minWidth: 50, textAlign: 'center' }}>
+                    <Typography variant="body2" sx={{ fontWeight: 'bold', minWidth: { xs: 35, sm: 50 }, textAlign: 'center', fontSize: { xs: '0.8rem', sm: '1rem' } }}>
                       {scoreline.score}
                     </Typography>
                     <Box sx={{ flex: 1 }}>
@@ -322,36 +379,36 @@ const CommunityPredictions = ({ matchId, match }) => {
                         variant="determinate"
                         value={parseFloat(scoreline.percentage)}
                         sx={{
-                          height: 8,
+                          height: { xs: 6, sm: 8 },
                           borderRadius: 4,
                           backgroundColor: '#e0e0e0',
                           '& .MuiLinearProgress-bar': {
-                            backgroundColor: '#667eea',
+                            backgroundColor: '#fbc02d',
                           },
                         }}
                       />
                     </Box>
-                    <Stack direction="row" spacing={1} sx={{ minWidth: 80, textAlign: 'right' }}>
-                      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                    <Stack direction="row" spacing={0.5} sx={{ minWidth: { xs: 60, sm: 80 }, textAlign: 'right' }}>
+                      <Typography variant="caption" sx={{ fontWeight: 'bold', fontSize: { xs: '0.7rem', sm: '0.8rem' } }}>
                         {scoreline.percentage}%
                       </Typography>
-                      <Typography variant="caption" color="textSecondary">
+                      <Typography variant="caption" color="textSecondary" sx={{ fontSize: { xs: '0.65rem', sm: '0.75rem' } }}>
                         ({scoreline.count})
                       </Typography>
                     </Stack>
                   </Stack>
                 ))}
               </Box>
-            </AccordionDetails>
-          </Accordion>
-        )}
+            )}
+          </CardContent>
+        </Card>
+      )}
 
-        {/* Summary Text */}
-        <Typography variant="caption" color="textSecondary" sx={{ display: 'block', textAlign: 'center', mt: 2 }}>
-          {mostPredicted.percentage}% of predictors think <strong>{mostPredicted.label}</strong> will happen
-        </Typography>
-      </CardContent>
-    </Card>
+      {/* Summary Text */}
+      <Typography variant="caption" color="textSecondary" sx={{ display: 'block', textAlign: 'center', mt: 1, mb: 1, fontSize: { xs: '0.7rem', sm: '0.8rem' } }}>
+        {mostPredicted.percentage}% of the community think <strong>{mostPredicted.label}</strong> will happen
+      </Typography>
+    </Box>
   );
 };
 
