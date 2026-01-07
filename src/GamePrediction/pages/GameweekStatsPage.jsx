@@ -16,6 +16,8 @@ import {
   TableRow,
   Paper,
   Stack,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import { getUserAllGameweekStats } from '../services/gameweekService';
@@ -25,6 +27,10 @@ const GameweekStatsPage = ({ userId }) => {
   const [stats, setStats] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     if (!userId) {
@@ -49,23 +55,23 @@ const GameweekStatsPage = ({ userId }) => {
   }, [userId]);
 
   if (!userId) {
-    return <Alert severity="warning">Please log in to view gameweek statistics.</Alert>;
+    return <Alert severity="warning" sx={{ m: { xs: 1, sm: 2 } }}>Please log in to view gameweek statistics.</Alert>;
   }
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: { xs: 4, md: 8 } }}>
         <CircularProgress />
       </Box>
     );
   }
 
   if (error) {
-    return <Alert severity="error">{error}</Alert>;
+    return <Alert severity="error" sx={{ m: { xs: 1, sm: 2 } }}>{error}</Alert>;
   }
 
   if (stats.length === 0) {
-    return <Alert severity="info">No gameweek statistics available yet.</Alert>;
+    return <Alert severity="info" sx={{ m: { xs: 1, sm: 2 } }}>No gameweek statistics available yet.</Alert>;
   }
 
   // Calculate summary stats
@@ -75,10 +81,10 @@ const GameweekStatsPage = ({ userId }) => {
   const avgGameweekPoints = stats.length > 0 ? (totalGameweekPoints / stats.length).toFixed(1) : 0;
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%', px: { xs: '1px', sm: 2, md: 3 } }}>
       {/* Get the latest gameweek from stats */}
       {stats.length > 0 && (
-        <Box sx={{ mb: 4 }}>
+        <Box sx={{ mb: { xs: 2, sm: 3, md: 4 } }}>
           <GameweekTopPlayer 
             gameweek={stats[stats.length - 1]?.gameweek} 
             showTopThree={true}
@@ -87,14 +93,14 @@ const GameweekStatsPage = ({ userId }) => {
       )}
 
       {/* Summary Cards */}
-      <Grid container spacing={2} sx={{ mb: 4 }}>
+      <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ mb: { xs: 2, sm: 3, md: 4 } }}>
         <Grid item xs={12} sm={6} md={3}>
-          <Card>
-            <CardContent sx={{ textAlign: 'center' }}>
-              <Typography color="textSecondary" gutterBottom>
+          <Card sx={{ borderRadius: 2 }}>
+            <CardContent sx={{ textAlign: 'center', p: { xs: 1.5, sm: 2 } }}>
+              <Typography color="textSecondary" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }} gutterBottom>
                 Gameweeks Played
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+              <Typography variant={isMobile ? 'h5' : 'h4'} sx={{ fontWeight: 'bold', color: '#1976d2' }}>
                 {stats.length}
               </Typography>
             </CardContent>
@@ -102,12 +108,12 @@ const GameweekStatsPage = ({ userId }) => {
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <Card>
-            <CardContent sx={{ textAlign: 'center' }}>
-              <Typography color="textSecondary" gutterBottom>
+          <Card sx={{ borderRadius: 2 }}>
+            <CardContent sx={{ textAlign: 'center', p: { xs: 1.5, sm: 2 } }}>
+              <Typography color="textSecondary" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }} gutterBottom>
                 Total Gameweek Points
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#4caf50' }}>
+              <Typography variant={isMobile ? 'h5' : 'h4'} sx={{ fontWeight: 'bold', color: '#4caf50' }}>
                 {totalGameweekPoints}
               </Typography>
             </CardContent>
@@ -115,12 +121,12 @@ const GameweekStatsPage = ({ userId }) => {
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <Card>
-            <CardContent sx={{ textAlign: 'center' }}>
-              <Typography color="textSecondary" gutterBottom>
+          <Card sx={{ borderRadius: 2 }}>
+            <CardContent sx={{ textAlign: 'center', p: { xs: 1.5, sm: 2 } }}>
+              <Typography color="textSecondary" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }} gutterBottom>
                 Avg Points/GW
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#ff9800' }}>
+              <Typography variant={isMobile ? 'h5' : 'h4'} sx={{ fontWeight: 'bold', color: '#ff9800' }}>
                 {avgGameweekPoints}
               </Typography>
             </CardContent>
@@ -128,12 +134,12 @@ const GameweekStatsPage = ({ userId }) => {
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <Card>
-            <CardContent sx={{ textAlign: 'center' }}>
-              <Typography color="textSecondary" gutterBottom>
+          <Card sx={{ borderRadius: 2 }}>
+            <CardContent sx={{ textAlign: 'center', p: { xs: 1.5, sm: 2 } }}>
+              <Typography color="textSecondary" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }} gutterBottom>
                 Accuracy
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#9c27b0' }}>
+              <Typography variant={isMobile ? 'h5' : 'h4'} sx={{ fontWeight: 'bold', color: '#9c27b0' }}>
                 {totalGameweekPredictions > 0
                   ? ((totalGameweekCorrect / totalGameweekPredictions) * 100).toFixed(0)
                   : 0}
@@ -145,69 +151,71 @@ const GameweekStatsPage = ({ userId }) => {
       </Grid>
 
       {/* Detailed Gameweek Table */}
-      <Card>
-        <CardContent>
+      <Card sx={{ borderRadius: 2, overflow: 'auto' }}>
+        <CardContent sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
           <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-            <TrendingUpIcon sx={{ color: '#1976d2' }} />
-            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+            <TrendingUpIcon sx={{ color: '#1976d2', fontSize: { xs: 20, sm: 24 } }} />
+            <Typography variant={isMobile ? 'body1' : 'h6'} sx={{ fontWeight: 'bold' }}>
               Gameweek Performance
             </Typography>
           </Stack>
 
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Gameweek</TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 'bold' }}>
-                    Points
-                  </TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 'bold' }}>
-                    Predictions
-                  </TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 'bold' }}>
-                    Correct
-                  </TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 'bold' }}>
-                    Accuracy
-                  </TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 'bold' }}>
-                    Exact Scores
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {stats.map((gw) => (
-                  <TableRow key={gw.gameweek} sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }}>
-                    <TableCell sx={{ fontWeight: 'bold' }}>
-                      Gameweek {gw.gameweek}
+          <Box sx={{ overflowX: 'auto' }}>
+            <TableContainer component={Paper}>
+              <Table size={isMobile ? 'small' : 'medium'}>
+                <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: 'bold', fontSize: { xs: '0.7rem', sm: '0.875rem' } }}>Gameweek</TableCell>
+                    <TableCell align="right" sx={{ fontWeight: 'bold', fontSize: { xs: '0.7rem', sm: '0.875rem' } }}>
+                      Points
                     </TableCell>
-                    <TableCell align="right" sx={{ fontWeight: 'bold', color: '#4caf50' }}>
-                      {gw.gameweekPoints || 0}
+                    {!isMobile && <TableCell align="right" sx={{ fontWeight: 'bold', fontSize: '0.875rem' }}>
+                      Predictions
+                    </TableCell>}
+                    <TableCell align="right" sx={{ fontWeight: 'bold', fontSize: { xs: '0.7rem', sm: '0.875rem' } }}>
+                      Correct
                     </TableCell>
-                    <TableCell align="right">{gw.gameweekPredictions || 0}</TableCell>
-                    <TableCell align="right">
-                      <Stack sx={{ alignItems: 'flex-end' }}>
-                        <Typography>{gw.gameweekCorrect || 0}</Typography>
-                        {gw.gameweekPredictions > 0 && (
-                          <Typography variant="caption" sx={{ color: '#666' }}>
-                            ({((gw.gameweekCorrect / gw.gameweekPredictions) * 100).toFixed(0)}%)
-                          </Typography>
-                        )}
-                      </Stack>
+                    <TableCell align="right" sx={{ fontWeight: 'bold', fontSize: { xs: '0.7rem', sm: '0.875rem' } }}>
+                      Accuracy
                     </TableCell>
-                    <TableCell align="right">
-                      {gw.gameweekPredictions > 0
-                        ? ((gw.gameweekCorrect / gw.gameweekPredictions) * 100).toFixed(0)
-                        : 0}
-                      %
-                    </TableCell>
-                    <TableCell align="right">{gw.gameweekExactScores || 0}</TableCell>
+                    {!isTablet && <TableCell align="right" sx={{ fontWeight: 'bold', fontSize: '0.875rem' }}>
+                      Exact Scores
+                    </TableCell>}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {stats.map((gw) => (
+                    <TableRow key={gw.gameweek} sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }}>
+                      <TableCell sx={{ fontWeight: 'bold', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                        GW {gw.gameweek}
+                      </TableCell>
+                      <TableCell align="right" sx={{ fontWeight: 'bold', color: '#4caf50', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                        {gw.gameweekPoints || 0}
+                      </TableCell>
+                      {!isMobile && <TableCell align="right" sx={{ fontSize: '0.875rem' }}>{gw.gameweekPredictions || 0}</TableCell>}
+                      <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                        <Stack sx={{ alignItems: 'flex-end' }}>
+                          <Typography sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>{gw.gameweekCorrect || 0}</Typography>
+                          {gw.gameweekPredictions > 0 && (
+                            <Typography variant="caption" sx={{ color: '#666', fontSize: { xs: '0.6rem', sm: '0.7rem' } }}>
+                              ({((gw.gameweekCorrect / gw.gameweekPredictions) * 100).toFixed(0)}%)
+                            </Typography>
+                          )}
+                        </Stack>
+                      </TableCell>
+                      <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                        {gw.gameweekPredictions > 0
+                          ? ((gw.gameweekCorrect / gw.gameweekPredictions) * 100).toFixed(0)
+                          : 0}
+                        %
+                      </TableCell>
+                      {!isTablet && <TableCell align="right" sx={{ fontSize: '0.875rem' }}>{gw.gameweekExactScores || 0}</TableCell>}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
         </CardContent>
       </Card>
     </Box>

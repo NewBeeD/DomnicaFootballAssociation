@@ -16,6 +16,8 @@ import {
   Divider,
   Paper,
   Chip,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -36,6 +38,9 @@ const PredictionForm = ({ match, onSubmitSuccess, existingPrediction = null }) =
   const [submitted, setSubmitted] = useState(false);
   const [editing, setEditing] = useState(false);
   const [predictionScored, setPredictionScored] = useState(false);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { enqueueSnackbar } = useSnackbar();
   const { submit, loading } = usePredictionMutation();
@@ -124,8 +129,6 @@ const PredictionForm = ({ match, onSubmitSuccess, existingPrediction = null }) =
     return Object.keys(newErrors).length === 0;
   };
 
-
-  // In src/GamePrediction/components/PredictionForm.jsx - line ~125
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -164,7 +167,6 @@ const PredictionForm = ({ match, onSubmitSuccess, existingPrediction = null }) =
     }
   };
 
-
   const handleClear = () => {
     setHomeScore('');
     setAwayScore('');
@@ -173,12 +175,11 @@ const PredictionForm = ({ match, onSubmitSuccess, existingPrediction = null }) =
     setEditing(false);
   };
 
-
   if (!match) {
     return (
-      <Card>
+      <Card sx={{ borderRadius: 2 }}>
         <CardContent>
-          <Typography color="error">Match data not available</Typography>
+          <Typography color="error" sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>Match data not available</Typography>
         </CardContent>
       </Card>
     );
@@ -189,56 +190,119 @@ const PredictionForm = ({ match, onSubmitSuccess, existingPrediction = null }) =
     const isMatchLiveOrFinished = match.status === 'LIVE' || match.status === 'FINISHED';
     return (
       <Box>
-        <Card>
-          <CardContent>
-            <Alert severity={isMatchLiveOrFinished ? 'info' : 'error'} sx={{ mx: 2, mt: 2 }}>
+        <Card sx={{ borderRadius: 2 }}>
+          <CardContent sx={{ p: { xs: 1.5, sm: 2, md: 3 } }}>
+            <Alert severity={isMatchLiveOrFinished ? 'info' : 'error'} sx={{ fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
               ⏰ {isMatchLiveOrFinished ? `Match ${match.status.toUpperCase()} - Predictions locked.` : 'Kickoff time has passed. Predictions closed.'}
             </Alert>
           </CardContent>
         </Card>
 
-        {/* Show Community Predictions when match is LIVE or FINISHED */}
-        {isMatchLiveOrFinished && (
-          <Box sx={{ mt: 3 }}>
-            <CommunityPredictions matchId={match.id || match.matchId} match={match} />
-          </Box>
-        )}
+        {/* Show Community Predictions after kickoff */}
+        <Box sx={{ mt: { xs: 1.5, sm: 2 } }}>
+          <CommunityPredictions matchId={match.id || match.matchId} match={match} />
+        </Box>
       </Box>
     );
   }
 
-  // If submitted and not editing, show a message and edit button
+  // If submitted and not editing, show prediction details with community data
   if (submitted && !editing) {
     return (
-      <Card>
-        <CardContent>
-          {predictionScored ? (
-            <>
-              <Alert severity="info" sx={{ mx: 2, mt: 2 }}>
-                ✅ Prediction scored! Your score has been calculated and cannot be edited.
-              </Alert>
-              {/* Show comparison when prediction is scored */}
-              <PredictionComparison 
-                userId={currentUser?.uid}
-                matchId={match.id || match.matchId}
-                match={match}
-                prediction={existingPrediction}
-              />
-            </>
-          ) : (
-            <>
-              <Alert severity="success" sx={{ mx: 2, mt: 2 }}>
-                ✅ Prediction submitted!
-              </Alert>
-              <Box sx={{ mt: 2, textAlign: 'center' }}>
-                <Button variant="outlined" onClick={() => setEditing(true)}>
+      <Box>
+        <Card sx={{ borderRadius: 2, background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}>
+          <CardContent sx={{ p: { xs: 1.5, sm: 2, md: 3 } }}>
+            <Alert severity={predictionScored ? 'info' : 'success'} sx={{ fontSize: { xs: '0.8rem', sm: '0.875rem' }, mb: 2 }}>
+              {predictionScored 
+                ? '✅ Prediction scored! Your score has been calculated.' 
+                : '✅ Prediction submitted!'}
+            </Alert>
+
+            {/* Display predicted scores and teams */}
+            <Box sx={{ mb: 2 }}>
+              <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 600, fontSize: { xs: '0.85rem', sm: '0.95rem' } }}>
+                📊 Your Prediction
+              </Typography>
+              <Paper elevation={0} sx={{ p: { xs: 1.5, sm: 2 }, backgroundColor: 'rgba(255, 255, 255, 0.1)', borderRadius: 2 }}>
+                <Grid container spacing={{ xs: 1, sm: 2 }} alignItems="center" justifyContent="center">
+                  <Grid item xs={12} sm="auto" sx={{ textAlign: 'center' }}>
+                    <Typography variant="body2" sx={{ opacity: 0.8, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                      {match.homeTeamName}
+                    </Typography>
+                    <Typography variant="h5" sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', sm: '2rem' } }}>
+                      {homeScore}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} sm="auto" sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+                    <Typography variant="body2" sx={{ fontSize: { xs: '0.9rem', sm: '1rem' }, opacity: 0.8 }}>
+                      VS
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} sm="auto" sx={{ textAlign: 'center' }}>
+                    <Typography variant="body2" sx={{ opacity: 0.8, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                      {match.awayTeamName}
+                    </Typography>
+                    <Typography variant="h5" sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', sm: '2rem' } }}>
+                      {awayScore}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Box sx={{ textAlign: 'center', mt: 1.5 }}>
+                  <Chip
+                    label={
+                      predictedOutcome === 'HOME_WIN'
+                        ? `${match.homeTeamName} Win`
+                        : predictedOutcome === 'AWAY_WIN'
+                        ? `${match.awayTeamName} Win`
+                        : 'Draw'
+                    }
+                    color={
+                      predictedOutcome === 'HOME_WIN' || predictedOutcome === 'AWAY_WIN'
+                        ? 'success'
+                        : 'warning'
+                    }
+                    variant="filled"
+                    size={isMobile ? 'small' : 'medium'}
+                    sx={{
+                      fontSize: { xs: '0.7rem', sm: '0.875rem' },
+                    }}
+                  />
+                </Box>
+              </Paper>
+            </Box>
+
+            {!predictionScored && (
+              <Box sx={{ textAlign: 'center' }}>
+                <Button 
+                  variant="outlined" 
+                  onClick={() => setEditing(true)} 
+                  size={isMobile ? 'small' : 'medium'}
+                  sx={{ color: 'white', borderColor: 'rgba(255, 255, 255, 0.5)', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+                >
                   Edit Prediction
                 </Button>
               </Box>
-            </>
-          )}
-        </CardContent>
-      </Card>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Show comparison when prediction is scored */}
+        {predictionScored && (
+          <Box sx={{ mt: { xs: 1.5, sm: 2 } }}>
+            <PredictionComparison 
+              userId={currentUser?.uid}
+              matchId={match.id || match.matchId}
+              match={match}
+              prediction={existingPrediction}
+            />
+          </Box>
+        )}
+
+        {/* Show Community Predictions, Key Analytics, and Top Scorelines */}
+        <Box sx={{ mt: { xs: 1.5, sm: 2 } }}>
+          <CommunityPredictions matchId={match.id || match.matchId} match={match} />
+        </Box>
+      </Box>
     );
   }
 
@@ -253,59 +317,56 @@ const PredictionForm = ({ match, onSubmitSuccess, existingPrediction = null }) =
         }}
       >
         <CardHeader
-          title={`${match.homeTeamName || 'Home'} vs ${match.awayTeamName || 'Away'}`}
+          title={
+            <Typography sx={{ fontSize: { xs: '0.9rem', sm: '1rem', md: '1.25rem' }, fontWeight: 'bold' }}>
+              {`${match.homeTeamName || 'Home'} vs ${match.awayTeamName || 'Away'}`}
+            </Typography>
+          }
           subheader={
             match.scheduledTime && (
-              <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem' }}>
+              <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: { xs: '0.7rem', sm: '0.875rem' } }}>
                 {new Date(match.scheduledTime.seconds * 1000).toLocaleString()}
               </Typography>
             )
           }
-          sx={{ textAlign: 'center' }}
+          sx={{ textAlign: 'center', p: { xs: 1.5, sm: 2 } }}
         />
 
-        {kickoffPassed && (
-          <Alert severity="error" sx={{ mx: 2, mt: 2 }}>
-            {match.status === 'LIVE' || match.status === 'FINISHED' ? 
-              `❌ Match ${match.status.toLowerCase()} - Predictions are locked.` 
-              : '⏰ Kickoff time has passed. Predictions closed.'}
-          </Alert>
-        )}
-
-        <CardContent>
+        <CardContent sx={{ p: { xs: 1.5, sm: 2, md: 3 } }}>
           <form onSubmit={handleSubmit}>
-            <Stack spacing={3}>
+            <Stack spacing={{ xs: 1.5, sm: 2, md: 3 }}>
               <Paper
                 elevation={0}
                 sx={{
-                  p: 3,
+                  p: { xs: 1.5, sm: 2, md: 3 },
                   backgroundColor: 'rgba(255, 255, 255, 0.1)',
                   borderRadius: 2,
                 }}
               >
-                <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 600 }}>
+                <Typography variant="subtitle2" sx={{ mb: 1.5, fontWeight: 600, fontSize: { xs: '0.85rem', sm: '0.95rem' } }}>
                   📊 Predict the Final Score
                 </Typography>
 
-                <Grid container spacing={2} alignItems="flex-start">
+                <Grid container spacing={{ xs: 1, sm: 2 }} alignItems="flex-start">
                   <Grid item xs={5}>
                     <TextField
                       fullWidth
                       type="number"
-                      label="Home Score"
+                      label="Home"
                       value={homeScore}
                       onChange={(e) => setHomeScore(e.target.value)}
                       inputProps={{ min: 0, max: 20 }}
                       error={!!errors.homeScore}
                       helperText={errors.homeScore}
                       disabled={kickoffPassed || loading || predictionScored}
+                      size={isMobile ? 'small' : 'medium'}
                       sx={{
                         '& .MuiOutlinedInput-root': {
                           color: 'white',
                           '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.5)' },
                         },
                         '& .MuiInputBase-input': {
-                          fontSize: '2rem',
+                          fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' },
                           textAlign: 'center',
                           fontWeight: 'bold',
                         },
@@ -313,8 +374,8 @@ const PredictionForm = ({ match, onSubmitSuccess, existingPrediction = null }) =
                     />
                   </Grid>
 
-                  <Grid item xs={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Typography variant="h4" sx={{ fontWeight: 'bold', opacity: 0.8 }}>
+                  <Grid item xs={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', pt: { xs: 2, sm: 3 } }}>
+                    <Typography variant={isMobile ? 'body2' : 'h5'} sx={{ fontWeight: 'bold', opacity: 0.8 }}>
                       VS
                     </Typography>
                   </Grid>
@@ -323,20 +384,21 @@ const PredictionForm = ({ match, onSubmitSuccess, existingPrediction = null }) =
                     <TextField
                       fullWidth
                       type="number"
-                      label="Away Score"
+                      label="Away"
                       value={awayScore}
                       onChange={(e) => setAwayScore(e.target.value)}
                       inputProps={{ min: 0, max: 20 }}
                       error={!!errors.awayScore}
                       helperText={errors.awayScore}
                       disabled={kickoffPassed || loading || predictionScored}
+                      size={isMobile ? 'small' : 'medium'}
                       sx={{
                         '& .MuiOutlinedInput-root': {
                           color: 'white',
                           '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.5)' },
                         },
                         '& .MuiInputBase-input': {
-                          fontSize: '2rem',
+                          fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' },
                           textAlign: 'center',
                           fontWeight: 'bold',
                         },
@@ -352,15 +414,13 @@ const PredictionForm = ({ match, onSubmitSuccess, existingPrediction = null }) =
                 <Paper
                   elevation={0}
                   sx={{
-                    p: 2,
+                    p: { xs: 1, sm: 1.5 },
                     backgroundColor: 'rgba(255, 255, 255, 0.15)',
                     borderRadius: 2,
                     textAlign: 'center',
                   }}
                 >
-                  <Typography variant="subtitle2" sx={{ opacity: 0.8, mb: 1 }}>
-                    Predicted Outcome
-                  </Typography>
+
                   <Chip
                     icon={<EmojiEventsIcon />}
                     label={
@@ -376,10 +436,12 @@ const PredictionForm = ({ match, onSubmitSuccess, existingPrediction = null }) =
                         : 'warning'
                     }
                     variant="filled"
+                    size={isMobile ? 'small' : 'medium'}
                     sx={{
-                      fontSize: '1rem',
+                      fontSize: { xs: '0.7rem', sm: '0.875rem' },
                       height: 'auto',
-                      py: 2,
+                      py: { xs: 1, sm: 1.5 },
+                      mt: 0.5
                     }}
                   />
                 </Paper>
@@ -388,25 +450,25 @@ const PredictionForm = ({ match, onSubmitSuccess, existingPrediction = null }) =
               <Paper
                 elevation={0}
                 sx={{
-                  p: 2,
+                  p: { xs: 1, sm: 1.5 },
                   backgroundColor: 'rgba(255, 255, 255, 0.1)',
                   borderRadius: 2,
                 }}
               >
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" spacing={1}>
                   <Box sx={{ flex: 1 }}>
-                    <Typography variant="caption" sx={{ opacity: 0.8 }}>
+                    <Typography variant="caption" sx={{ opacity: 0.8, fontSize: { xs: '0.65rem', sm: '0.75rem' } }}>
                       Correct Outcome
                     </Typography>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    <Typography variant={isMobile ? 'body2' : 'h6'} sx={{ fontWeight: 'bold' }}>
                       +3 pts
                     </Typography>
                   </Box>
                   <Box sx={{ flex: 1 }}>
-                    <Typography variant="caption" sx={{ opacity: 0.8 }}>
+                    <Typography variant="caption" sx={{ opacity: 0.8, fontSize: { xs: '0.65rem', sm: '0.75rem' } }}>
                       Exact Score
                     </Typography>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    <Typography variant={isMobile ? 'body2' : 'h6'} sx={{ fontWeight: 'bold' }}>
                       +5 pts
                     </Typography>
                   </Box>
@@ -414,14 +476,16 @@ const PredictionForm = ({ match, onSubmitSuccess, existingPrediction = null }) =
               </Paper>
             </Stack>
 
-            <CardActions sx={{ justifyContent: 'flex-end', gap: 1, pt: 3 }}>
+            <CardActions sx={{ justifyContent: 'flex-end', gap: 1, pt: { xs: 1.5, sm: 2 }, px: { xs: 1, sm: 2 } }}>
               <Button
                 variant="outlined"
                 onClick={handleClear}
                 disabled={loading || kickoffPassed || predictionScored}
+                size={isMobile ? 'small' : 'medium'}
                 sx={{
                   color: 'white',
                   borderColor: 'rgba(255, 255, 255, 0.5)',
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' }
                 }}
               >
                 Clear
@@ -431,23 +495,25 @@ const PredictionForm = ({ match, onSubmitSuccess, existingPrediction = null }) =
                 type="submit"
                 variant="contained"
                 disabled={loading || kickoffPassed || !currentUser || predictionScored}
+                size={isMobile ? 'small' : 'medium'}
                 sx={{
                   backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' }
                 }}
               >
                 {loading ? (
                   <>
-                    <CircularProgress size={20} sx={{ mr: 1, color: 'white' }} />
-                    Saving...
+                    <CircularProgress size={16} sx={{ mr: 0.5, color: 'white' }} />
+                    {isMobile ? 'Saving...' : 'Submit Prediction'}
                   </>
                 ) : (
-                  'Submit Prediction'
+                  'Submit'
                 )}
               </Button>
             </CardActions>
 
             {!currentUser && (
-              <Alert severity="warning" sx={{ mt: 2 }}>
+              <Alert severity="warning" sx={{ mt: 2, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
                 Please log in to make a prediction
               </Alert>
             )}
@@ -456,7 +522,7 @@ const PredictionForm = ({ match, onSubmitSuccess, existingPrediction = null }) =
       </Card>
 
       {/* Show Community Predictions below the form */}
-      <Box sx={{ mt: 3 }}>
+      <Box sx={{ mt: { xs: 1.5, sm: 2, md: 3 } }}>
         <CommunityPredictions matchId={match.id || match.matchId} match={match} />
       </Box>
     </Box>
@@ -464,8 +530,6 @@ const PredictionForm = ({ match, onSubmitSuccess, existingPrediction = null }) =
 };
 
 export default PredictionForm;
-
-
 
 
 
