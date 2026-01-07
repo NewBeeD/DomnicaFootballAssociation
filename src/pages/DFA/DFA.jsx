@@ -301,7 +301,7 @@ const DFA = () => {
   };
 
 
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState('1');
 
   const handleChangeTableFixtures = (event, newValue) => {
     setValue(newValue);
@@ -412,18 +412,18 @@ const DFA = () => {
         <TabContext value={value}>
 
           <TabList onChange={handleChangeTableFixtures} aria-label="tabs example" centered >
-                    <Tab label='Table' value={1}  />
-                    <Tab label='Fixtures' value={2}  />
+                    <Tab label='Table' value="1"  />
+                    <Tab label='Fixtures' value="2"  />
           </TabList>
 
 
-          <TabPanel  value={1}>
+          <TabPanel  value="1">
 
             <Points_Table page='Homepage'/>
 
           </TabPanel>
 
-          <TabPanel  value={2}>
+          <TabPanel  value="2">
 
             <FixturesData page='home' type="now" league='DFA' />
             

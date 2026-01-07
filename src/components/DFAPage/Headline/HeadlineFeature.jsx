@@ -220,7 +220,7 @@ const HeadlineFeature = () => {
         <Typography variant="h5" sx={{ color: 'white' }}>
           Loading League Headlines...
         </Typography>
-        <style jsx>{`
+        <style>{`
           @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }

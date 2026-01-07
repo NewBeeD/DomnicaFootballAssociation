@@ -188,7 +188,7 @@ const InlineTableLegend = () => {
           <Table >
 
             <TableHead sx={{ backgroundColor: `var(--color-color2, ${theme.colors.color2})`}}>
-              <TableRow>
+              <TableRow key="header-premier">
                 {/* <TableCell sx={{ fontSize: {xs: 8}, fontWeight: 900}}>Pos</TableCell> */}
 
                 <TableCell width={window_width < 290?110: 0.5} sx={{ fontSize: {xs: 11}, fontWeight: 900, textAlign:'left'}}>Pos</TableCell>

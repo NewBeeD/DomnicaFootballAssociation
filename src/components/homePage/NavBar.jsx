@@ -45,9 +45,9 @@ const navItems = [
   { id: 5, label: 'Stats', path: '/DFA/Stats', icon: <BarChartIcon /> },
   { 
     id: 6, 
-    label: 'DFA', 
-    path: 'http://www.dominicafa.com/', 
-    external: true,
+    label: 'Predict', 
+    path: '/PredictionGame', 
+    external: false,
     icon: <SportsIcon />
   },
 ]
